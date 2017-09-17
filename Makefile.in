@@ -93,6 +93,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+
+# Conditionally build the PDF.
 @ENABLE_PDF_TRUE@am__append_1 = avoid_time_t.pdf
 noinst_PROGRAMS = example_02$(EXEEXT) example_03$(EXEEXT) \
 	test_time$(EXEEXT) test_diff$(EXEEXT) test_add$(EXEEXT) \
@@ -248,7 +250,8 @@ am__can_run_installinfo = \
 man3dir = $(mandir)/man3
 NROFF = nroff
 MANS = $(dist_man_MANS)
-am__dist_doc_DATA_DIST = avoid_time_t.pdf
+am__dist_doc_DATA_DIST = README COPYING LICENSE AUTHORS ChangeLog \
+	INSTALL NEWS avoid_time_t.pdf
 DATA = $(dist_doc_DATA)
 HEADERS = $(include_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) \
@@ -447,7 +450,6 @@ libtime_la_SOURCES = time_copy.c \
 	extraordinary_days.dat \
 	avoid_time_t.tex \
 	references.bib \
-	gpl.txt \
 	legalcode.txt
 
 nodist_libtime_la_SOURCES = dtai_table.h dtai_table.tab
@@ -458,9 +460,8 @@ avoid_time_t.out avoid_time_t.brf avoid_time_t.log avoid_time_t.aux \
 avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf
 
 ACLOCAL_AMFLAGS = -I m4
-
-# Conditionally build the PDF.
-dist_doc_DATA = $(am__append_1)
+dist_doc_DATA = README COPYING LICENSE AUTHORS ChangeLog INSTALL NEWS \
+	$(am__append_1)
 example_03_LDADD = libtime.la
 example_02_LDADD = libtime.la
 test_time_LDADD = libtime.la
@@ -514,7 +515,7 @@ powers_of_two_LDADD = libtime.la
 # See the NEWS file (and the revision history in the PDF) for the history
 # of the version-info.
 #
-libtime_la_LDFLAGS = -version-info 1:4:0
+libtime_la_LDFLAGS = -version-info 1:5:0
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.

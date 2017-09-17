@@ -2,7 +2,8 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([time], [2017-08-27], [John_Sauter@systemeyescomputerstore.com])
+AC_INIT([time], [2017-09-17], [John_Sauter@systemeyescomputerstore.com],
+[libtime],["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([time_diff.c])
 AC_CONFIG_HEADERS([config.h])
