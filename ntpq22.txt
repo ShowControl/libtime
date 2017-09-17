@@ -1,0 +1,10 @@
+associd=0 status=0615 leap_none, sync_ntp, 1 event, clock_sync,
+version="ntpd 4.2.6p5@1.2349-o Tue Nov 22 09:50:38 UTC 2016 (1)",
+processor="x86_64", system="Linux/4.8.15-300.fc25.x86_64", leap=00,
+stratum=3, precision=-24, rootdelay=154.023, rootdisp=84.759,
+refid=64.6.144.6,
+reftime=dc17e116.82386cca  Wed, Jan  4 2017 16:01:10.508,
+clock=dc17e4a8.edd5ba02  Wed, Jan  4 2017 16:16:24.929, peer=47587,
+tc=10, mintc=3, offset=3.885, frequency=20.023, sys_jitter=3.653,
+clk_jitter=3.064, clk_wander=0.215, tai=37, leapsec=201701010000,
+expire=201706280000

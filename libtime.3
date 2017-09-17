@@ -1,0 +1,169 @@
+.TH LIBTIME 3 "2017-08-27" "John Sauter"
+.SH NAME
+libtime \- manipulate representations of time
+.SH SYMOPSIS
+.B #include </usr/local/include/time_subroutines.h>
+.sp
+These subroutines are packaged in a library called libtime which is
+installed by default in /usr/local/lib.  To include them when linking,
+specify \fB -L/usr/local/lib -Wl,-rpath -Wl,/usr/local/lib -ltime \fR
+in your GCC command line.
+.SH DESCRIPTION
+The \fI libtime \fR
+functions manipulate representations of time.  They are centered
+on the \fI TM \fR structure, and take leap seconds into account.
+See below for a reference to the full documentation.
+.sp
+.TP
+int int128_to_string (__int128 value, char *result, int result_size);
+Convert a 128-bit integer to a string.
+.sp
+.TP
+int time_copy_tm (struct tm *in_tm, struct tm *out_tm);
+Copy a tm structure.
+.sp
+.TP
+int time_current_tm (struct tm *current_tm);
+Fetch the current time, without nanoseconds.
+.sp
+.TP
+int time_current_tm_nano (struct tm *current_tm, int *nanoseconds);
+Fetch the current time, including nanoseconds.
+.sp
+.TP
+long long int time_diff (struct tm *A_tm, struct tm *B_tm, int variable_length_seconds_before_1972);
+Compute the difference between two times in seconds.
+.sp
+.TP
+int time_DTAI (int Julian_day_number, int variable_length_seconds_before_1972);
+Fetch the difference between TAI and UTC at the beginning
+of the specified Julian Day Number.
+.sp
+.TP
+int time_Julian_day_number (int year, int month, int day);
+Compute the Julian Day Number corresponding to a date.
+.sp
+.TP
+int time_length_local_minute (struct tm *time_tm, int variable_length_seconds_before_1972);
+Compute the length of the current minute of local time.
+.sp
+.TP
+int time_length_month (struct tm *time_tm);
+Compute the length of the current month.
+.sp
+.TP
+int time_length_prev_local_minute (struct tm *time_tm, int variable_length_seconds_before_1972);
+Compute the length of the previous minute of local time.  
+.sp
+.TP
+int time_length_prev_month (struct tm *time_tm);
+Compute the length of the previous month.
+.sp
+.TP
+int time_length_prev_UTC_minute (struct tm *time_tm, int variable_length_seconds_before_1972);
+Compute the length of the previous minute of Coordinated Universal Time.
+.sp
+.TP
+int time_length_UTC_minute (struct tm *time_tm, int variable_length_seconds_before_1972);
+Compute the length of the current minute of Coordinated Universal Time.
+.sp
+.TP
+int time_local_add_days (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_before_1972);
+Add days to a local time.
+.sp
+.TP
+int time_local_add_hours (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_before_1972);
+Add hours to a local time.
+.sp
+.TP
+int time_local_add_minutes (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_before_1972);
+Add minutes to a local time.
+.sp
+.TP
+int time_local_add_months (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_before_1972);
+Add months to a local time.
+.sp
+.TP
+int time_local_add_seconds (struct tm *time_tm, long long int add_seconds, int variable_length_seconds_before_1972);
+Add seconds to a local time.
+.sp
+.TP
+int time_local_add_seconds_ns (struct tm *time_tm, long long int *nanoseconds, long long int add_seconds, long long int add_nanoseconds, int variable_length_seconds_before_1972);
+Add seconds and nanoseconds to a local time.
+.sp
+.TP
+int time_local_add_years (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_before_1972);
+Add years to a local time.
+.sp
+.TP
+int time_local_normalize (struct tm *time_tm, long long int seconds, int variable_length_seconds_before_1972);
+Make sure all of the fields of a tm structure containing local time are
+within their valid ranges.
+.sp
+.TP
+int time_local_to_UTC (struct tm *local_time, struct tm *coordinated_universal_time, int variable_length_seconds_before_1972);
+Convert local time to Coordinated Universal Time.
+.sp
+.TP
+int time_sleep_until (struct tm *time_tm, int nanoseconds, int variable_length_seconds_before_1972);
+Sleep until a specified Coordinated Universal Time.
+.sp
+.TP
+int time_tm_nano_to_integer (struct tm *input_tm, int input_nanoseconds, __int128 *result);
+Convert the time and nanoseconds to a 128-bit integer.
+.sp
+.TP
+int time_tm_nano_to_string (struct tm *input_tm, int input_nanoseconds, char *current_time_string, int current_time_string_length);
+Convert the time and nanoseconds to a string.
+.sp
+.TP
+int time_tm_to_integer (struct tm *input_tm, long long int *result);
+Convert the time to a long long integer.
+.sp
+.TP
+int time_tm_to_string (struct tm *input_tm, char *current_time_string, int current_time_string_length);
+Convert the time to a string.
+.sp
+.TP
+int time_UTC_add_days (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_before_1972);
+Add days to a Coordinated Universal Time.
+.sp
+.TP
+int time_UTC_add_hours (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_after_1972);
+Add hours to a Coordinated Universal Time.
+.sp
+.TP
+int time_UTC_add_minutes (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_before_1972);
+Add minutes to a Coordinated Universal Time.
+.sp
+.TP
+int time_UTC_add_months (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_before_1972);
+Add months to a Coordinated Universal Time.
+.sp
+.TP
+int time_UTC_add_seconds (struct tm *time_tm, long long int add_seconds, int variable_length_seconds_before_1972);
+Add seconds to a Coordinated Universal Time.
+.sp
+.TP
+int time_UTC_add_seconds_ns (struct tm *time_tm, long long int *nanoseconds, long long int add_seconds, long long int add_nanoseconds, int variable_length_seconds_before_1972);
+Add seconds and nanoseconds to a Coordinated Universal Time.  
+.sp
+.TP
+int time_UTC_add_years (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_before_1972);
+Add years to a Coordinated Universal Time.
+.sp
+.TP
+int time_UTC_normalize (struct tm *time_tm, long long int seconds, int variable_length_seconds_before_1972);
+Make sure all of the fields of a tm structure containing a
+Coordinated Universal Time are within their valid ranges.  
+.sp
+.TP
+int time_UTC_to_local (struct tm *coordinated_universal_time, struct tm *local_time, int variable_length_seconds_before_1972);
+Convert Coordinated Universal Time to local time.
+.SH SEE ALSO
+A paper on why you should use these functions is available at
+\%https://commons.wikimedia.org/wiki/File:Avoid_Using_POSIX_time_t_for_Telling_Time.pdf
+It contains detailed documentation and some examples of how to use these
+subroutines.
+
+

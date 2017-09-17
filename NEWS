@@ -1,0 +1,36 @@
+2017-08-27 1:4:0
+  Add a MAN page.
+  
+2017-07-08 1:3:0
+  Use Automake in the build procedure.
+  Distribute the software using the customary GNU packaging,
+  with the PDF file as its documentation.  Continue to include
+  the software in the PDF as embedded files.  Build the PDF
+  only if requested.  Update to IERS Bulletin C version 54, issued
+  July 6, 2017, which states that no leap second will be introduced
+  at the end of December, 2017, so UTC - TAI will remain at
+  -37 seconds for the next six months, at least.
+
+2017-05-07 1:2:0
+  Minor typographical changes, add test_local.c,
+  work around compiler over-optimization in int128\_to\_string.
+
+2017-01-27 1:1:0
+  Update the Makefile and some of the test programs
+  based on feedback from Steve Summit.
+
+2017-01-18 1:0:0
+  Added the ability to use variable length seconds before 1972.
+  
+2017-01-10 0:2:0
+  Updated to IERS Bulletin C version 53,
+  issued January 9, 2017, which states that UTC - TAI
+  will remain at -37 seconds for the next six months, at least.
+  
+2017-01-01 0:1:0
+  Added a description of the stat function,
+  the list of entry points and the kernel recommendations.
+  Handle converting -2^127 to a string.
+  
+2016-12-21 0:0:0
+  Original distribution.

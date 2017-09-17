@@ -1,0 +1,802 @@
+\documentclass[letterpaper,twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{embedfile}
+\usepackage{enumitem}
+\usepackage[super]{nth}
+\usepackage{fancyhdr}
+\usepackage{xfrac}
+\usepackage{fnpct}
+\usepackage{siunitx}
+\usepackage{graphics}
+\usepackage{natbib}
+\usepackage{microtype}
+\usepackage{hyperxmp}
+\usepackage{verbatim}
+\usepackage[kpsewhich=true]{minted}
+%\usepackage[usenames,dvipsnames]{color}
+\usepackage[pdfencoding=unicode,pagebackref]{hyperref}
+\bibliographystyle{plainnat}
+\setcitestyle{numbers,square}
+% Pages styles
+%\setlength{\headheight}{22.5pt}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[LE]{\thepage}
+\fancyhead[CE]{{\scshape John Sauter}}
+\fancyhead[CO]{{\scshape Avoid Using POSIX {\ttfamily time\_t}
+    for Telling Time}}
+\fancyhead[RO]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot{}
+\setlength\tabcolsep{1mm}
+\renewcommand\arraystretch{1.3}
+
+\begin{document}
+\embedfile[desc={Avoid Using POSIX time\_t for Telling Time},
+  mimetype={text/pdflatex}]{avoid_time_t.tex}
+\title{Avoid Using POSIX {\ttfamily time\_t} for Telling
+  Time\footnote{Copyright
+    {\copyright} 2017 by John Sauter.
+    This paper is made available under a
+    Creative Commons Attribution-ShareAlike 4.0 International License.
+    You can read a human-readable summary of the license at
+    \url{http://creativecommons.org/licenses/by-sa/4.0}, which contains
+    a link to the full text of the license.
+    See also section \ref{section:Licensing} of this paper.}
+}
+\author{John Sauter\footnote{
+    System Eyes Computer Store,
+    20A Northwest Blvd.  Ste 345,
+    Nashua, NH  03063-4066,
+    e-mail: John\_Sauter@systemeyescomputerstore.com,
+    telephone: (603) 424-1188}}
+\hypersetup{unicode=true,
+  pdfauthor={John Sauter},
+  pdftitle={Avoid Using POSIX time\_t for Telling Time},
+  pdfsubject={POSIX time\_t},
+  pdfkeywords={Coordinated Universal Time, UTC, POSIX, time\_t},
+  pdfcontactaddress={System Eyes Computer Store, 20A Northwest Blvd.  Ste 345},
+  pdfcontactcity={Nashua},
+  pdfcontactcountry={USA},
+  pdfcontactemail={John\_Sauter@systemeyescomputerstore.com},
+  pdfcontactphone={603-424-1188},
+  pdfcontactpostcode={03063-4066},
+  pdfcontactregion={New Hampshire},
+  pdfcontacturl={https://www.systemeyescomputerstore.com},
+  pdfcopyright={Copyright {\copyright} 2017 by John Sauter},
+  pdfdate={2017-08-27},
+  pdflicenseurl={http://creativecommons.org/licenses/by-sa/4.0},
+  pdfmetalang={en-US}  
+}
+\date{2017-08-27}
+\maketitle
+\begin{abstract}
+  The POSIX data type {\ttfamily time\_t} is defined in a way that leads
+  to errors in application programs when it is used for telling time.
+  Here is how to avoid using it for that purpose.
+\end{abstract}
+\begin{description}
+\item[Keywords:]Coordinated Universal Time; UTC; POSIX; time\_t.
+\end{description}
+  
+%\tableofcontents
+\newpage
+
+\section{Definition of {\ttfamily time\_t}}
+The data type {\ttfamily time\_t} is defined in POSIX\citep{7582338}
+as a count of seconds.
+When telling time, it is the number of seconds
+since the epoch, which is approximately January 1, 1970.  This count of
+seconds since the epoch is also
+defined as an encoding of Coordinated Universal time into an integer.
+
+Here is the formal definition:
+\begin{quotation}
+
+4.16 Seconds Since the Epoch
+
+A value that approximates the number of seconds that have elapsed
+since the Epoch. A Coordinated Universal Time name
+(specified in terms of seconds (tm\_sec), minutes (tm\_min),
+hours (tm\_hour), days since January 1 of the year (tm\_yday),
+and calendar year minus 1900 (tm\_year)) is related to a time
+represented as seconds since the Epoch, according to the expression below.
+
+If the year is $<1970$ or the value is negative, the relationship is undefined.
+If the year is $\geq 1970$ and the value is non-negative, the value is
+related to a Coordinated Universal Time name according to the
+C-language expression, where tm\_sec, tm\_min, tm\_hour, tm\_yday,
+and tm\_year are all integer types:
+\begin{multline*}
+  tm\_sec + tm\_min*60 + tm\_hour*3600 + tm\_yday*86400 \,+ \\
+    (tm\_year-70)*31536000 + ((tm\_year-69)/4)*86400 \,- \\
+    ((tm\_year-1)/100)*86400 + ((tm\_year+299)/400)*86400
+\end{multline*}
+The relationship between the actual time of day and the current value
+for seconds since the Epoch is unspecified.
+
+How any changes to the value of seconds since the Epoch are made
+to align to a desired relationship with the current actual time
+is implementation-defined. As represented in seconds since the Epoch,
+each and every day shall be accounted for by exactly \num{86400} seconds.
+
+\begin{description}
+\item[Note:]
+The last three terms of the expression add in a day for each year
+that follows a leap year starting with the first leap year since
+the Epoch. The first term adds a day every 4 years starting in 1973,
+the second subtracts a day back out every 100 years starting in 2001,
+and the third adds a day back in every 400 years starting in 2001.
+The divisions in the formula are integer divisions; that is, the
+remainder is discarded leaving only the integer quotient.
+\end{description}
+\end{quotation}
+
+\section{Problems}
+There are problems with this definition.
+\begin{itemize}
+\item{It is not defined for years before 1970.}
+\item{The relationship between the actual time of day and the current value
+  for seconds since the Epoch is unspecified.
+  This means it can vary from time to time
+  and from one implementation to another, making the
+  relationship meaningless.}
+\item{An application using {\ttfamily time\_t} is required to pretend that
+  all days
+  contain exactly \num{86400} seconds.  This is false: December 31, 2016, for
+  example, contains \num{86401} seconds.  This pretense leads to application
+  program errors on days that do not contain \num{86400} seconds.
+  Because {\ttfamily time\_t} counts seconds almost all the time,
+  application programmers
+  are tempted to use it as though it always counts seconds,
+  leading to errors in the application when it doesn't.}
+\item{Because the epoch is undefined, an implementation can change
+  it while an application is running, so that time seems to step
+  backwards.  One can forgive an application which fails when this
+  happens.}
+\end{itemize}
+
+\section{Solutions}
+The major reason for the problems with {\ttfamily time\_t} is that it is
+trying to do
+too much: be a count of seconds and encode Coordinated Universal Time.
+The first stage in solving the problems is to separate these two jobs.
+\subsection{Encoding Coordinated Universal Time}
+A good way to represent Coordinated Universal Time is with the \verb|tm| data
+structure.  It contains integers for the year, month, day, hour, minute
+and second.  To encode it into an integer you can do this:
+\begin{multline*}
+  value = (year \times 10000000000) + (month \times 100000000) \,+ \\
+  (day \times 1000000) + (hour \times 10000) + (minute \times 100) + second
+\end{multline*}
+The value computed above is defined for all years, has a clear relationship
+to the date and time of day, and does not require an application to pretend
+that all days have \num{86400} seconds.  Its values are very different from
+the value of a {\ttfamily time\_t}, and so are not likely to be mistaken for it,
+or vice-versa.  It does not count seconds, so application programmers
+will not be tempted to misuse it for that purpose.
+
+\subsection{Measuring Time}
+Application programmers need a way to measure time intevals.
+If the interval starts and ends during the execution of an application,
+Monotonic Time
+can be used, since it is a count of seconds since an arbitrary epoch.
+Unlike {\ttfamily time\_t}, Monotonic Time does not change its epoch while
+applications are running, and so Monotonic Time never appears to flow
+backwards.  However, Monotonic Time is not good for writing to a file
+or sending
+over a network to another computer, since each computer will have
+its own epoch, and that epoch will change when the computer is restarted.
+For those purposes it is best to use Coordinated Universal Time.
+
+To measure the time between two instants of Coordinated Universal Time
+requires a table of days whose lengths are not \num{86400} seconds.
+This table
+can be used to adjust for the number of leap seconds that have occurred
+during the interval.
+
+\section{Implementing the Solutions}
+The solutions presented above are adequate only if they will allow an
+application
+programmer to avoid completely the use of {\ttfamily time\_t} for telling time.
+To demonstrate that this is possible,
+I will list all of the POSIX functions 
+that use {\ttfamily time\_t}
+(or timespec, which contains a {\ttfamily time\_t}) 
+and show how to
+replace the application functions which use {\ttfamily time\_t} as
+seconds since the epoch.
+
+\subsection{clock\_getres}
+This function returns a timespec, but that timespec describes an interval
+rather than an instant.  The {\ttfamily time\_t} returned in the timespec is a
+number of seconds rather than seconds since the epoch.
+
+\subsection{clock\_gettime and gettimeofday}
+Gettimeofday is equivalent to clock\_gettime with clock ID set to
+CLOCK\_REAL\-TIME, except for the time zone, which should not be used.
+
+Clock\_gettime with clock ID set to CLOCK\_REAL\-TIME can be replaced by
+a function which returns the current time in a \verb|tm| structure along
+with the number of nanoseconds since the last second.
+\inputminted[firstline=34]{c}{time_current_tm_nano.c}
+\embedfile[desc={Return the current time including nanoseconds},
+  mimetype={text/x-c}]{time_current_tm_nano.c}
+
+\subsection{clock\_nanosleep}
+Clock\_nanosleep with clock ID set to CLOCK\_REAL\-TIME and with flag
+TIMER\_ABS\-TIME not set can be replaced by clock\_nanosleep with
+clock ID set to CLOCK\_MONO\-TONIC, since CLOCK\_MONO\-TONIC ticks at
+same rate as CLOCK\_REAL\-TIME.
+
+Clock\_nanosleep with clock ID set to CLOCK\_REAL\-TIME and with flag
+TIMER\_ABS\-TIME set can be replaced by a function which accepts
+a time in a \verb|tm| structure and a count of nanoseconds since that second.
+\inputminted[firstline=32]{c}{time_sleep_until.c}
+\embedfile[desc={Sleep until the specified time},
+  mimetype={text/x-c}]{time_sleep_until.c}
+See subsection \ref{subsection:difftime} for time\_diff
+and an explanation of variable\_length\_sec\-onds\_before\_1972.
+
+\subsection{clock\_settime}
+Clock\_settime is not used by applications.
+However, see section \ref{section:KernelRecommendations} for a
+recommendation that would make setting the time of day during a
+leap second possible.
+
+\subsection{ctime and ctime\_r}
+Ctime and ctime\_r can be replaced by a call to localtime followed by
+a call to asctime.  See subsection \ref{subsection:localtime}
+for the substitute for localtime.
+If asctime isn't flexible enough, use strftime or see subsection
+\ref{subsection:tostring}
+
+\subsection{difftime}
+\label{subsection:difftime}
+Difftime can be replaced by a function which returns the time in seconds
+between two times expressed using the \verb|tm| structure.
+\inputminted[firstline=37]{c}{time_diff.c}
+\embedfile[desc={Compute the number of seconds between two times},
+  mimetype={text/x-c}]{time_diff.c}
+The table of changes in DTAI is too long to present here in full,
+but here are some of the lines:
+\inputminted[firstline=46880,lastline=46906]{c}{dtai_table.tab}
+\embedfile[desc={Table of changes in DTAI, used by time\_diff.c},
+  mimetype={text/x-c}]{dtai_table.tab}
+\embedfile[desc={Size of the table of changes in DTAI},
+  mimetype={text/x-c}]{dtai_table.h}
+\embedfile[desc={program to create dtai\_table from extraordinary\_days.dat},
+  mimetype={application/python}]{read_extraordinary_days_table.py}
+\embedfile[desc={table of extraordinary days},
+  mimetype={text/plain}]{extraordinary_days.dat}
+The left number is the Julian Day Number of the day which starts with
+the new value of DTAI, and the right number is the new value of DTAI.
+
+The full table of changes in DTAI is embedded in this PDF file;
+see section \ref{section:Embedded_files}.
+The table can be generated automatically\citep{JBS_001}, but the ultimate
+source of its data is based on manually editing a file when the
+International Earth Rotation and Reference Systems Service (IERS)
+issues its Bulletin C\footnote{\url{https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html}} announcing the next leap second.  See file
+{\ttfamily extraordinary\_days.dat}, also embedded in this PDF file,
+for details.
+
+\subsection{gmtime and gmtime\_r}
+Gmtime and gmtime\_r convert from {\ttfamily time\_t} to
+the \verb|tm| structure,
+representing Coordinated Universal Time.  We don't
+need this function since our primary representation for time is the
+\verb|tm| structure representing Coordinated Universal Time,
+and we are not using {\ttfamily time\_t}.
+
+\subsection{localtime and localtime\_r}
+\label{subsection:localtime}
+Localtime and localtime\_r convert a {\ttfamily time\_t} into
+a \verb|tm| structure that
+represents local time.  We can replace this with a function that takes
+as input a \verb|tm| structure that represents Coordinated Universal Time.
+\inputminted[firstline=32]{c}{time_utc_to_local.c}
+\embedfile[desc={Convert Coordinated Universal Time to local time},
+  mimetype={text/x-c}]{time_utc_to_local.c}
+See subsection \ref{subsection:copy} for time\_copy\_tm,
+subsection \ref{subsection:timeUTCadd} for
+time\_\-length\_\-prev\_\-UTC\_\-minute,
+and subsection \ref{subsection:timelocaladd} for time\_local\_normalize.
+
+\subsection{mktime}
+\label{subsection:mktime}
+Mktime converts a \verb|tm| structure that represents local time into a
+{\ttfamily time\_t}.  We can replace this with a function whose output is a
+\verb|tm| structure that represents Coordinated Universal Time.
+\inputminted[firstline=32]{c}{time_local_to_utc.c}
+\embedfile[desc={Convert local time to Coordinated Universal Time},
+  mimetype={plain/x-c}]{time_local_to_utc.c}
+See subsection \ref{subsection:timeUTCadd} for time\_UTC\_normalize.
+
+\subsection{nanosleep}
+Nanosleep takes a timespec as input, but the {\ttfamily time\_t} portion of that
+timespec represents the number of seconds to sleep, not an instant of
+time.  Similarly, the timespec output represents the number of seconds
+remaining in the sleep time.  Both {\ttfamily time\_t} values can be considered
+a count of seconds.
+
+\subsection{settimeofday}
+Settimeofday is not used by applications.
+However, see section \ref{section:KernelRecommendations} for a recommendation
+that would make setting the time of day during a leap second possible.
+
+\subsection{stat}
+Stat has three timespec fields: atime, mtime and ctime.  The POSIX standard
+is rather vague on when the fields are updated to the current time, and
+some file systems have precision less than a second for some of the fields.
+Your application should not count on these fields being accurate to
+the second.  If you need to compare file times, you should do what
+rsync does, and implement a modify-window feature, which causes two
+file times to compare equal if they differ by no more than the specified
+number of seconds.
+
+Some file systems fill in the nanoseconds part of the timespec field,
+but you should ignore nanoseconds when comparing because the times may be
+inaccurate by up to one second, even on modern file systems.
+However, see section \ref{section:KernelRecommendations} for a
+recommendation for making the file times accurate.
+
+\subsection{time}
+Instead of returning the current time as a {\ttfamily time\_t}, return it as
+a \verb|tm|.
+\inputminted[firstline=34]{c}{time_current_tm.c}
+\embedfile[desc={Return the current time in a tm structure},
+  mimetype={text/x-c}]{time_current_tm.c}
+
+\subsection{timegm}
+Timegm converts a \verb|tm| structure containing Coordinated Universal Time
+into a {\ttfamily time\_t}.
+We don't need it, since we are using the \verb|tm| structure
+as our primary representation of time.  However, it is sometimes
+convenient to represent time as a single value instead of a structure.
+\inputminted[firstline=32]{c}{time_tm_to_integer.c}
+\embedfile[desc={Convert a time to an integer},
+  mimetype={text/x-c}]{time_tm_to_integer.c}
+
+The following subroutine goes one step further, by including the
+fraction of a second in the value.
+\inputminted[firstline=32]{c}{time_tm_nano_to_integer.c}
+\embedfile[desc={Convert a time to a 128-bit integer},
+  mimetype={text/x-c}]{time_tm_nano_to_integer.c}
+
+A 128-bit integer cannot be printed with printf, so here is a subroutine
+to convert it to a string.
+\inputminted[firstline=32]{c}{int128_to_string.c}
+\embedfile[desc={Convert a 128-bit integer to a string},
+  mimetype={text/x-c}]{int128_to_string.c}
+
+\section{Beyond POSIX}
+Just being able to do all the POSIX functions isn't enough to persuade
+application programmers to abandon {\ttfamily time\_t} for telling time.
+Application programmers
+need a net benefit to make changing worthwhile.  To sweeten the solution,
+here are some subroutines to manipulate a time value.
+
+\subsection{Copy a time}
+\label{subsection:copy}
+Here is how to copy a time value from one \verb|tm| structure to another.
+\inputminted[firstline=34]{c}{time_copy.c}
+\embedfile[desc={Copy a time value from one tm structure to another},
+  mimetype={text/x-c}]{time_copy.c}
+
+\subsection{Adding years, months, days, hours, minutes or seconds}
+\label{subsection:timeUTCadd}
+If you have a time value stored in a \verb|tm| structure, and it represents
+Coordinated Universal Time, you can add to the year, month, day, hour,
+minute or second field.  You can decrease these fields by adding a
+negative value.  When the target date is invalid, such as February 31,
+you can choose whether to round towards the future or towards the past
+to get a valid date.
+\inputminted[firstline=32]{c}{time_utc_add.c}
+\embedfile[desc={Change the year, month, day, hour, minute or second
+  of a UTC time value},
+  mimetype={text/x-c}]{time_utc_add.c}
+The routines above use various time\_length subroutines to determine
+the length of the current or previous month or minute.
+\inputminted[firstline=32]{c}{time_length.c}
+\embedfile[desc={Determine the length of the current or previous
+  month or minute},
+  mimetype={text/x-c}]{time_length.c}
+
+The subroutines above also use time\_UTC\_normalize.
+\inputminted[firstline=32]{c}{time_utc_normalize.c}
+\embedfile[desc={Make sure all of the fields of a tm structure
+  are in their valid range},
+  mimetype={text/x-c}]{time_utc_normalize.c}
+
+\subsection{Doing the same with local time}
+\label{subsection:timelocaladd}
+If you have a time value stored in a \verb|tm| structure, and it represents
+local time, you can add to the year, month, day, hour, minute or
+second field.  You can decrease these fields by adding a negative
+value.  When the target date is invalid, such as February 31,
+you can choose whether to round towards the future or towards the past
+to get a valid date.
+\inputminted[firstline=32]{c}{time_local_add.c}
+\embedfile[desc={Change the year, month, day, hour, minute or second
+  of a local time value},
+  mimetype={text/x-c}]{time_local_add.c}
+The subroutines above use time\_local\_normalize.
+\inputminted[firstline=32]{c}{time_local_normalize.c}
+\embedfile[desc={Make sure all of the fields of a tm structure
+  representing a local time are in their valid range},
+  mimetype={text/x-c}]{time_local_normalize.c}
+
+\subsection{Representing a time as a string}
+\label{subsection:tostring}
+If you want to send a time to another computer, or write it into a file,
+it is convenient to be able to convert it to a string.  Here is how you
+can do that.  This subroutine works for both Coordinated Universal Time
+and local time.
+\inputminted[firstline=34]{c}{time_tm_to_string.c}
+\embedfile[desc={Convert a time to a string},
+  mimetype={text/x-c}]{time_tm_to_string.c}
+
+If you need more precision you can include the nanoseconds:
+\inputminted[firstline=34]{c}{time_tm_nano_to_string.c}
+\embedfile[desc={Convert a precise time to a string},
+  mimetype={text/x-c}]{time_tm_nano_to_string.c}
+
+\section{List of Entry Points}
+For reference, here are the subroutines described above, in
+alphabetical order, each with a brief description.
+\inputminted[firstline=36,lastline=256]{c}{time_subroutines.h}
+\embedfile[desc={Header file for time subroutines},
+  mimetype={plain/x-c}]{time_subroutines.h}
+
+\section{Embedded files}
+\label{section:Embedded_files}
+To save you the trouble of typing in these subroutines, they are embedded
+in this PDF file.  You can extract them using okular or Adobe Acrobat Reader.
+Also included are some sample and test programs, and the configuration
+scripts needed to compile the programs and construct this PDF file.
+Building the PDF file requires {\LaTeX} and Python.
+
+If you have only the PDF file, you can build the time library by
+extracting the embedded files into an empty directory,
+typing {\ttfamily bash fix\_files.sh}, 
+then typing {\ttfamily ./configure},
+and finally {\ttfamily make}.
+Once the library is built you can install it by typing
+{\ttfamily sudo make install}.
+
+If you have the compressed tar file, extract its contents to an empty
+directory, then type {\ttfamily ./configure},
+then {\ttfamily make} and finally {\ttfamily sudo make install}.
+
+\embedfile[desc={Test program},
+  mimetype={plain/x-c}]{test_time.c}
+\embedfile[desc={Test program},
+  mimetype={plain/x-c}]{test_diff.c}
+\embedfile[desc={Test program},
+  mimetype={plain/x-c}]{test_add.c}
+\embedfile[desc={Test all of the entry points},
+  mimetype={plain/x-c}]{test_ep.c}
+\embedfile[desc={Make sure all lines of source are tested},
+  mimetype={plain/x-c}]{test_local.c}
+\embedfile[desc={Regression test program},
+  mimetype={plain/x-c}]{print_DTAI.c}
+\embedfile[desc={Sample program: sleep until nearly midnight}
+  mimetype={plain/x-c}]{sleep_until_midnight.c}
+\embedfile[desc={Sample program: print the date of the POSIX epoch}
+  mimetype={plain/x-c}]{POSIX_epoch.c}
+\embedfile[desc={Sample program: print powers of two}
+  mimetype={plain/x-c}]{powers_of_two.c}
+\embedfile[desc={template configure script for the document, the included
+    code and some test and sample programs},
+  mimetype={text/plain}]{configure.ac}
+\embedfile[desc={configure script for the document, the included
+    code and some test and sample programs},
+  mimetype={text/plain}]{configure}
+\embedfile[desc={Makefile template for the document, the included code
+    and some test and sample programs},
+  mimetype={text/plain}]{Makefile.in}
+\embedfile[desc={Automake Makefile template for the document,
+    the included code and some test and sample programs},
+  mimetype={text/plain}]{Makefile.am}
+\embedfile[desc={The GPL, version 3},
+  mimetype={text/plain}]{COPYING}
+\embedfile[desc={The authors of the package},
+  mimetype={text/plain}]{AUTHORS}
+\embedfile[desc={Release announcements},
+  mimetype={text/plain}]{NEWS}
+\embedfile[desc={Detailed log of changes},
+  mimetype={text/plain}]{ChangeLog}
+\embedfile[desc={Basic description of the package},
+  mimetype={text/plain}]{README}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{install-sh}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{missing}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{config.sub}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{config.h.in}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{ltmain.sh}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{compile}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{INSTALL}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{depcomp}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{config.guess}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{aclocal.m4}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{m4/libtool.m4}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{m4/lt\string~obsolete.m4}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{m4/ltoptions.m4}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{m4/ltsugar.m4}
+\embedfile[desc={install file},
+  mimetype={text/plain}]{m4/ltversion.m4}
+\embedfile[desc={MAN file},
+  mimetype={text/plain}]{libtime.3}
+\embedfile[desc={fix permissions and directories of files},
+  mimetype={text/bash}]{fix_files.sh}
+
+\section{Examples}
+These examples are intended to illustrate how an application would
+use these subroutines to manipulate time represented in a \verb|tm| structure.
+
+\subsection{Meeting at 9 AM}
+You wish to schedule a meeting in the Chrysanthemum Conference Hall
+at 9 AM on June 30, 2017.  The participants are all over the world,
+so the message sent to their scheduling software will be in
+Coordinated Universal Time.  The Chrysanthemum Conference Hall
+is located in Tokyo, Japan.
+
+Set your time zone to Asia/Tokyo.  Construct a \verb|tm| structure
+containing June 30, 2017, at 9 AM.  Convert that from local time to UTC.
+Convert the UTC time to a string, and send the string to
+the participants.  The string you send should be 2017-06-30T00:00:00Z.
+
+\subsection{Periodic Backups}
+You are writing the scheduler for a backup program.  At 3 AM
+local time
+after each weekday it does an incremental backup,
+except it does a full backup if the last full backup is more
+than a month old.  The scheduler is run when the backup program
+is installed on the computer, and again when
+the current backup has started.  The scheduler is expected
+to compute the Coordinated Universal Time at which to start
+the next backup, and indicate whether the backup will be
+incremental or full.
+
+Compute the current time and convert it to local time.
+Set the hour, minute and second to 03:00:00.
+Using that as the base, advance by one or more days
+until tm\_wday is not Sunday or Monday.  Convert the result
+to Coordinated Universal Time.  This is the time of the
+next backup.  If you install the software on December 31, 2016,
+at 21:21:35 in time zone America/New\_York, the first
+scheduled backup will be at 2017-01-03T08:00:00Z.
+\inputminted[firstline=44,lastline=76]{c}{example_02.c}
+\embedfile[desc={Example code for periodic backups},
+  mimetype={text/x-c}]{example_02.c}
+
+Subtract one month from the local time computed above, and
+convert it to Coordinated Universal Time.  Compute the
+difference between this time and the time of the last
+full backup.  If the difference is negative, or if there
+has never been a full backup, this backup is full;
+otherwise it is incremental.
+\inputminted[firstline=78,lastline=94]{c}{example_02.c}
+
+\subsection{Rocket over Central Park}
+You are asked to explode a fireworks rocket over Central
+Park in New York City at exactly 7 PM on the last day of each month.
+You place a computer-controlled
+rocket launcher on a building adjacent to Central Park.  You know that
+the rocket will take exactly two seconds to reach the top of its
+arc after it is launched.  The launch computer knows only about Coordinated
+Universal Time.  What schedule do you give it for launching in 2016?
+
+Starting with January 31, 2016, in time zone America/New\_York,
+step through the months until the year is no longer 2016, rounding
+the date down to get the last day of the month.
+On each day, set the time to 7 PM, convert to UTC, then subtract
+two seconds.  The schedule will accomodate Daylight Saving Time,
+the extra day at the end of February,
+and the leap second at the end of the year.
+\inputminted[firstline=45,lastline=81]{c}{example_03.c}
+\embedfile[desc={Example code for rocket over Central Park},
+  mimetype={text/x-c}]{example_03.c}
+
+Here is the schedule for 2016:
+\verbatiminput{example_03_output.txt}
+\embedfile[desc={Output of example 3},
+  mimetype={text/x-c}]{example_03_output.txt}
+
+\section{Limitations}
+\subsection{Unpredictable Rotation of the Earth}
+The rotation rate of the Earth is not predictable far in advance.  It must
+be observed, like the weather.  To say this another way, we do not know
+exactly when the Sun will rise a year from now.  Because Coordinated
+Universal Time is tied to the rotation of the Earth, it is similarly
+uncertain.
+
+We have good records of the rotation rate of the Earth from the time
+of the invention of the telescope and the pendulum clock until
+the present.  Prior to 1700, the measurements become uncertain.
+Efforts have been made to improve our knowledge of the rotation
+rate of the Earth in historical times\citep{2004JHA....35..327M}%
+\citep{2005JHA....36..339M}\citep{1997A&A...322..347S}%
+\citep{2011ASSP...23....3S}\citep{1986PEPI...44..281M}%
+\citep{Stephenson20160404}.
+This software carries a table in file {\ttfamily dtai\_table.tab}
+that reaches back to the year $-2000$ and forward to
+the year \num{2500} based on the latest research.
+Beyond the table, the software makes predictions which become less
+reliable the further out you go.
+
+The table will be updated from time to time to capture present
+observations of the Earth's rotation and better estimates from
+historical times.  If your application deals with times before
+1700 or more than six months in the future, you should recompute
+your times whenever the DTAI table is updated.  In the example
+of the rocket over Central Park, if you had pre-computed the times
+in 2015, you would have missed the leap second at the end of
+December 31, 2016.  The update to the DTAI table in the middle
+of 2016 should cause the schedule for the remainder of the year
+to be recomputed, resulting in a launch time of 23:59:59 for
+the December 31 rocket, instead of 23:59:58.
+
+If your application deals only with days, and is not sensitive
+to the exact number of seconds between two times, you can be
+more relaxed.
+
+\subsection{Only coded for GNU/Linux}
+The code embedded in this PDF has been written for GNU/Linux.
+Some effort would be required to port the code to another
+operating system.
+
+\section{Kernel Recommendations}
+\label{section:KernelRecommendations}
+Most of the work needed to handle UTC correctly is done in application
+programs, but some kernel changes would result in better UTC support.
+\begin{enumerate}
+\item Add a named clock, called {\ttfamily CLOCK\_UTC}, which uses
+  a {\ttfamily timeval} in which the nanoseconds field has $10^{9}$ added to
+  indicate a leap second.  This would allow the clock to be set
+  during a leap second.
+\item Add a kernel boot parameter (perhaps in conjunction with
+  an NTP configuration option) to specify the behavior of
+  {\ttfamily CLOCK\_REALTIME}.
+  Choices are:
+  \begin{enumerate}
+  \item The same as the old behavior, where during a leap second
+    23:59:59 is repeated and {\ttfamily adjtimex} returns
+    {\ttfamily TIME\_OOP}.  This is the default, for compatibility.
+  \item Smeared time, where the clock begins to depart from UTC several hours
+    before the leap second, reaches its maximum at the leap second, then
+    returns to UTC over the next several hours.  {\ttfamily Adjtimex}
+    never returns {\ttfamily TIME\_OOP} and no second is repeated.
+    Reasonable choices for the total smear time are 24 and 48 hours.
+    Clock smearing is used to mask leap seconds from software that isn't
+    prepared to handle them.
+  \item The same as {\ttfamily CLOCK\_UTC}.
+  \end{enumerate}
+\item When file systems store their mtime, atime and ctime, they use
+  the value returned by {\ttfamily CLOCK\_REALTIME}.  Provided that
+  {\ttfamily CLOCK\_REALTIME} is set to behave like {\ttfamily CLOCK\_UTC}
+  this fixes the inaccuracy of file times.
+\end{enumerate}
+
+\section{Update History}
+\begin{description}
+\item[2017-08-27 1:4:0] Add a MAN page.
+\item[2017-07-08 1:3:0] Use Automake in the build procedure.
+  Distribute the software using the customary GNU packaging,
+  with the PDF file as its documentation.  Continue to include
+  the software in the PDF as embedded files.  Build the PDF
+  only if requested.  Update to IERS Bulletin C version 54, issued
+  July 6, 2017, which states that no leap second will be introduced
+  at the end of December, 2017, so UTC -- TAI will remain at
+  $-37$ seconds for the next six months, at least.
+\item[2017-05-07 1:2:0] Minor typographical changes, add test\_local.c,
+  work around compiler over-optimization in int128\_to\_string.
+\item[2017-01-27 1:1:0] Update the Makefile and some of the test programs
+  based on feedback from Steve Summit.
+\item[2017-01-18 1:0:0] Added the ability to use variable length seconds
+  before 1972.
+\item[2017-01-10 0:2:0] Updated to IERS Bulletin C version 53,
+  issued January 9, 2017, which states that UTC -- TAI
+  will remain at $-37$ seconds for the next six months, at least.
+\item[2017-01-01 0:1:0] Added a description of the stat function,
+  the list of entry points and the kernel recommendations.
+  Handle converting $-2^{127}$ to a string. 
+\item[2016-12-21 0:0:0] Original distribution.
+\end{description}
+
+\section{Future Work}
+The table of leap seconds will need to be updated every six months,
+when the IERS releases Bulletin C with a new leap second announcement.
+These updates can also capture the latest research on the rotation
+of the Earth in historical times.  It would be nice if these updates
+could be included in the software automatically.
+
+\section{Licensing}
+\label{section:Licensing}
+As noted on the first page, this paper is licensed under a Creative
+Commons Attribution-ShareAlike 4.0 International License.  The code
+presented here, and embedded in the PDF file, is licensed under
+the GPL, version 3 or later.
+\embedfile[desc={General Public License version 3},
+  mimetype={text / plain}]{gpl.txt}
+
+The full text of the Creative Commons Attribution-ShareAlike 4.0
+International license is at this web site:
+\url{http://creativecommons.org/licenses/by-sa/4.0/legalcode}%
+\embedfile[desc={Plaintext version of Creative Commons BY-SA 4.0 license},
+  mimetype={text / plain}]{legalcode.txt}, and is embedded in this
+PDF file.  What follows is a human-readable summary of it.
+
+\subsection{You are free to:}
+\begin{description}
+\item[Share ---]copy and redistribute the material in any medium or format, and
+\item[Adapt ---]remix, transform, and build upon the material
+\end{description}
+for any purpose, even commercially.  The licensor cannot revoke these
+freedoms as long as you follow the license terms.
+\subsection{Under the following terms:}
+\begin{description}
+\item[Attribution ---]You must give appropriate credit\footnote{If supplied,
+  you must provide the name of the creator and attribution parties,
+  a copyright notice, a license notice, a disclaimer notice, and a link
+  to the material.}, provide a link to
+  the license, and indicate if changes were made\footnote{You must indicate if
+    you modified the material and retain an indication of previous
+    modifications.}.  You may do so in any
+  reasonable manner, but not in any that suggests the licensor endorses you
+  or your use.
+\item[ShareAlike ---]If you remix, transform, or build upon the material,
+  you must distribute your contributions under the same
+  license\footnote{You may also use any of the licenses listed as compatible
+    at the following web site:
+    \url{https://creativecommons.org/compatiblelicenses}}
+  as the original.
+\item[No additional restrictions ---]You may not apply legal terms or
+  technological measures\footnote{The license prohibits application of
+    effective technological measures, defined with reference to Article 11
+    of the WIPO Copyright Treaty.}
+  that legally restrict others from doing anything
+  the license permits.
+\end{description}
+\subsection{Notices:}
+\begin{itemize}
+\item{You do not have to comply with the license for elements of the
+  material in the public domain or where your use is permitted by an
+  exception or limitation.}
+\item{No warranties are given.  The license may not give you all of the
+  permissions necessary for your intended use.  For example, other rights
+  such as publicity, privacy or moral rights may limit how you use the
+  material.}
+\end{itemize}
+
+% The bibliography contains URLs, and it is difficult to break URLs across
+% a page boundary, particularly when there are footnotes.  To avoid this
+% problem, put the bibliography on its own page.
+\newpage
+
+\bibliography{references}
+\embedfile[desc={Bibliography},mimetype={text/biblatex}]{references.bib}
+
+\end{document}
