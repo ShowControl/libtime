@@ -41,7 +41,7 @@ In addition, there is concise documentation in man libtime.
 Notes to developers:
 
 To create the documentation file, invoke ./configure with --enable-pdf.
-You will need LaTeX to build it.  Building the ditribution kit builds
+You will need LaTeX to build it.  Building the distribution kit builds
 the PDF automatically.
 
 The version number is the distribution date, since the unpredictability

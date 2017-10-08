@@ -106,7 +106,7 @@ powers_of_two_LDADD = libtime.la
 # See the NEWS file (and the revision history in the PDF) for the history
 # of the version-info.
 #
-libtime_la_LDFLAGS = -version-info 1:5:0
+libtime_la_LDFLAGS = -version-info 1:6:0
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.
