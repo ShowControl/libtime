@@ -72,11 +72,11 @@
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2017 by John Sauter},
-  pdfdate={2017-10-08},
+  pdfdate={2017-11-19},
   pdflicenseurl={http://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}  
 }
-\date{2017-10-08}
+\date{2017-11-19}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -187,11 +187,11 @@ will not be tempted to misuse it for that purpose.
 \subsection{Measuring Time}
 Application programmers need a way to measure time intevals.
 If the interval starts and ends during the execution of an application,
-Monotonic Time
+CLOCK\_BOOTTIME
 can be used, since it is a count of seconds since an arbitrary epoch.
-Unlike {\ttfamily time\_t}, Monotonic Time does not change its epoch while
-applications are running, and so Monotonic Time never appears to flow
-backwards.  However, Monotonic Time is not good for writing to a file
+Unlike {\ttfamily time\_t}, CLOCK\_BOOTTIME does not change its epoch while
+applications are running, and so it never appears to flow
+backwards.  However, CLOCK\_BOOTTIME is not good for writing to a file
 or sending
 over a network to another computer, since each computer will have
 its own epoch, and that epoch will change when the computer is restarted.
@@ -285,7 +285,9 @@ see section \ref{section:Embedded_files}.
 The table can be generated automatically\citep{JBS_001}, but the ultimate
 source of its data is based on manually editing a file when the
 International Earth Rotation and Reference Systems Service (IERS)
-issues its Bulletin C\footnote{\url{https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html}} announcing the next leap second.  See file
+issues its Bulletin
+C\footnote{\url{https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html}}
+announcing the next leap second.  See file
 {\ttfamily extraordinary\_days.dat}, also embedded in this PDF file,
 for details.
 
@@ -549,9 +551,21 @@ then {\ttfamily make} and finally {\ttfamily sudo make install}.
   mimetype={text/plain}]{m4/ltversion.m4}
 \embedfile[desc={MAN file},
   mimetype={text/plain}]{libtime.3}
+\embedfile[desc={pkg-config file},
+  mimetype={text/plain}]{libtime.pc.in}
+\embedfile[desc={program to check the subroutines work},
+  mimetype={plain/x-c}]{check_time.c}
+\embedfile[desc={expected output from check\_time},
+  mimetype={text/plain}]{check_time_expected_output.txt}
+\embedfile[desc={Automake driver for check and distcheck},
+  mimetype={text/bash}]{test-driver}
+\embedfile[desc={compare check\_time output with expected output},
+  mimetype={text/bash}]{verify_files_template.sh}
 \embedfile[desc={fix permissions and directories of files},
   mimetype={text/bash}]{fix_files.sh}
 
+These files are also available on github, at
+\url{github@github.com:ShowControl/libtime.git}.
 \section{Examples}
 These examples are intended to illustrate how an application would
 use these subroutines to manipulate time represented in a \verb|tm| structure.
@@ -702,6 +716,10 @@ programs, but some kernel changes would result in better UTC support.
 
 \section{Update History}
 \begin{description}
+\item[2017-11-19 1:7:0] Add support for pkg-config, make check and
+  make distcheck.  Recommend CLOCK\_BOOTTIME instead of CLOCK\_MONOTONIC
+  because CLOCK\_MONOTONIC stops counting when the computer is suspended,
+  and therefore can change its epoch while an application is running.
 \item[2017-10-08 1:6:0] Improve the MAN page.
 \item[2017-09-17 1:5:0] Place on github.
 \item[2017-08-27 1:4:0] Add a MAN page.

@@ -1,0 +1,9 @@
+Program start.
+Big number -10.
+Big number 0.
+Big number -2**127.
+year 2006.
+month 0.
+OK: 2005-12-31T23:59:02Z <-> 2005-12-31T18:59:02-05:00.
+OK: 2005-12-31T23:59:60Z <-> 2005-12-31T18:59:60-05:00.
+Successful completion.

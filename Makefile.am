@@ -1,4 +1,4 @@
-# File: Makefile.am for libtime, author: John Sauter, date: July 4, 2017
+# File: Makefile.am for libtime, author: John Sauter, date: November 19, 2017.
 
 lib_LTLIBRARIES = libtime.la
 libtime_la_SOURCES = time_copy.c \
@@ -30,7 +30,8 @@ dist_man_MANS = libtime.3
 BUILT_SOURCES = dtai_table.h dtai_table.tab example_03_output.txt
 CLEANFILES = dtai_table.h dtai_table.tab example_03_output.txt \
 avoid_time_t.out avoid_time_t.brf avoid_time_t.log avoid_time_t.aux \
-avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf
+avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf check_time_output.txt \
+verify_files.sh
 
 clean-local:
 	rm -rf _minted-avoid_time_t/
@@ -52,7 +53,7 @@ if ENABLE_PDF
 endif
 
 noinst_PROGRAMS = example_02 example_03 test_time test_diff test_add test_ep \
-test_local print_DTAI sleep_until_midnight POSIX_epoch powers_of_two
+test_local print_DTAI sleep_until_midnight POSIX_epoch powers_of_two check_time
 example_03_LDADD = libtime.la
 example_02_LDADD = libtime.la
 test_time_LDADD = libtime.la
@@ -64,6 +65,7 @@ print_DTAI_LDADD = libtime.la
 sleep_until_midnight_LDADD = libtime.la
 POSIX_epoch_LDADD = libtime.la
 powers_of_two_LDADD = libtime.la
+check_time_LDADD = libtime.la
 
 # The version-info below is used by libtool's versioning system.
 # It specifies three integers: current, revision and age.
@@ -106,7 +108,7 @@ powers_of_two_LDADD = libtime.la
 # See the NEWS file (and the revision history in the PDF) for the history
 # of the version-info.
 #
-libtime_la_LDFLAGS = -version-info 1:6:0
+libtime_la_LDFLAGS = -version-info 1:7:0
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.
@@ -123,7 +125,7 @@ pdf-local: avoid_time_t.pdf
 .PHONEY: pdf-local
 
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl example_02.c example_03.c \
-	example_03_output.txt $(libtime_la_SOURCES)
+	example_03_output.txt libtime.pc $(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
@@ -135,3 +137,23 @@ avoid_time_t.bbl : avoid_time_t.tex references.bib example_02.c example_03.c \
 
 example_03_output.txt : example_03
 	$(builddir)/example_03 >$(builddir)/example_03_output.txt
+
+# Support pgk-config
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = libtime.pc
+
+# Support make check and make distcheck
+dist_check_DATA = check_time_output.txt check_time_expected_output.txt
+dist_check_SCRIPTS = verify_files_template.sh
+TESTS = verify_files.sh
+verify_files.sh : verify_files_template.sh check_time_output.txt
+	cp $(srcdir)/verify_files_template.sh verify_files.sh
+	if [ ! -r "check_time_expected_output.txt" ] ; then cp $(srcdir)/check_time_expected_output.txt check_time_expected_output.txt ; touch copied_from_srcdir ; fi
+	chmod +x verify_files.sh
+
+check_time_output.txt : check_time
+	./check_time > check_time_output.txt
+clean-local: clean-local-check
+.PHONEY: clean-local-check
+clean-local-check:
+	if [ -e "copied_from_srcdir" ] ; then rm -f check_time_expected_output.txt ; rm copied_from_srcdir ; fi
