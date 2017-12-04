@@ -1,3 +1,6 @@
+2017-12-04 1:8:0
+  Add a section on International Atomic Time.
+  
 2017-11-19 1:7:0
   Add support for pkg-config, make check and make distcheck.
   Recommend CLOCK_REALTIME instead of CLOCK_MONOTONIC because
