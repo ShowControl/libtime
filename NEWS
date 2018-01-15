@@ -1,3 +1,8 @@
+2018-01-15 1:9:0
+  Update to IERS Bulletin C 55, issued January 9, 2018,
+  which states that no leap second will be introduced
+  at the end of June, 2018, so UTC-TAI will remain at
+  -37 seconds for the next six months, at least.
 2017-12-04 1:8:0
   Add a section on International Atomic Time.
   
@@ -21,9 +26,9 @@
   Distribute the software using the customary GNU packaging,
   with the PDF file as its documentation.  Continue to include
   the software in the PDF as embedded files.  Build the PDF
-  only if requested.  Update to IERS Bulletin C version 54, issued
+  only if requested.  Update to IERS Bulletin C 54, issued
   July 6, 2017, which states that no leap second will be introduced
-  at the end of December, 2017, so UTC - TAI will remain at
+  at the end of December, 2017, so UTC-TAI will remain at
   -37 seconds for the next six months, at least.
 
 2017-05-07 1:2:0
@@ -38,8 +43,8 @@
   Added the ability to use variable length seconds before 1972.
   
 2017-01-10 0:2:0
-  Updated to IERS Bulletin C version 53,
-  issued January 9, 2017, which states that UTC - TAI
+  Updated to IERS Bulletin C 53,
+  issued January 9, 2017, which states that UTC-TAI
   will remain at -37 seconds for the next six months, at least.
   
 2017-01-01 0:1:0

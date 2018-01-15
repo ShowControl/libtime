@@ -44,7 +44,7 @@
   mimetype={text/pdflatex}]{avoid_time_t.tex}
 \title{Avoid Using POSIX {\ttfamily time\_t} for Telling
   Time\footnote{Copyright
-    {\copyright} 2017 by John Sauter.
+    {\copyright} 2018 by John Sauter.
     This paper is made available under a
     Creative Commons Attribution-ShareAlike 4.0 International License.
     You can read a human-readable summary of the license at
@@ -71,12 +71,12 @@
   pdfcontactpostcode={03063-4066},
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
-  pdfcopyright={Copyright {\copyright} 2017 by John Sauter},
-  pdfdate={2017-12-04},
+  pdfcopyright={Copyright {\copyright} 2018 by John Sauter},
+  pdfdate={2018-01-15},
   pdflicenseurl={http://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}  
 }
-\date{2017-12-04}
+\date{2018-01-15}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -465,7 +465,7 @@ such a data type is with reference to International Atomic Time, or TAI.
 TAI is a time scale which started on January 1, 1958, at 00:00:00 GMT
 and has counted fixed-length SI seconds since then.  For the 14 years from
 1958 to 1972, UTC used seconds which averaged shorter than the SI seconds,
-so by 1972 the two time scaled differed by about 10 seconds.  During 1971 the
+so by 1972 the two time scales differed by about 10 seconds.  During 1971 the
 UTC time scale was made to exactly match the TAI time scale, with an offset of
 10 seconds.
 
@@ -473,7 +473,8 @@ Since January 1, 1972 at 00:00:00 UTC, both TAI and UTC have counted
 SI seconds, each in its own way.  UTC inserts leap seconds to keep
 civil time synchronized to the rotation of the Earth, and TAI does not.
 Each time UTC inserts a leap second, the difference between TAI and UTC
-increases by one second.  During 2017, the difference has been 37 seconds.
+increases by one second.  During calendar year 2017 the difference has
+been 37 seconds.
 
 UNIX programmers like to use 1970 as a base date, so they backdated the
 synchronization of TAI and UTC to January 1, 1970, but kept the 10 second
@@ -770,6 +771,10 @@ programs, but some kernel changes would result in better UTC support.
 
 \section{Update History}
 \begin{description}
+\item[2018-01-15 1:9:0] Update to IERS Bulletin C 55, issued
+  January 9, 2018, which states that no leap second will be introduced
+  at the end of June 2018 so UTC -- TAI will remain at $-37$ seconds
+  for the next six months, at least.
 \item[2017-12-04 1:8:0] Add information about International Atomic Time.
 \item[2017-11-19 1:7:0] Add support for pkg-config, make check and
   make distcheck.  Recommend CLOCK\_BOOTTIME instead of CLOCK\_MONOTONIC
@@ -782,7 +787,7 @@ programs, but some kernel changes would result in better UTC support.
   Distribute the software using the customary GNU packaging,
   with the PDF file as its documentation.  Continue to include
   the software in the PDF as embedded files.  Build the PDF
-  only if requested.  Update to IERS Bulletin C version 54, issued
+  only if requested.  Update to IERS Bulletin C 54, issued
   July 6, 2017, which states that no leap second will be introduced
   at the end of December, 2017, so UTC -- TAI will remain at
   $-37$ seconds for the next six months, at least.
@@ -792,7 +797,7 @@ programs, but some kernel changes would result in better UTC support.
   based on feedback from Steve Summit.
 \item[2017-01-18 1:0:0] Added the ability to use variable length seconds
   before 1972.
-\item[2017-01-10 0:2:0] Updated to IERS Bulletin C version 53,
+\item[2017-01-10 0:2:0] Updated to IERS Bulletin C 53,
   issued January 9, 2017, which states that UTC -- TAI
   will remain at $-37$ seconds for the next six months, at least.
 \item[2017-01-01 0:1:0] Added a description of the stat function,
