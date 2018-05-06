@@ -1,9 +1,9 @@
 /*
- * File: time_local_add.c, author: John Sauter, date: January 17, 2017.
+ * File: time_local_add.c, author: John Sauter, date: May 6, 2018.
  */
 
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -454,7 +454,7 @@ time_local_add_seconds_ns (struct tm *time_tm,
    * amount to navigate the calendar by seconds.  Adjust the year,
    * month, day of the month, hour and minute fields to get the
    * seconds field into its valid range, and thereby name the 
-   * signated second using the Gregorian calendar.  Note that 
+   * designated second using the Gregorian calendar.  Note that 
    * time_local_normalize takes the seconds value in a 
    * long long int parameter and ignores the tm_sec field of time_tm.  
    * This is to allow the number of seconds to be very large or 

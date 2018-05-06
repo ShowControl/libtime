@@ -1,8 +1,13 @@
+2018-05-06 1:10:0
+  Move the prediction of the next leap second from December 31, 2020
+  to June 30, 2020, based on the IERS predictions of the rotation
+  rate of the Earth, projected into the future.
+  
 2018-01-15 1:9:0
-  Update to IERS Bulletin C 55, issued January 9, 2018,
-  which states that no leap second will be introduced
-  at the end of June, 2018, so UTC-TAI will remain at
-  -37 seconds for the next six months, at least.
+  Update to IERS Bulletin C 55, issued January 9, 2018, which states
+  that no leap second will be introduced at the end of June, 2018,
+  so UTC-TAI will remain at -37 seconds for the next six months, at least.
+  
 2017-12-04 1:8:0
   Add a section on International Atomic Time.
   

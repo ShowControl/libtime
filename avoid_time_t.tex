@@ -72,11 +72,11 @@
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2018 by John Sauter},
-  pdfdate={2018-01-15},
+  pdfdate={2018-05-06},
   pdflicenseurl={http://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}  
 }
-\date{2018-01-15}
+\date{2018-05-06}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -94,31 +94,32 @@
 The data type {\ttfamily time\_t} is defined in POSIX\citep{7582338}
 as a count of seconds.
 When telling time, it is the number of seconds
-since the epoch, which is approximately January 1, 1970.  This count of
-seconds since the epoch is also
+since the Epoch, which is approximately January 1, 1970.  This count of
+seconds since the Epoch is also
 defined as an encoding of Coordinated Universal time into an integer.
 
-Here is the formal definition:
-\begin{quotation}
+The following subsection is the formal definition of ``Seconds
+since the Epoch'' from POSIX:
 
-4.16 Seconds Since the Epoch
-
-A value that approximates the number of seconds that have elapsed
+\subsection*{4.16 Seconds Since the Epoch}
+A value that approximates the number
+of seconds that have elapsed
 since the Epoch. A Coordinated Universal Time name
-(specified in terms of seconds (tm\_sec), minutes (tm\_min),
-hours (tm\_hour), days since January 1 of the year (tm\_yday),
-and calendar year minus 1900 (tm\_year)) is related to a time
+(specified in terms of seconds ($tm\_sec$), minutes ($tm\_min$),
+hours ($tm\_hour$), days since January 1 of the year ($tm\_yday$),
+and calendar year minus 1900 ($tm\_year$)) is related to a time
 represented as seconds since the Epoch, according to the expression below.
 
-If the year is $<1970$ or the value is negative, the relationship is undefined.
+If the year is $<1970$ or the value is negative, the relationship is
+undefined.
 If the year is $\geq 1970$ and the value is non-negative, the value is
 related to a Coordinated Universal Time name according to the
-C-language expression, where tm\_sec, tm\_min, tm\_hour, tm\_yday,
-and tm\_year are all integer types:
+C-language expression, where $tm\_sec$, $tm\_min$, $tm\_hour$,
+$tm\_yday$, and $tm\_year$ are all integer types:
 \begin{multline*}
   tm\_sec + tm\_min*60 + tm\_hour*3600 + tm\_yday*86400 \,+ \\
-    (tm\_year-70)*31536000 + ((tm\_year-69)/4)*86400 \,- \\
-    ((tm\_year-1)/100)*86400 + ((tm\_year+299)/400)*86400
+  (tm\_year-70)*31536000 + ((tm\_year-69)/4)*86400 \,- \\
+  ((tm\_year-1)/100)*86400 + ((tm\_year+299)/400)*86400
 \end{multline*}
 The relationship between the actual time of day and the current value
 for seconds since the Epoch is unspecified.
@@ -130,18 +131,17 @@ each and every day shall be accounted for by exactly \num{86400} seconds.
 
 \begin{description}
 \item[Note:]
-The last three terms of the expression add in a day for each year
-that follows a leap year starting with the first leap year since
-the Epoch. The first term adds a day every 4 years starting in 1973,
-the second subtracts a day back out every 100 years starting in 2001,
-and the third adds a day back in every 400 years starting in 2001.
-The divisions in the formula are integer divisions; that is, the
-remainder is discarded leaving only the integer quotient.
+  The last three terms of the expression add in a day for each year
+  that follows a leap year starting with the first leap year since
+  the Epoch. The first term adds a day every 4 years starting in 1973,
+  the second subtracts a day back out every 100 years starting in 2001,
+  and the third adds a day back in every 400 years starting in 2001.
+  The divisions in the formula are integer divisions; that is, the
+  remainder is discarded leaving only the integer quotient.
 \end{description}
-\end{quotation}
 
 \section{Problems}
-There are problems with this definition.
+There are several problems with this definition:
 \begin{itemize}
 \item{It is not defined for years before 1970.}
 \item{The relationship between the actual time of day and the current value
@@ -169,6 +169,7 @@ The major reason for the problems with {\ttfamily time\_t} is that it is
 trying to do
 too much: be a count of seconds and encode Coordinated Universal Time.
 The first stage in solving the problems is to separate these two jobs.
+
 \subsection{Encoding Coordinated Universal Time}
 A good way to represent Coordinated Universal Time is with the \verb|tm| data
 structure.  It contains integers for the year, month, day, hour, minute
@@ -485,14 +486,19 @@ and seconds during 1970 and 1971 are the variable-length UTC seconds
 that were used at that time.
 
 The benefit of this data type is that it makes computing the number of
-seconds between two times easy: just subtract the integers.  The tradeoff
-is that displaying the time in UTC is more difficult.  For example,
-the TAI integer \num{1483228836} corresponds to December 31, 2016, at 23:59:60.
+seconds between two times after January 1, 1972 easy: just subtract the
+integers.  The tradeoff is that displaying the time in UTC is more difficult.
+For example, the TAI integer \num{1483228836} corresponds to December 31, 2016,
+at 23:59:60.
 See the example in subsection \ref{example:TAI} for this conversion.
 
 \section{List of Entry Points}
 For reference, here are the subroutines described above, in
 alphabetical order, each with a brief description.
+The attribute ``const'' means that the function does not examine
+any values except its arguments, and has no effects except
+to return a value.  The attribute ``pure'' means the same except
+that the function can examine (but not change) global variables.
 \inputminted[firstline=36,lastline=256]{c}{time_subroutines.h}
 \embedfile[desc={Header file for time subroutines},
   mimetype={plain/x-c}]{time_subroutines.h}
@@ -771,6 +777,9 @@ programs, but some kernel changes would result in better UTC support.
 
 \section{Update History}
 \begin{description}
+\item[2018-05-06 1:10:0] Move the prediction of the next leap second
+  from December 31, 2020 to June 30, 2020 based on predictions
+  of the Earth's rotation from the IERS projected into the future.
 \item[2018-01-15 1:9:0] Update to IERS Bulletin C 55, issued
   January 9, 2018, which states that no leap second will be introduced
   at the end of June 2018 so UTC -- TAI will remain at $-37$ seconds
