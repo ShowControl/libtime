@@ -4,9 +4,10 @@ the use of POSIX time_t for telling time.
 
 Notes to users:
 
-You will need python version 3 and its jdcal module.  Install the jdcal
-module with pip.  First install pip.  The package name on both Ubuntu
-and Fedora is python3-pip.
+You will need GNU make, python version 3 and its jdcal module.
+Install GNU Make from the operating system repository.  Install
+the jdcal module with pip.  First install pip if it isn't installed
+by default.  The package name on both Ubuntu and Fedora is python3-pip.
 
 Then use pip to install jdcal:
 
