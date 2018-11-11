@@ -126,14 +126,15 @@ $(srcdir)/extraordinary_days.dat --c-output=$(builddir)/dtai_table
 pdf-local: avoid_time_t.pdf
 .PHONEY: pdf-local
 
-avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl example_02.c example_03.c \
-	example_03_output.txt libtime.pc dtai_table.h $(libtime_la_SOURCES)
+avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
+	example_02.c example_03.c \
+	example_03_output.txt libtime.pc $(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 
 avoid_time_t.bbl : avoid_time_t.tex references.bib example_02.c example_03.c \
-	example_03_output.txt dtai_table.h $(libtime_la_SOURCES)
+	dtai_table.h example_03_output.txt $(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export BIBINPUTS="$(srcdir):" && kpsewhich -var-value BIBINPUTS && bibtex $(builddir)/avoid_time_t.aux
 
