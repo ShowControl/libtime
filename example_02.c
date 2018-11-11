@@ -1,8 +1,8 @@
 /*
- * File: example_02.c, author: John Sauter, date: January 14, 2017.
+ * File: example_02.c, author: John Sauter, date: November 11, 2018.
  */
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ example_2 ()
   int found_time, day_incr, diff;
   
   time_current_tm (&time_tm);
-  time_UTC_to_local (&time_tm, &local_time_tm, 0);
+  time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
   time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof(buffer1));
   printf ("now: %s\n", buffer1);
   local_time_tm.tm_hour = 3;
@@ -63,7 +63,7 @@ example_2 ()
   while (!found_time)
     {
       time_copy_tm (&local_time_tm, &extra_time_tm);
-      time_local_add_days (&extra_time_tm, day_incr, 1, 0);
+      time_local_add_days (&extra_time_tm, day_incr, 1, INT_MIN);
       if ((extra_time_tm.tm_wday == 0) ||
 	  (extra_time_tm.tm_wday == 1))
 	day_incr = day_incr + 1;
@@ -71,23 +71,23 @@ example_2 ()
 	found_time = 1;
     }
 
-  time_local_to_UTC (&extra_time_tm, &time_tm, 0);
+  time_local_to_UTC (&extra_time_tm, &time_tm, INT_MIN);
   time_tm_to_string (&time_tm, &buffer1 [0], sizeof (buffer1));
   printf ("Next scheduled backup is at %s.\n", buffer1);
 
   /* To illustrate, assume the last backup was 29 days ago.  
    */
   time_current_tm (&backup_tm);
-  time_UTC_add_days (&backup_tm, -29, -1, 0);
+  time_UTC_add_days (&backup_tm, -29, -1, INT_MIN);
   time_tm_to_string (&backup_tm, &buffer2 [0], sizeof (buffer2));
   printf ("Assume the last full backup was %s.\n", buffer2);
   
-  time_local_add_months (&extra_time_tm, -1, 1, 0);
-  time_local_to_UTC (&extra_time_tm, &int_time_tm, 0);
+  time_local_add_months (&extra_time_tm, -1, 1, INT_MIN);
+  time_local_to_UTC (&extra_time_tm, &int_time_tm, INT_MIN);
   time_tm_to_string (&int_time_tm, &buffer1 [0], sizeof (buffer1));
   printf ("One month before the next scheduled backup is %s.\n",
 	  buffer1);
-  diff = time_diff (&int_time_tm, &backup_tm, 0);
+  diff = time_diff (&int_time_tm, &backup_tm, INT_MIN);
   if (diff < 0)
     printf ("Next backup is full.\n");
   else
@@ -102,8 +102,8 @@ usage (FILE * fp, int argc, char **argv)
     {
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
-	       "example_3\n"
-	       " Version 1.0 2017-01-14\n"
+	       "example_2\n"
+	       " Version 1.1 2018-11-11\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"

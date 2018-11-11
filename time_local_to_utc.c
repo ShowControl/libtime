@@ -1,9 +1,9 @@
 /*
- * File: time_local_to_utc.c, author: John Sauter, date: January 14, 2017.
+ * File: time_local_to_utc.c, author: John Sauter, date: November 11, 2018.
  */
 
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@
 int
 time_local_to_UTC (struct tm *local_time,
 		   struct tm *coordinated_universal_time,
-		   int variable_length_seconds_before_1972)
+		   int variable_length_seconds_before_year)
 {
   struct tm local_tm;
   struct tm utc_time_tm;
@@ -94,7 +94,7 @@ time_local_to_UTC (struct tm *local_time,
   /* Make sure the fields of the tm structure are all in their 
    * valid ranges.  */
   time_UTC_normalize (&utc_time_tm, utc_time_tm.tm_sec,
-		      variable_length_seconds_before_1972);
+		      variable_length_seconds_before_year);
 
   /* Return the result to the caller.  */
   time_copy_tm (&utc_time_tm, coordinated_universal_time);

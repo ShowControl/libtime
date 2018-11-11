@@ -1,5 +1,5 @@
 /*
- * File: time_local_add.c, author: John Sauter, date: May 6, 2018.
+ * File: time_local_add.c, author: John Sauter, date: November 11, 2018.
  */
 
 /*
@@ -55,7 +55,7 @@
 /* After changing the day, make sure the seconds are correct.  */
 static int
 time_local_adjust_seconds (struct tm *time_tm, int rounding_mode,
-			   int variable_length_seconds_before_1972)
+			   int variable_length_seconds_before_year)
 {
   
   /* The seconds can be invalid if we are at the end of the UTC day 
@@ -68,7 +68,7 @@ time_local_adjust_seconds (struct tm *time_tm, int rounding_mode,
    * happen at the same time everywhere, regardless of time zone.  */
   if (time_tm->tm_sec >=
       time_length_local_minute (time_tm,
-				variable_length_seconds_before_1972))
+				variable_length_seconds_before_year))
     {
       switch (rounding_mode)
 	{
@@ -102,7 +102,7 @@ time_local_adjust_seconds (struct tm *time_tm, int rounding_mode,
 	  /* Round down to the last second of the day.  */
 	  time_tm->tm_sec =
 	    time_length_local_minute (time_tm,
-				      variable_length_seconds_before_1972)
+				      variable_length_seconds_before_year)
 	    - 1;
 	  break;
 	  
@@ -117,7 +117,7 @@ time_local_adjust_seconds (struct tm *time_tm, int rounding_mode,
 /* Add a specified number of years to a specified time.  */
 int
 time_local_add_years (struct tm *time_tm, int addend, int rounding_mode,
-		      int variable_length_seconds_before_1972)
+		      int variable_length_seconds_before_year)
 {
   int return_value;
   
@@ -155,13 +155,13 @@ time_local_add_years (struct tm *time_tm, int addend, int rounding_mode,
   /* Adjust the value of the seconds field to be valid.  */
   return_value =
     time_local_adjust_seconds (time_tm, rounding_mode,
-			       variable_length_seconds_before_1972);
+			       variable_length_seconds_before_year);
   if (return_value != 0)
     return (return_value);
     
   return_value =
     time_local_normalize (time_tm, time_tm->tm_sec,
-			  variable_length_seconds_before_1972);
+			  variable_length_seconds_before_year);
   return (return_value);
 }
 
@@ -169,7 +169,7 @@ time_local_add_years (struct tm *time_tm, int addend, int rounding_mode,
  * make the amount to add negative.  */
 int
 time_local_add_months (struct tm *time_tm, int addend, int rounding_mode,
-		       int variable_length_seconds_before_1972)
+		       int variable_length_seconds_before_year)
 {
   int return_value;
   
@@ -219,20 +219,20 @@ time_local_add_months (struct tm *time_tm, int addend, int rounding_mode,
   /* Make sure the value of the seconds field is valid.  */
   return_value =
     time_local_adjust_seconds (time_tm, rounding_mode,
-			       variable_length_seconds_before_1972);
+			       variable_length_seconds_before_year);
   if (return_value != 0)
     return (return_value);
   
   return_value =
     time_local_normalize (time_tm, time_tm->tm_sec,
-			  variable_length_seconds_before_1972);
+			  variable_length_seconds_before_year);
   return (return_value);
 }
 
 /* Add a specified number of days to a specified time.  */
 int
 time_local_add_days (struct tm *time_tm, int addend, int rounding_mode,
-		     int variable_length_seconds_before_1972)
+		     int variable_length_seconds_before_year)
 {
   int return_value;
   
@@ -269,13 +269,13 @@ time_local_add_days (struct tm *time_tm, int addend, int rounding_mode,
   /* Make sure the value of the seconds field is valid.  */
   return_value =
     time_local_adjust_seconds (time_tm, rounding_mode,
-			       variable_length_seconds_before_1972);
+			       variable_length_seconds_before_year);
   if (return_value != 0)
     return (return_value);
   
   return_value =
     time_local_normalize (time_tm, time_tm->tm_sec,
-			  variable_length_seconds_before_1972);
+			  variable_length_seconds_before_year);
   return (return_value);
 
 }
@@ -284,7 +284,7 @@ time_local_add_days (struct tm *time_tm, int addend, int rounding_mode,
 int
 time_local_add_hours (struct tm *time_tm, int addend,
 		      int rounding_mode,
-		      int variable_length_seconds_before_1972)
+		      int variable_length_seconds_before_year)
 {
   int return_value;
 
@@ -328,13 +328,13 @@ time_local_add_hours (struct tm *time_tm, int addend,
   /* Make sure the seconds field is valid.  */
   return_value =
     time_local_adjust_seconds (time_tm, rounding_mode,
-			       variable_length_seconds_before_1972);
+			       variable_length_seconds_before_year);
   if (return_value != 0)
     return (return_value);
 
   return_value =
     time_local_normalize (time_tm, time_tm->tm_sec,
-			  variable_length_seconds_before_1972);
+			  variable_length_seconds_before_year);
   return (return_value);
 }
 
@@ -342,7 +342,7 @@ time_local_add_hours (struct tm *time_tm, int addend,
 int
 time_local_add_minutes (struct tm *time_tm, int addend,
 			int rounding_mode,
-			int variable_length_seconds_before_1972)
+			int variable_length_seconds_before_year)
 {
   int return_value;
 
@@ -396,20 +396,20 @@ time_local_add_minutes (struct tm *time_tm, int addend,
   /* Make sure the seconds field is valid.  */
   return_value =
     time_local_adjust_seconds (time_tm, rounding_mode,
-			       variable_length_seconds_before_1972);
+			       variable_length_seconds_before_year);
   if (return_value != 0)
     return (return_value);
 
   return_value =
     time_local_normalize (time_tm, time_tm->tm_sec,
-			  variable_length_seconds_before_1972);
+			  variable_length_seconds_before_year);
   return (return_value);
 }
 
 /* Add a specified number of seconds to a time.  */
 int
 time_local_add_seconds (struct tm *time_tm, long long int add_seconds,
-			int variable_length_seconds_before_1972)
+			int variable_length_seconds_before_year)
 {
   long long int add_nanoseconds;
   long long int nanoseconds;
@@ -421,7 +421,7 @@ time_local_add_seconds (struct tm *time_tm, long long int add_seconds,
   return_val =
     time_local_add_seconds_ns (time_tm, &nanoseconds,
 			       add_seconds, add_nanoseconds,
-			       variable_length_seconds_before_1972);
+			       variable_length_seconds_before_year);
   return (return_val);
 }
 
@@ -431,7 +431,7 @@ time_local_add_seconds_ns (struct tm *time_tm,
 			   long long int *nanoseconds,
 			   long long int add_seconds,
 			   long long int add_nanoseconds,
-			   int variable_length_seconds_before_1972)
+			   int variable_length_seconds_before_year)
 {
   long long int accumulated_seconds;
   long long int accumulated_nanoseconds;
@@ -463,7 +463,7 @@ time_local_add_seconds_ns (struct tm *time_tm,
    * time_tm->tm_sec.  */
   return_value =
     time_local_normalize (time_tm, accumulated_seconds,
-			  variable_length_seconds_before_1972);
+			  variable_length_seconds_before_year);
   *nanoseconds = accumulated_nanoseconds;
   return (return_value);
 }

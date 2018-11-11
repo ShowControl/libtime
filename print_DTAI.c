@@ -1,9 +1,9 @@
 /*
- * File: print_DTAI.c, author: John Sauter, date: January 15, 2017.
+ * File: print_DTAI.c, author: John Sauter, date: November 11, 2018.
  * Print the value of DTAI for all days.
  */
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ static int debug_level = 0;
 
 /* Print the value of DTAI for all Julian Day Numbers.  */
 void
-do_print (int variable_length_seconds_before_1972)
+do_test (int variable_length_seconds_before_year)
 {
 
   int JDN, new_JDN, value, old_value;
@@ -61,7 +61,7 @@ do_print (int variable_length_seconds_before_1972)
   old_value = 0;
   while (JDN <= 3000000)
     {
-      value = time_DTAI (JDN, variable_length_seconds_before_1972);
+      value = time_DTAI (JDN, variable_length_seconds_before_year);
       if (value != old_value)
 	{
 	  time_tm_to_string (&time_tm, &buffer1 [0], sizeof (buffer1));
@@ -70,7 +70,7 @@ do_print (int variable_length_seconds_before_1972)
 	}
       
       time_UTC_add_days (&time_tm, 1, 1,
-			 variable_length_seconds_before_1972);
+			 variable_length_seconds_before_year);
       new_JDN = time_Julian_day_number (time_tm.tm_year + 1900,
 					time_tm.tm_mon + 1,
 					time_tm.tm_mday);
@@ -94,7 +94,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "print DTAI for all Julian Day Numbers.\n"
-	       "Version 1.0 2017-01-15\n"
+	       "Version 1.1 2018-11-11\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"
@@ -116,7 +116,7 @@ int
 main (int argc, char **argv)
 {
 
-  int variable_length_seconds_before_1972;
+  int variable_length_seconds_before_year;
   
   for (;;)
     {
@@ -149,13 +149,14 @@ main (int argc, char **argv)
 
   printf ("argc is %d.\n", argc);
 
-  variable_length_seconds_before_1972 = 0;
+  variable_length_seconds_before_year = INT_MIN;
   if (argc > 1)
-    variable_length_seconds_before_1972 = atoi (argv [optind]);
-  if (variable_length_seconds_before_1972 == 1)
-    printf ("variable-length seconds before 1972.\n");
+    variable_length_seconds_before_year = atoi (argv [optind]);
+  if (variable_length_seconds_before_year != INT_MIN)
+    printf ("variable-length seconds before %d.\n",
+	    variable_length_seconds_before_year);
 
-  do_print (variable_length_seconds_before_1972);
+  do_test (variable_length_seconds_before_year);
   exit (EXIT_SUCCESS);
 
   return 0;

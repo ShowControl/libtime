@@ -1,10 +1,10 @@
 /*
- * File: POSIX_epoch.c, author: John Sauter, date: January 16, 2017.
- * Print the date of the POXIS epoch.
+ * File: POSIX_epoch.c, author: John Sauter, date: November 11, 2018.
+ * Print the date of the POSIX epoch.
  */
 
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ do_print ()
       time_current_tm (&time1_tm);
       seconds_since_epoch = time (NULL);
       time_current_tm (&time2_tm);
-      if ((time_diff (&time1_tm, &time2_tm, 0) == 0) &&
+      if ((time_diff (&time1_tm, &time2_tm, INT_MIN) == 0) &&
 	  (time1_tm.tm_sec != 60))
 	{
 	  break;
@@ -74,12 +74,12 @@ do_print ()
 
   /* Subtract the number of SI seconds since the epoch from
    * the current time to get the time of the epoch.  */
-  time_UTC_add_seconds (&time2_tm, -seconds_since_epoch, 0);
+  time_UTC_add_seconds (&time2_tm, -seconds_since_epoch, INT_MIN);
 
   /* Subtract the number of wall clock seconds since the epoch
    * from the current time to get the time of the epoch.  */
   time_copy_tm (&time1_tm, &time3_tm);
-  time_UTC_add_seconds (&time3_tm, -seconds_since_epoch, 1);
+  time_UTC_add_seconds (&time3_tm, -seconds_since_epoch, 1972);
   
   /* Print the results.  */
   time_tm_to_string (&time1_tm, &buffer1 [0], sizeof (buffer1));
@@ -106,10 +106,10 @@ do_print ()
   
   time_tm_to_string (&time1_tm, &buffer1 [0], sizeof (buffer1));
   time_copy_tm (&time1_tm, &time2_tm);
-  time_UTC_add_seconds (&time2_tm, -seconds_count, 0);
+  time_UTC_add_seconds (&time2_tm, -seconds_count, INT_MIN);
   time_tm_to_string (&time2_tm, &buffer2 [0], sizeof (buffer2));
   time_copy_tm (&time1_tm, &time3_tm);
-  time_UTC_add_seconds (&time3_tm, -seconds_count, 1);
+  time_UTC_add_seconds (&time3_tm, -seconds_count, 1972);
   time_tm_to_string (&time3_tm, &buffer3 [0], sizeof (buffer3));
   printf ("%d SI seconds before %s is %s\n"
 	  " or %s wall-clock seconds.\n",
@@ -127,7 +127,7 @@ usage (FILE *fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "Print the date of the POSIX epoch\n"
-	       " Version 1.0 2017-01-14\n"
+	       " Version 1.1 2018-11-11\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"

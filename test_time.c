@@ -1,10 +1,10 @@
 /*
- * File: test_time.c, author: John Sauter, date: January 27, 2017.
+ * File: test_time.c, author: John Sauter, date: November 11, 2018.
  * Test the time subroutines.
  */
 
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -117,14 +117,14 @@ do_logging (char *log_file_name)
       int128_to_string (current_time_int128,
 			text_buffer_2, sizeof(text_buffer_2));
       time_tm_to_integer (&now_tm, &current_time_long_long_int);
-      time_UTC_to_local (&now_tm, &local_time_tm, 0);
+      time_UTC_to_local (&now_tm, &local_time_tm, INT_MIN);
       time_tm_nano_to_string (&local_time_tm, nanoseconds,
 			      text_buffer_3, sizeof(text_buffer_3));
-      time_local_to_UTC (&local_time_tm, &utc_time_tm, 0);
+      time_local_to_UTC (&local_time_tm, &utc_time_tm, INT_MIN);
       time_tm_nano_to_string (&utc_time_tm, nanoseconds,
 			      text_buffer_4, sizeof(text_buffer_4));
 
-      elapsed_time = time_diff (&base_time_tm, &now_tm, 0);
+      elapsed_time = time_diff (&base_time_tm, &now_tm, INT_MIN);
       
       fprintf (log_file, "%s, %s, %s, %s, %d, %lld, %ld, %ld\n",
 	       text_buffer_1, text_buffer_2, text_buffer_3, text_buffer_4,
@@ -136,8 +136,8 @@ do_logging (char *log_file_name)
       target_nanoseconds = 0;
       add_nanoseconds = delay_time_ns * loop_counter;
       time_UTC_add_seconds_ns (&target_time_tm, &target_nanoseconds,
-			       0, add_nanoseconds, 0);
-      time_sleep_until (&target_time_tm, target_nanoseconds, 0); 
+			       0, add_nanoseconds, INT_MIN);
+      time_sleep_until (&target_time_tm, target_nanoseconds, INT_MIN); 
  
       /* clock_nanosleep (CLOCK_MONOTONIC, 0, &delay_timespec, NULL); */
       current_time = (double) ts_m.tv_sec + (double) (ts_m.tv_nsec / 1e9);
@@ -159,7 +159,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options]\n\n"
 	       "log the progress of time.\n"
-	       " Version 1.0 2017-01-14\n"
+	       " Version 1.1 2018-11-11\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-o | --output-file   Where to put the log file\n"

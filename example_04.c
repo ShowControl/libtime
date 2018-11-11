@@ -1,8 +1,8 @@
 /*
- * File: example_04.c, author: John Sauter, date: December 4, 2017.
+ * File: example_04.c, author: John Sauter, date: November 11, 2018.
  */
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ example_4 (long long int time_stamp_value)
 
   /* Add the time stamp, which is the integer representation of TAI.  */
   time_copy_tm (&time1_tm, &time2_tm);
-  time_UTC_add_seconds (&time2_tm, time_stamp_value - 10, 1);
+  time_UTC_add_seconds (&time2_tm, time_stamp_value - 10, 1972);
   time_tm_to_string (&time2_tm, &buffer2 [0], sizeof (buffer2));
 
   /* Print the result.  */
@@ -76,7 +76,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "example_4\n"
-	       " Version 1.0 2017-12-03\n"
+	       " Version 1.1 2018-11-11\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"
@@ -93,7 +93,7 @@ static const struct option long_options[] = {
   {0, 0, 0, 0}
 };
 
-/* main program: parse options, perform test and exit. */
+/* main program: parse options, perform example and exit. */
 int
 main (int argc, char **argv)
 {

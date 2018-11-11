@@ -1,9 +1,9 @@
 /*
- * File: test_add.c, author: John Sauter, date: January 14, 2017.
+ * File: test_add.c, author: John Sauter, date: November 11, 2018.
  * Test the various time adding entry points.
  */
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ do_test ()
   int found_time, day_incr, diff;
   
   time_current_tm (&time_tm);
-  time_UTC_to_local (&time_tm, &local_time_tm, 0);
+  time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
   time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof(buffer1));
   printf ("now: %s\n", buffer1);
 
@@ -76,7 +76,7 @@ do_test ()
     {
       /* determine the time of the POSIX Epoch.  */
       seconds1 = time (NULL);
-      time_UTC_add_seconds (&time_tm, -seconds1, 0);
+      time_UTC_add_seconds (&time_tm, -seconds1, INT_MIN);
       time_tm_to_string (&time_tm, &buffer1 [0], sizeof (buffer1));
       printf ("POSIX epoch is %s.\n", buffer1);
     }
@@ -96,14 +96,14 @@ do_test ()
       while (1)
 	{
 	  time_copy_tm (&local_time_tm, &extra_time_tm);
-	  time_local_add_days (&extra_time_tm, day_incr, 1, 0);
+	  time_local_add_days (&extra_time_tm, day_incr, 1, INT_MIN);
 	  extra_time_tm.tm_hour = 19;
 	  extra_time_tm.tm_min = 0;
 	  extra_time_tm.tm_sec = 0;
 	  if (extra_time_tm.tm_year != (2016 - 1900))
 	    break;
-	  time_local_to_UTC (&extra_time_tm, &time_tm, 0);
-	  time_UTC_add_seconds (&time_tm, -2, 0);
+	  time_local_to_UTC (&extra_time_tm, &time_tm, INT_MIN);
+	  time_UTC_add_seconds (&time_tm, -2, INT_MIN);
 	  time_tm_to_string (&time_tm, &buffer1 [0], sizeof (buffer1));
 	  time_tm_to_string (&extra_time_tm, &buffer2 [0],
 			     sizeof (buffer2));
@@ -124,30 +124,30 @@ do_test ()
       while (!found_time)
 	{
 	  time_copy_tm (&local_time_tm, &extra_time_tm);
-	  time_local_add_days (&extra_time_tm, day_incr, 1, 0);
+	  time_local_add_days (&extra_time_tm, day_incr, 1, INT_MIN);
 	  if ((extra_time_tm.tm_wday == 0) ||
 	      (extra_time_tm.tm_wday == 1))
 	    day_incr = day_incr + 1;
 	  else
 	    found_time = 1;
 	}
-      time_local_to_UTC (&extra_time_tm, &time_tm, 0);
+      time_local_to_UTC (&extra_time_tm, &time_tm, INT_MIN);
       time_tm_to_string (&time_tm, &buffer1 [0], sizeof (buffer1));
       printf ("First scheduled backup is at %s.\n", buffer1);
 
       /* To illustrate, assume the last backup was 29 days ago.  
        */
       time_current_tm (&backup_tm);
-      time_UTC_add_days (&backup_tm, -29, -1, 0);
+      time_UTC_add_days (&backup_tm, -29, -1, INT_MIN);
       time_tm_to_string (&backup_tm, &buffer2 [0], sizeof (buffer2));
       printf ("Assume the last full backup was %s.\n", buffer2);
 
-      time_local_add_months (&extra_time_tm, -1, 1, 0);
-      time_local_to_UTC (&extra_time_tm, &int_time_tm, 0);
+      time_local_add_months (&extra_time_tm, -1, 1, INT_MIN);
+      time_local_to_UTC (&extra_time_tm, &int_time_tm, INT_MIN);
       time_tm_to_string (&int_time_tm, &buffer1 [0], sizeof (buffer1));
       printf ("One month before the next scheduled backup is %s.\n",
 	      buffer1);
-      diff = time_diff (&int_time_tm, &backup_tm, 0);
+      diff = time_diff (&int_time_tm, &backup_tm, INT_MIN);
       if (diff < 0)
 	printf ("Next backup is full.\n");
       else
@@ -163,7 +163,7 @@ do_test ()
       local_time_tm.tm_min = 0;
       local_time_tm.tm_sec = 0;
 
-      time_local_to_UTC (&local_time_tm, &time_tm, 0);
+      time_local_to_UTC (&local_time_tm, &time_tm, INT_MIN);
       time_tm_to_string (&time_tm, &buffer1 [0], sizeof (buffer1));
       printf ("9 AM local is %s.\n", buffer1);
     }
@@ -181,10 +181,10 @@ do_test ()
       for (scount=0;scount<=max_scount;scount++)
 	{
 	  time_copy_tm (&start_time_tm, &time_tm);
-	  time_UTC_add_seconds (&time_tm, scount, 0);
-	  time_UTC_to_local (&time_tm, &extra_time_tm, 0);
-	  time_local_to_UTC (&extra_time_tm, &int_time_tm, 0);
-	  seconds1 = time_diff (&time_tm, &int_time_tm, 0);
+	  time_UTC_add_seconds (&time_tm, scount, INT_MIN);
+	  time_UTC_to_local (&time_tm, &extra_time_tm, INT_MIN);
+	  time_local_to_UTC (&extra_time_tm, &int_time_tm, INT_MIN);
+	  seconds1 = time_diff (&time_tm, &int_time_tm, INT_MIN);
 	  if ((seconds1 != 0) || ((scount % 100000) == 0))
 	    {
 	      time_tm_to_string (&time_tm, &buffer1 [0],
@@ -211,12 +211,12 @@ do_test ()
       start_time_tm.tm_sec = 50;
       start_time_tm.tm_gmtoff = (9 * 3600) + (18 * 60) + 59;
       time_copy_tm (&start_time_tm, &extra_time_tm);
-      time_local_add_seconds (&extra_time_tm, 2, 0);
+      time_local_add_seconds (&extra_time_tm, 2, INT_MIN);
       time_copy_tm (&extra_time_tm, &int_time_tm);
-      time_local_add_seconds (&extra_time_tm, -4, 0);
+      time_local_add_seconds (&extra_time_tm, -4, INT_MIN);
       time_copy_tm (&extra_time_tm, &intermediate_time_tm);
-      time_local_add_seconds (&extra_time_tm, 2, 0);
-      seconds2 = time_diff (&extra_time_tm, &start_time_tm, 0);
+      time_local_add_seconds (&extra_time_tm, 2, INT_MIN);
+      seconds2 = time_diff (&extra_time_tm, &start_time_tm, INT_MIN);
       if (1 || (seconds2 != 0))
 	{
 	  time_tm_to_string (&start_time_tm, &buffer1 [0],
@@ -246,7 +246,7 @@ do_test ()
 	{
 	  start_time_tm.tm_year = j - 1900;
 	  time_current_tm (&time_tm);
-	  time_UTC_to_local (&time_tm, &local_time_tm, 0);
+	  time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
 	  time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof(buffer1));
 	  printf ("year %d at %s\n", j, buffer1);
 
@@ -254,7 +254,7 @@ do_test ()
 	    {
 	      start_time_tm.tm_mon = k;
 	      time_current_tm (&time_tm);
-	      time_UTC_to_local (&time_tm, &local_time_tm, 0);
+	      time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
 	      time_tm_to_string (&local_time_tm, &buffer1 [0],
 				 sizeof(buffer1));
 	      printf ("month %d at %s\n", k, buffer1);
@@ -267,16 +267,16 @@ do_test ()
 		  for (i=-60;i<=(86400+60);i++)
 		    {
 		      time_copy_tm (&start_time_tm, &time_tm);
-		      time_UTC_add_seconds (&time_tm, i, 0);
+		      time_UTC_add_seconds (&time_tm, i, INT_MIN);
 		      if (time_tm.tm_sec == 60)
 			trigger = 1;
 		      time_copy_tm (&time_tm, &extra_time_tm);
-		      time_UTC_add_seconds (&extra_time_tm, 2, 0);
+		      time_UTC_add_seconds (&extra_time_tm, 2, INT_MIN);
 		      time_copy_tm (&extra_time_tm, &int_time_tm);
-		      time_UTC_add_seconds (&extra_time_tm, -4, 0);
+		      time_UTC_add_seconds (&extra_time_tm, -4, INT_MIN);
 		      time_copy_tm (&extra_time_tm, &backup_tm);
-		      time_UTC_add_seconds (&extra_time_tm, 2, 0);
-		      seconds3 = time_diff (&time_tm, &extra_time_tm, 0);
+		      time_UTC_add_seconds (&extra_time_tm, 2, INT_MIN);
+		      seconds3 = time_diff (&time_tm, &extra_time_tm, INT_MIN);
 		      if (seconds3 != 0)
 			{
 			  time_tm_to_string (&time_tm, &buffer1 [0],
@@ -295,9 +295,9 @@ do_test ()
 		      if (time_tm.tm_sec < 60)
 			{
 			  time_copy_tm (&time_tm, &extra_time_tm);
-			  time_UTC_add_days (&extra_time_tm, 1, 1, 0);
-			  time_UTC_add_days (&extra_time_tm, -1, 1, 0);
-			  seconds3 = time_diff (&time_tm, &extra_time_tm, 0);
+			  time_UTC_add_days (&extra_time_tm, 1, 1, INT_MIN);
+			  time_UTC_add_days (&extra_time_tm, -1, 1, INT_MIN);
+			  seconds3 = time_diff (&time_tm, &extra_time_tm, INT_MIN);
 			  if (seconds3 != 0)
 			    {
 			      time_tm_to_string (&time_tm, &buffer2 [0],
@@ -311,10 +311,10 @@ do_test ()
 			  if (time_tm.tm_mday <= 28)
 			    {
 			      time_copy_tm (&time_tm, &extra_time_tm);
-			      time_UTC_add_months (&extra_time_tm, 1, 1, 0);
-			      time_UTC_add_months (&extra_time_tm, -1, 1, 0);
+			      time_UTC_add_months (&extra_time_tm, 1, 1, INT_MIN);
+			      time_UTC_add_months (&extra_time_tm, -1, 1, INT_MIN);
 			      seconds3 =
-				time_diff (&time_tm, &extra_time_tm, 0);
+				time_diff (&time_tm, &extra_time_tm, INT_MIN);
 			      if (seconds3 != 0)
 				{
 				  time_tm_to_string (&time_tm, &buffer2 [0],
@@ -327,10 +327,10 @@ do_test ()
 				} 
 			    	  
 			      time_copy_tm (&time_tm, &extra_time_tm);
-			      time_UTC_add_years (&extra_time_tm, 1, 1, 0);
-			      time_UTC_add_years (&extra_time_tm, -1, 1, 0);
+			      time_UTC_add_years (&extra_time_tm, 1, 1, INT_MIN);
+			      time_UTC_add_years (&extra_time_tm, -1, 1, INT_MIN);
 			      seconds3 =
-				time_diff (&time_tm, &extra_time_tm, 0);
+				time_diff (&time_tm, &extra_time_tm, INT_MIN);
 			      if (seconds3 != 0)
 				{
 				  time_tm_to_string (&time_tm, &buffer2 [0],
@@ -344,13 +344,13 @@ do_test ()
 			    }
 			}
 		      
-		      time_UTC_to_local (&time_tm, &extra_time_tm, 0);
+		      time_UTC_to_local (&time_tm, &extra_time_tm, INT_MIN);
 		      time_copy_tm (&extra_time_tm, &intermediate_time_tm);
-		      time_local_add_seconds (&extra_time_tm, 2, 0);
-		      time_local_add_seconds (&extra_time_tm, -4, 0);
-		      time_local_add_seconds (&extra_time_tm, 2, 0);
+		      time_local_add_seconds (&extra_time_tm, 2, INT_MIN);
+		      time_local_add_seconds (&extra_time_tm, -4, INT_MIN);
+		      time_local_add_seconds (&extra_time_tm, 2, INT_MIN);
 		      seconds2 = time_diff (&extra_time_tm,
-					    &intermediate_time_tm, 0);
+					    &intermediate_time_tm, INT_MIN);
 		      if (seconds2 != 0)
 			{
 			  time_tm_to_string (&time_tm, &buffer1 [0],
@@ -364,9 +364,9 @@ do_test ()
 			}
 		      
 		      time_local_to_UTC (&extra_time_tm, &intermediate_time_tm,
-					 0);
+					 INT_MIN);
 		      seconds1 = time_diff (&time_tm, &intermediate_time_tm,
-					    0);
+					    INT_MIN);
 		      if ((seconds1 != 0))
 			{
 			  time_tm_to_string (&time_tm, &buffer2 [0],
@@ -410,10 +410,10 @@ do_test ()
       for (i=0;i<=250;i++)
 	{
 	  time_copy_tm (&start_time_tm, &time_tm);
-	  time_UTC_add_years (&time_tm, i, 1, 0);
-	  time_UTC_to_local (&time_tm, &extra_time_tm, 0);
-	  time_local_to_UTC (&extra_time_tm, &intermediate_time_tm, 0);
-	  seconds1 = time_diff (&time_tm, &intermediate_time_tm, 0);
+	  time_UTC_add_years (&time_tm, i, 1, INT_MIN);
+	  time_UTC_to_local (&time_tm, &extra_time_tm, INT_MIN);
+	  time_local_to_UTC (&extra_time_tm, &intermediate_time_tm, INT_MIN);
+	  seconds1 = time_diff (&time_tm, &intermediate_time_tm, INT_MIN);
 	  if (1 || (seconds1 != 0))
 	    {
 	      time_tm_to_string (&time_tm, &buffer2 [0], sizeof (buffer2));
@@ -436,14 +436,14 @@ do_test ()
       start_time_tm.tm_min = 59;
       start_time_tm.tm_sec = 59;
       time_copy_tm (&start_time_tm, &time_tm);
-      time_local_add_years (&time_tm, -1, -1, 0);
+      time_local_add_years (&time_tm, -1, -1, INT_MIN);
       time_copy_tm (&time_tm, &extra_time_tm);
-      time_local_add_years (&extra_time_tm, 1, -1, 0);
+      time_local_add_years (&extra_time_tm, 1, -1, INT_MIN);
       time_tm_to_string (&start_time_tm, &buffer1 [0], sizeof (buffer1));
       time_tm_to_string (&time_tm, &buffer2 [0], sizeof (buffer2));
       time_tm_to_string (&extra_time_tm, &buffer3 [0], sizeof (buffer3));
-      seconds1 = time_diff (&start_time_tm, &time_tm, 0);
-      seconds2 = time_diff (&start_time_tm, &extra_time_tm, 0);
+      seconds1 = time_diff (&start_time_tm, &time_tm, INT_MIN);
+      seconds2 = time_diff (&start_time_tm, &extra_time_tm, INT_MIN);
       printf ("%s->%s is %lld seconds\n",
 	      buffer1, buffer2, seconds1);
       printf ("%s->%s->%s is %lld seconds\n",
@@ -459,18 +459,18 @@ do_test ()
       start_time_tm.tm_hour = 0;
       start_time_tm.tm_min = 0;
       start_time_tm.tm_sec = 0;
-      time_UTC_normalize (&start_time_tm, 0, 0);
-      time_UTC_add_months (&start_time_tm, 1, -1, 0);
-      time_UTC_add_days (&start_time_tm, 16, 1, 0);
+      time_UTC_normalize (&start_time_tm, 0, INT_MIN);
+      time_UTC_add_months (&start_time_tm, 1, -1, INT_MIN);
+      time_UTC_add_days (&start_time_tm, 16, 1, INT_MIN);
       time_copy_tm (&start_time_tm, &prev_time_tm);
       
       for (i=0; i<200; i++)
 	{
 	  time_copy_tm (&start_time_tm, &time_tm);
 
-	  time_UTC_add_years (&time_tm, i, 1, 0);
-	  time_UTC_add_years (&time_tm, -i, 1, 0);
-	  seconds1 = time_diff (&start_time_tm, &time_tm, 0);
+	  time_UTC_add_years (&time_tm, i, 1, INT_MIN);
+	  time_UTC_add_years (&time_tm, -i, 1, INT_MIN);
+	  seconds1 = time_diff (&start_time_tm, &time_tm, INT_MIN);
 	  if (seconds1 != 0)
 	    {
 	      time_tm_to_string (&start_time_tm, &buffer1 [0],
@@ -479,9 +479,9 @@ do_test ()
 	      printf ("add years %d: %s, %s\n", i, buffer1, buffer2);
 	    }
 
-	  time_UTC_add_months (&time_tm, i, 1, 0);
-	  time_UTC_add_months (&time_tm, -i, 1, 0);
-	  seconds1 = time_diff (&start_time_tm, &time_tm, 0);
+	  time_UTC_add_months (&time_tm, i, 1, INT_MIN);
+	  time_UTC_add_months (&time_tm, -i, 1, INT_MIN);
+	  seconds1 = time_diff (&start_time_tm, &time_tm, INT_MIN);
 	  if (seconds1 != 0)
 	    {
 	      time_tm_to_string (&start_time_tm, &buffer1 [0],
@@ -490,9 +490,9 @@ do_test ()
 	      printf ("add months %d: %s, %s\n", i, buffer1, buffer2);
 	    }
 
-	  time_UTC_add_days (&time_tm, i, 1, 0);
-	  time_UTC_add_days (&time_tm, -i, 1, 0);
-	  seconds1 = time_diff (&start_time_tm, &time_tm, 0);
+	  time_UTC_add_days (&time_tm, i, 1, INT_MIN);
+	  time_UTC_add_days (&time_tm, -i, 1, INT_MIN);
+	  seconds1 = time_diff (&start_time_tm, &time_tm, INT_MIN);
 	  if (seconds1 != 0)
 	    {
 	      time_tm_to_string (&start_time_tm, &buffer1 [0],
@@ -501,9 +501,9 @@ do_test ()
 	      printf ("add days %d: %s, %s\n", i, buffer1, buffer2);
 	    }
 	  
-	  time_UTC_add_hours (&time_tm, i, 1, 0);
-	  time_UTC_add_hours (&time_tm, -i, 1, 0);
-	  seconds1 = time_diff (&start_time_tm, &time_tm, 0);
+	  time_UTC_add_hours (&time_tm, i, 1, INT_MIN);
+	  time_UTC_add_hours (&time_tm, -i, 1, INT_MIN);
+	  seconds1 = time_diff (&start_time_tm, &time_tm, INT_MIN);
 	  if (seconds1 != 0)
 	    {
 	      time_tm_to_string (&start_time_tm, &buffer1 [0],
@@ -512,9 +512,9 @@ do_test ()
 	      printf ("add hours %d: %s, %s\n", i, buffer1, buffer2);
 	    }
 
-	  time_UTC_add_minutes (&time_tm, i, 1, 0);
-	  time_UTC_add_minutes (&time_tm, -i, 1, 0);
-	  seconds1 = time_diff (&start_time_tm, &time_tm, 0);
+	  time_UTC_add_minutes (&time_tm, i, 1, INT_MIN);
+	  time_UTC_add_minutes (&time_tm, -i, 1, INT_MIN);
+	  seconds1 = time_diff (&start_time_tm, &time_tm, INT_MIN);
 	  if (seconds1 != 0)
 	    {
 	      time_tm_to_string (&start_time_tm, &buffer1 [0],
@@ -523,9 +523,9 @@ do_test ()
 	      printf ("add minutes %d: %s, %s\n", i, buffer1, buffer2);
 	    }
 	  
-	  time_UTC_add_seconds (&time_tm, i, 0);
-	  time_UTC_add_seconds (&time_tm, -i, 0);
-	  seconds1 = time_diff (&start_time_tm, &time_tm, 0);
+	  time_UTC_add_seconds (&time_tm, i, INT_MIN);
+	  time_UTC_add_seconds (&time_tm, -i, INT_MIN);
+	  seconds1 = time_diff (&start_time_tm, &time_tm, INT_MIN);
 	  if ((seconds1 != 0) || (debug_level > 0))
 	    {
 	      time_tm_to_string (&start_time_tm, &buffer1 [0],
@@ -538,17 +538,17 @@ do_test ()
 	  if (debug_level > 0)
 	    printf ("start at %s\n", buffer2);
 	  
-	  time_UTC_to_local (&time_tm, &extra_time_tm, 0);
+	  time_UTC_to_local (&time_tm, &extra_time_tm, INT_MIN);
 	  time_tm_to_string (&extra_time_tm, &buffer2 [0], sizeof (buffer2));
 	  if (debug_level > 0)
 	    printf ("convert to local time %s\n", buffer2);
 
-	  time_local_add_years (&extra_time_tm, i, -1, 0);
+	  time_local_add_years (&extra_time_tm, i, -1, INT_MIN);
 	  time_tm_to_string (&extra_time_tm, &buffer2 [0], sizeof (buffer2));
 	  if (debug_level > 0)
 	    printf ("add %d years %s\n", i, buffer2);
 
-	  time_local_to_UTC (&extra_time_tm, &time_tm, 0);
+	  time_local_to_UTC (&extra_time_tm, &time_tm, INT_MIN);
 	  time_tm_to_string (&time_tm, &buffer2 [0], sizeof (buffer2));
 	  if (debug_level > 0)
 	    printf ("back to UTC %s\n", buffer2);
@@ -557,45 +557,45 @@ do_test ()
 	  time_tm_to_string (&time_tm, &buffer2 [0], sizeof (buffer2));
 	  if (debug_level > 0)
 	    printf ("start at %s\n", buffer2);
-	  time_UTC_add_months (&intermediate_time_tm, 1, 1, 0);
+	  time_UTC_add_months (&intermediate_time_tm, 1, 1, INT_MIN);
 	  time_tm_to_string (&intermediate_time_tm, &buffer4 [0],
 			     sizeof (buffer4));
 	  if (debug_level > 0)
 	    printf ("plus one month: %s\n", buffer4);
-	  time_UTC_add_days (&intermediate_time_tm, -5, 1, 0);
+	  time_UTC_add_days (&intermediate_time_tm, -5, 1, INT_MIN);
 	  time_tm_to_string (&intermediate_time_tm, &buffer4 [0],
 			     sizeof (buffer4));
 	  if (debug_level > 0)
 	    printf ("minus five days: %s\n", buffer4);
-	  time_UTC_add_hours (&intermediate_time_tm, 6, -1, 0);
+	  time_UTC_add_hours (&intermediate_time_tm, 6, -1, INT_MIN);
 	  time_tm_to_string (&intermediate_time_tm, &buffer4 [0],
 			     sizeof (buffer4));
 	  if (debug_level > 0)
 	    printf ("plus six hours: %s\n", buffer4);
-	  time_UTC_add_minutes (&intermediate_time_tm, -20, 1, 0);
+	  time_UTC_add_minutes (&intermediate_time_tm, -20, 1, INT_MIN);
 	  time_tm_to_string (&intermediate_time_tm, &buffer4 [0],
 			     sizeof (buffer4));
 	  if (debug_level > 0)
 	    printf ("minus twenty minutes: %s\n", buffer4);
-	  time_UTC_add_seconds (&intermediate_time_tm, -i, 0);
+	  time_UTC_add_seconds (&intermediate_time_tm, -i, INT_MIN);
 	  time_tm_to_string (&intermediate_time_tm, &buffer4 [0],
 			     sizeof (buffer4));
 	  if (debug_level > 0)
 	    printf ("minus %d seconds: %s\n", i, buffer4);
 	  time_copy_tm (&intermediate_time_tm, &extra_time_tm);
-	  time_UTC_add_seconds (&extra_time_tm, i, 0);
-	  time_UTC_add_minutes (&extra_time_tm, 20, 1, 0);
-	  time_UTC_add_hours (&extra_time_tm, -6, -1, 0);
-	  time_UTC_add_days (&extra_time_tm, 5, 1, 0);
-	  time_UTC_add_months (&extra_time_tm, -1, 1, 0);
+	  time_UTC_add_seconds (&extra_time_tm, i, INT_MIN);
+	  time_UTC_add_minutes (&extra_time_tm, 20, 1, INT_MIN);
+	  time_UTC_add_hours (&extra_time_tm, -6, -1, INT_MIN);
+	  time_UTC_add_days (&extra_time_tm, 5, 1, INT_MIN);
+	  time_UTC_add_months (&extra_time_tm, -1, 1, INT_MIN);
 	  time_tm_to_string (&prev_time_tm, &buffer1 [0], sizeof (buffer1));
 	  time_tm_to_string (&time_tm, &buffer2 [0], sizeof (buffer2));
 	  time_tm_to_string (&extra_time_tm, &buffer3 [0], sizeof (buffer3));
 	  time_tm_to_string (&intermediate_time_tm, &buffer4 [0],
 			     sizeof (buffer4));
-	  seconds1 = time_diff (&time_tm, &intermediate_time_tm, 0);
-	  seconds2 = time_diff (&intermediate_time_tm, &extra_time_tm, 0);
-	  seconds3 = time_diff (&time_tm, &extra_time_tm, 0);
+	  seconds1 = time_diff (&time_tm, &intermediate_time_tm, INT_MIN);
+	  seconds2 = time_diff (&intermediate_time_tm, &extra_time_tm, INT_MIN);
+	  seconds3 = time_diff (&time_tm, &extra_time_tm, INT_MIN);
 	  if (((seconds1 + i) != 2266800) && ((seconds1 + i) != 2180400) &&
 	      ((seconds1 + i) != 2007600) && ((seconds1 + i) != 2094000))
 	    {
@@ -626,19 +626,19 @@ do_test ()
       time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof (buffer1));
       printf ("local time: %s\n", &buffer1 [0]);
 
-      time_local_to_UTC (&local_time_tm, &time_tm, 0);
+      time_local_to_UTC (&local_time_tm, &time_tm, INT_MIN);
       time_tm_to_string (&time_tm, &buffer1 [0], sizeof (buffer1));
       printf ("converted to UTC: %s\n", &buffer1 [0]);
   
-      time_UTC_add_seconds (&time_tm, 1, 0);
+      time_UTC_add_seconds (&time_tm, 1, INT_MIN);
       time_tm_to_string (&time_tm, &buffer1 [0], sizeof (buffer1));
       printf ("forward one second: %s\n", &buffer1 [0]);
 
-      time_UTC_to_local (&time_tm, &local_time_tm, 0);
+      time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
       time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof (buffer1));
       printf ("converted to local time: %s\n", &buffer1 [0]);
 
-      time_local_add_seconds (&local_time_tm, -1, 0);
+      time_local_add_seconds (&local_time_tm, -1, INT_MIN);
       time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof (buffer1));
       printf ("back one second: %s.\n", &buffer1 [0]);
     }
@@ -658,7 +658,7 @@ do_test ()
 	  add_seconds = 1;
 	  add_nanoseconds = 0;
 	  time_UTC_add_seconds_ns (&time_tm, &nanoseconds,
-				   add_seconds, add_nanoseconds, 0);
+				   add_seconds, add_nanoseconds, INT_MIN);
 	  time_tm_to_string (&time_tm, &buffer1 [0], sizeof(buffer1));
 	  printf ("%s\n", buffer1);
 	}
@@ -668,7 +668,7 @@ do_test ()
 	  add_seconds = -1;
 	  add_nanoseconds = 0;
 	  time_UTC_add_seconds_ns (&time_tm, &nanoseconds,
-				   add_seconds, add_nanoseconds, 0);
+				   add_seconds, add_nanoseconds, INT_MIN);
 	  time_tm_to_string (&time_tm, &buffer1 [0], sizeof(buffer1));
 	  printf ("%s\n", buffer1);
 	}
@@ -686,7 +686,7 @@ do_test ()
 	  add_seconds = 1;
 	  add_nanoseconds = 0;
 	  time_UTC_add_seconds_ns (&time_tm, &nanoseconds,
-				   add_seconds, add_nanoseconds, 0);
+				   add_seconds, add_nanoseconds, INT_MIN);
 	  time_tm_to_string (&time_tm, &buffer1 [0], sizeof(buffer1));
 	  printf ("%s\n", buffer1);
 	}
@@ -701,11 +701,11 @@ do_test ()
       time_tm_to_string (&time_tm, &buffer1 [0], sizeof(buffer1));
       printf ("%s\n", buffer1);
       time_copy_tm (&time_tm, &backup_tm);
-      time_UTC_add_years (&time_tm, 1, -1, 0);
+      time_UTC_add_years (&time_tm, 1, -1, INT_MIN);
       time_tm_to_string (&time_tm, &buffer1 [0], sizeof(buffer1));
       printf ("%s\n", buffer1);
       time_copy_tm (&backup_tm, &time_tm);
-      time_UTC_add_years (&time_tm, 1, 1, 0);
+      time_UTC_add_years (&time_tm, 1, 1, INT_MIN);
       time_tm_to_string (&time_tm, &buffer1 [0], sizeof(buffer1));
       printf ("%s\n", buffer1);
       
@@ -723,7 +723,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "test_add\n"
-	       " Version 1.0 2017-01-14\n"
+	       " Version 1.1 2018-11-11\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"

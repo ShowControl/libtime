@@ -1,9 +1,9 @@
 /*
- * File: time_utc_normalize.c, author: John Sauter, date: January 14, 2017.
+ * File: time_utc_normalize.c, author: John Sauter, date: November 11, 2018.
  */
 
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@
 
 int
 time_UTC_normalize (struct tm *time_tm, long long int in_seconds,
-		    int variable_length_seconds_before_1972)
+		    int variable_length_seconds_before_year)
 {
   int return_value = 0;
   long long int seconds;
@@ -133,18 +133,18 @@ time_UTC_normalize (struct tm *time_tm, long long int in_seconds,
 	{
 	  seconds = seconds +
 	    time_length_prev_UTC_minute (time_tm,
-			     variable_length_seconds_before_1972);
+			     variable_length_seconds_before_year);
 	  time_tm->tm_min = time_tm->tm_min - 1;
 	  continue;
 	}
 
       if (seconds >=
 	  time_length_UTC_minute (time_tm,
-			      variable_length_seconds_before_1972))
+			      variable_length_seconds_before_year))
 	{
 	  seconds = seconds -
 	    time_length_UTC_minute (time_tm,
-			       variable_length_seconds_before_1972);
+			       variable_length_seconds_before_year);
 	  time_tm->tm_min = time_tm->tm_min + 1;
 	  continue;
 	}

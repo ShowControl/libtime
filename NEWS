@@ -1,3 +1,8 @@
+2018-11-11 2:0:0
+  Replace variable_length_seconds_before_1972 with
+  variable_length_seconds_before_year.  To use fixed-length
+  seconds always, specify INT_MIN.  To use variable length
+  seconds before 1972, specify 1972.
 2018-10-04 1:15:0
   Update the list of dependencies in the README for Fedora 29.
   

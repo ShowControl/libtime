@@ -1,9 +1,9 @@
 /*
- * File: time_sleep_until.c, author: John Sauter, date: January 14, 2017.
+ * File: time_sleep_until.c, author: John Sauter, date: November 11, 2018.
  */
 
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 /* Sleep until a specified time.  */
 int
 time_sleep_until (struct tm *time_tm, int nanoseconds,
-		  int variable_length_seconds_before_1972)
+		  int variable_length_seconds_before_year)
 {
   long long int seconds_to_sleep;
   struct tm now_tm;
@@ -47,7 +47,7 @@ time_sleep_until (struct tm *time_tm, int nanoseconds,
   /* Compute the number of seconds until the target time.  */
   seconds_to_sleep =
     time_diff (&now_tm, time_tm,
-	       variable_length_seconds_before_1972);
+	       variable_length_seconds_before_year);
 
   /* Adjust for the number of nanoseconds that have passed since
    * the last second, and the number that should pass after the

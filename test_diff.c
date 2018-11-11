@@ -1,9 +1,9 @@
 /*
- * File: test_diff.c, author: John Sauter, date: January 14, 2017.
+ * File: test_diff.c, author: John Sauter, date: November 11, 2018.
  * Test the diff_time subroutine.
  */
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ void
 do_test (char *A_time, char *B_time)
 {
   struct tm A_tm, B_tm;
-  int seconds;
+  long long int seconds;
   void *err_val;
   char A_string [256];
   char B_string [256];
@@ -64,10 +64,23 @@ do_test (char *A_time, char *B_time)
       printf ("error on B: %s.\n", B_time);
       return;
     }
-  seconds = time_diff (&A_tm, &B_tm, 0);
+  seconds = time_diff (&A_tm, &B_tm, INT_MIN);
   time_tm_to_string (&A_tm, A_string, sizeof (A_string));
   time_tm_to_string (&B_tm, B_string, sizeof (B_string));
-  printf ("%s to %s is %d seconds.\n",
+  printf ("%s to %s is %lld seconds.\n",
+	  A_string, B_string, seconds);
+
+  seconds = time_diff (&A_tm, &B_tm, 1972);
+  time_tm_to_string (&A_tm, A_string, sizeof (A_string));
+  time_tm_to_string (&B_tm, B_string, sizeof (B_string));
+  printf ("%s to %s is %lld seconds, "
+	  "with variable-length seconds before 1972.\n",
+	  A_string, B_string, seconds);
+  
+  seconds = time_diff (&A_tm, &B_tm, INT_MAX);
+  time_tm_to_string (&A_tm, A_string, sizeof (A_string));
+  time_tm_to_string (&B_tm, B_string, sizeof (B_string));
+  printf ("%s to %s is %lld seconds with all seconds variable length.\n",
 	  A_string, B_string, seconds);
   return;
 }
@@ -82,7 +95,8 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] A_time B_time\n\n"
 	       "print the number of seconds between two times.\n"
-	       "Version 2.0 2017-01-14\n"
+	       "The two times are formatted as %%Y-%%m-%%dT%%H:%%M:%%S.\n"
+	       "Version 3.0 2018-11-11\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"

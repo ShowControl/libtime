@@ -1,5 +1,5 @@
 /*
- * File: time_subroutines.h, author: John Sauter, date: May 7, 2017.
+ * File: time_subroutines.h, author: John Sauter, date: November 11, 2018.
  * Header file for subroutines to deal with UTC time.
  */
 
@@ -33,6 +33,7 @@
 
 #include <time.h>
 #include <stdarg.h>
+#include <limits.h>
 
 /* Convert a 128-bit integer to a string.  */
 int
@@ -55,14 +56,14 @@ time_current_tm_nano (struct tm *current_tm,
 /* Compute the difference between two times in seconds.  */
 long long int
 time_diff (struct tm *A_tm, struct tm *B_tm,
-	   int variable_length_seconds_before_1972)
+	   int variable_length_seconds_before_year)
   __attribute__ ((pure));
 
 /* Fetch the difference between TAI and UTC at the beginning
  * of the specified Julian Day Number.  */
 int
 time_DTAI (int Julian_day_number,
-	   int variable_length_seconds_before_1972)
+	   int variable_length_seconds_before_year)
   __attribute__ ((const));
 
 /* Compute the Julian Day Number corresponding to a date.  */
@@ -74,7 +75,7 @@ time_Julian_day_number (int year, int month, int day)
  */
 int
 time_length_local_minute (struct tm *time_tm,
-			  int variable_length_seconds_before_1972)
+			  int variable_length_seconds_before_year)
   __attribute__ ((pure));
 
 /* Compute the length of the current month.  */
@@ -86,7 +87,7 @@ time_length_month (struct tm *time_tm)
  */
 int
 time_length_prev_local_minute (struct tm *time_tm,
-			       int variable_length_seconds_before_1972)
+			       int variable_length_seconds_before_year)
   __attribute__ ((pure));
 
 /* Compute the length of the previous month.  */
@@ -98,45 +99,45 @@ time_length_prev_month (struct tm *time_tm)
  * Coordinated Universal Time.  */
 int
 time_length_prev_UTC_minute (struct tm *time_tm,
-			     int variable_length_seconds_before_1972)
+			     int variable_length_seconds_before_year)
   __attribute__ ((pure));
 
 /* Compute the length of the current minute of
  * Coordinated Universal Time.  */
 int
 time_length_UTC_minute (struct tm *time_tm,
-			int variable_length_seconds_before_1972)
+			int variable_length_seconds_before_year)
   __attribute__ ((pure));
 
 /* Add days to a local time.  */
 int
 time_local_add_days (struct tm *time_tm, int addend,
 		     int rounding_mode,
-		     int variable_length_seconds_before_1972);
+		     int variable_length_seconds_before_year);
 
 /* Add hours to a local time.  */
 int
 time_local_add_hours (struct tm *time_tm, int addend,
 		      int rounding_mode,
-		      int variable_length_seconds_before_1972);
+		      int variable_length_seconds_before_year);
 
 /* Add minutes to a local time.  */
 int
 time_local_add_minutes (struct tm *time_tm, int addend,
 			int rounding_mode,
-			int variable_length_seconds_before_1972);
+			int variable_length_seconds_before_year);
 
 /* Add months to a local time.  */
 int
 time_local_add_months (struct tm *time_tm, int addend,
 		       int rounding_mode,
-		       int variable_length_seconds_before_1972);
+		       int variable_length_seconds_before_year);
 
 /* Add seconds to a local time.  */
 int
 time_local_add_seconds (struct tm *time_tm,
 			long long int add_seconds,
-			int variable_length_seconds_before_1972);
+			int variable_length_seconds_before_year);
 
 /* Add seconds and nanoseconds to a local time.  */
 int
@@ -144,31 +145,31 @@ time_local_add_seconds_ns (struct tm *time_tm,
 			   long long int *nanoseconds,
 			   long long int add_seconds,
 			   long long int add_nanoseconds,
-			   int variable_length_seconds_before_1972);
+			   int variable_length_seconds_before_year);
 
 /* Add years to a local time.  */
 int
 time_local_add_years (struct tm *time_tm, int addend,
 		      int rounding_mode,
-		      int variable_length_seconds_before_1972);
+		      int variable_length_seconds_before_year);
 
 /* Make sure all of the fields of a tm structure containing 
  * local time are within their valid ranges.  */
 int
 time_local_normalize (struct tm *time_tm,
 		      long long int seconds,
-		      int variable_length_seconds_before_1972);
+		      int variable_length_seconds_before_year);
 
 /* Convert local time to Coordinated Universal Time.  */
 int
 time_local_to_UTC (struct tm *local_time,
 		   struct tm *coordinated_universal_time,
-		   int variable_length_seconds_before_1972);
+		   int variable_length_seconds_before_year);
 
 /* Sleep until a specified Coordinated Universal Time.  */
 int
 time_sleep_until (struct tm *time_tm, int nanoseconds,
-		  int variable_length_seconds_before_1972);
+		  int variable_length_seconds_before_year);
 
 /* Convert the time and nanoseconds to a 128-bit integer.  
  */
@@ -199,31 +200,31 @@ time_tm_to_string (struct tm *input_tm,
 int
 time_UTC_add_days (struct tm *time_tm, int addend,
 		   int rounding_mode,
-		   int variable_length_seconds_before_1972);
+		   int variable_length_seconds_before_year);
 
 /* Add hours to a Coordinated Universal Time.  */
 int
 time_UTC_add_hours (struct tm *time_tm, int addend,
 		    int rounding_mode,
-		    int variable_length_seconds_after_1972);
+		    int variable_length_seconds_after_year);
 
 /* Add minutes to a Coordinated Universal Time.  */
 int
 time_UTC_add_minutes (struct tm *time_tm, int addend,
 		      int rounding_mode,
-		      int variable_length_seconds_before_1972);
+		      int variable_length_seconds_before_year);
 
 /* Add months to a Coordinated Universal Time.  */
 int
 time_UTC_add_months (struct tm *time_tm, int addend,
 		     int rounding_mode,
-		     int variable_length_seconds_before_1972);
+		     int variable_length_seconds_before_year);
 
 /* Add seconds to a Coordinated Universal Time.  */
 int
 time_UTC_add_seconds (struct tm *time_tm,
 		      long long int add_seconds,
-		      int variable_length_seconds_before_1972);
+		      int variable_length_seconds_before_year);
 
 /* Add seconds and nanoseconds to a Coordinated Universal Time.  
  */
@@ -232,13 +233,13 @@ time_UTC_add_seconds_ns (struct tm *time_tm,
 			 long long int *nanoseconds,
 			 long long int add_seconds,
 			 long long int add_nanoseconds,
-			 int variable_length_seconds_before_1972);
+			 int variable_length_seconds_before_year);
 
 /* Add years to a Coordinated Universal Time.  */
 int
 time_UTC_add_years (struct tm *time_tm, int addend,
 		    int rounding_mode,
-		    int variable_length_seconds_before_1972);
+		    int variable_length_seconds_before_year);
 
 /* Make sure all of the fields of a tm structure containing a
  * Coordinated Universal Time are within their valid ranges.  
@@ -246,13 +247,13 @@ time_UTC_add_years (struct tm *time_tm, int addend,
 int
 time_UTC_normalize (struct tm *time_tm,
 		    long long int seconds,
-		    int variable_length_seconds_before_1972);
+		    int variable_length_seconds_before_year);
 
 /* Convert Coordinated Universal Time to local time.  */
 int
 time_UTC_to_local (struct tm *coordinated_universal_time,
 		   struct tm *local_time,
-		   int variable_length_seconds_before_1972);
+		   int variable_length_seconds_before_year);
 
 #endif /* TIME_SUBROUTINES_H */
 

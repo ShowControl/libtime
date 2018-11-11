@@ -72,11 +72,11 @@
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2018 by John Sauter},
-  pdfdate={2018-10-04},
+  pdfdate={2018-11-11},
   pdflicenseurl={http://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}  
 }
-\date{2018-10-04}
+\date{2018-11-11}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -248,7 +248,7 @@ a time in a \verb|tm| structure and a count of nanoseconds since that second.
 \embedfile[desc={Sleep until the specified time},
   mimetype={text/x-c}]{time_sleep_until.c}
 See subsection \ref{subsection:difftime} for time\_diff
-and an explanation of variable\_length\_sec\-onds\_before\_1972.
+and an explanation of variable\_length\_sec\-onds\_before\_year.
 
 \subsection{clock\_settime}
 Clock\_settime is not used by applications.
@@ -499,7 +499,7 @@ The attribute ``const'' means that the function does not examine
 any values except its arguments, and has no effects except
 to return a value.  The attribute ``pure'' means the same except
 that the function can examine (but not change) global variables.
-\inputminted[firstline=36,lastline=256]{c}{time_subroutines.h}
+\inputminted[firstline=37,lastline=257]{c}{time_subroutines.h}
 \embedfile[desc={Header file for time subroutines},
   mimetype={plain/x-c}]{time_subroutines.h}
 
@@ -778,6 +778,10 @@ programs, but some kernel changes would result in better UTC support.
 \section{Update History}
 
 \begin{description}
+\item[2018-11-11 2:0:0] Changed ``variable length seconds before 1972''
+  to ``variable length seconds before year''.  This additional flexibility
+  is in honor of Microsoft Windows, which will be counting leap seconds
+  after January 1, 2019.
   \item[2018-10-04 1:15:0] Update the list of dependencies in the
     README file for Fedora 29.
   \item[2018-09-30 1:14:0] Improve the prediction of future leap seconds.

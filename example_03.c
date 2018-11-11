@@ -1,8 +1,8 @@
 /*
- * File: example_03.c, author: John Sauter, date: January 14, 2017.
+ * File: example_03.c, author: John Sauter, date: November 11, 2018.
  */
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ example_3 ()
   int month_incr;
   
   time_current_tm (&time_tm);
-  time_UTC_to_local (&time_tm, &local_time_tm, 0);
+  time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
 
   local_time_tm.tm_year = 2016 - 1900;
   local_time_tm.tm_mon = 1 - 1;
@@ -64,15 +64,15 @@ example_3 ()
   while (1)
     {
       time_copy_tm (&local_time_tm, &extra_time_tm);
-      time_local_add_months (&extra_time_tm, month_incr, -1, 0);
+      time_local_add_months (&extra_time_tm, month_incr, -1, INT_MIN);
       extra_time_tm.tm_hour = 19;
       extra_time_tm.tm_min = 0;
       extra_time_tm.tm_sec = 0;
       if (extra_time_tm.tm_year != (2016 - 1900))
 	break;
       
-      time_local_to_UTC (&extra_time_tm, &time_tm, 0);
-      time_UTC_add_seconds (&time_tm, -2, 0);
+      time_local_to_UTC (&extra_time_tm, &time_tm, INT_MIN);
+      time_UTC_add_seconds (&time_tm, -2, INT_MIN);
       time_tm_to_string (&time_tm, &buffer1 [0], sizeof (buffer1));
       time_tm_to_string (&extra_time_tm, &buffer2 [0],
 			 sizeof (buffer2));
@@ -92,7 +92,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "example_3\n"
-	       " Version 1.0 2017-01-14\n"
+	       " Version 1.1 2018-11-11\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"
@@ -109,7 +109,7 @@ static const struct option long_options[] = {
   {0, 0, 0, 0}
 };
 
-/* main program: parse options, perform test and exit. */
+/* main program: parse options, perform example and exit. */
 int
 main (int argc, char **argv)
 {

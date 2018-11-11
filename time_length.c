@@ -1,9 +1,9 @@
 /*
- * File: time_length.c, author: John Sauter, date: January 14, 2017.
+ * File: time_length.c, author: John Sauter, date: November 11, 2018.
  */
 
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -142,7 +142,7 @@ time_length_prev_month (struct tm *time_tm)
 /* Return the length of this UTC minute.  */
 int
 time_length_UTC_minute (struct tm *time_tm,
-			int variable_length_seconds_before_1972)
+			int variable_length_seconds_before_year)
 {
 
   int JDN_today, JDN_tomorrow, DTAI_today, DTAI_tomorrow;
@@ -160,12 +160,12 @@ time_length_UTC_minute (struct tm *time_tm,
   /* Calculate the number of seconds between UTC and TAI, 
    * known as DTAI, for this date.  */
   DTAI_today = time_DTAI (JDN_today,
-			  variable_length_seconds_before_1972);
+			  variable_length_seconds_before_year);
 
   /* Do the same for tomorrow.  */
   JDN_tomorrow = JDN_today + 1;
   DTAI_tomorrow = time_DTAI (JDN_tomorrow,
-			     variable_length_seconds_before_1972);
+			     variable_length_seconds_before_year);
 
   /* If the value of DTAI did not change between the beginning 
    * of the day today and the beginning of the day tomorrow, 
@@ -183,7 +183,7 @@ time_length_UTC_minute (struct tm *time_tm,
 /* Return the number of seconds in the previous UTC minute.  */
 int
 time_length_prev_UTC_minute (struct tm *time_tm,
-			     int variable_length_seconds_before_1972)
+			     int variable_length_seconds_before_year)
 {
   struct tm prev_minute_tm;
   int return_value;
@@ -219,21 +219,22 @@ time_length_prev_UTC_minute (struct tm *time_tm,
 
   return_value =
     time_length_UTC_minute (&prev_minute_tm,
-			    variable_length_seconds_before_1972);
+			    variable_length_seconds_before_year);
   return (return_value);
 }
 
 /* Return the length of this local minute.  */
 int
 time_length_local_minute (struct tm *time_tm,
-			  int variable_length_seconds_before_1972)
+			  int variable_length_seconds_before_year)
 {
-  /* Modern time zones are mostly 60 minutes offset from UTC.  
-   * Those that are not are mostly 30 minutes offset.  All are 
-   * offset by an integral number of minutes.  This makes it 
-   * easy to determine which local minute contains a 
+  /* Modern time zones are mostly a multiple of 60 minutes offset 
+   * from UTC.  Those that are not are mostly a multiple of 30 minutes 
+   * offset.  All are offset by an integral number of minutes.  
+   * This makes it easy to determine which local minute contains a 
    * leap second: it is the one that starts at the same time 
    * as the UTC minute that contains a leap second.  
+   *
    * However, in the past there were some time zones that
    * were not offset from UTC by an integral number of minutes.
    * Since we are extending leap seconds into the past, we are
@@ -261,17 +262,17 @@ time_length_local_minute (struct tm *time_tm,
   time_copy_tm (time_tm, &local_tm);
   local_tm.tm_sec = 0;
   time_local_to_UTC (&local_tm, &utc_time_tm,
-		     variable_length_seconds_before_1972);
+		     variable_length_seconds_before_year);
   return_val =
     time_length_UTC_minute (&utc_time_tm,
-			    variable_length_seconds_before_1972);
+			    variable_length_seconds_before_year);
   return (return_val);
 }
 
 /* Return the number of seconds in the previous local minute.  */
 int
 time_length_prev_local_minute (struct tm *time_tm,
-			       int variable_length_seconds_before_1972)
+			       int variable_length_seconds_before_year)
 {
   struct tm prev_minute_tm;
   int return_value;
@@ -307,6 +308,6 @@ time_length_prev_local_minute (struct tm *time_tm,
 
   return_value =
     time_length_local_minute (&prev_minute_tm,
-			      variable_length_seconds_before_1972);
+			      variable_length_seconds_before_year);
   return (return_value);
 }

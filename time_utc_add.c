@@ -1,9 +1,9 @@
 /*
- * File: time_utc_add.c, author: John Sauter, date: January 14, 2017.
+ * File: time_utc_add.c, author: John Sauter, date: November 11, 2018.
  */
 
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@
 /* After changing the day, make sure the seconds are correct.  */
 static int
 time_UTC_adjust_seconds (struct tm *time_tm, int rounding_mode,
-			 int variable_length_seconds_before_1972)
+			 int variable_length_seconds_before_year)
 {
   /* The seconds can be invalid if we are at the end of the day and
    * the day we came from was longer than this day.  This can happen
@@ -62,7 +62,7 @@ time_UTC_adjust_seconds (struct tm *time_tm, int rounding_mode,
    * day we came to was 86,399 seconds long, or both.  */
   if (time_tm->tm_sec >=
       time_length_UTC_minute (time_tm,
-			      variable_length_seconds_before_1972))
+			      variable_length_seconds_before_year))
     {
       switch (rounding_mode)
 	{
@@ -98,7 +98,7 @@ time_UTC_adjust_seconds (struct tm *time_tm, int rounding_mode,
 	  /* Round down to the last second of this day.  */
 	  time_tm->tm_sec =
 	    time_length_UTC_minute (time_tm,
-				    variable_length_seconds_before_1972)
+				    variable_length_seconds_before_year)
 	    - 1;
 	  break;
 	  
@@ -113,7 +113,7 @@ time_UTC_adjust_seconds (struct tm *time_tm, int rounding_mode,
 int
 time_UTC_add_years (struct tm *time_tm, int addend,
 		    int rounding_mode,
-		    int variable_length_seconds_before_1972)
+		    int variable_length_seconds_before_year)
 {
   int return_value;
   
@@ -152,13 +152,13 @@ time_UTC_add_years (struct tm *time_tm, int addend,
   /* Adjust the value of the seconds field to be valid.  */
   return_value =
     time_UTC_adjust_seconds (time_tm, rounding_mode,
-			     variable_length_seconds_before_1972);
+			     variable_length_seconds_before_year);
   if (return_value != 0)
     return (return_value);
     
   return_value =
     time_UTC_normalize (time_tm, time_tm->tm_sec,
-			variable_length_seconds_before_1972);
+			variable_length_seconds_before_year);
   return (return_value);
 }
 
@@ -167,7 +167,7 @@ time_UTC_add_years (struct tm *time_tm, int addend,
 int
 time_UTC_add_months (struct tm *time_tm, int addend,
 		     int rounding_mode,
-		     int variable_length_seconds_before_1972)
+		     int variable_length_seconds_before_year)
 {
   int return_value;
   
@@ -218,13 +218,13 @@ time_UTC_add_months (struct tm *time_tm, int addend,
   /* Make sure the value of the seconds field is valid.  */
   return_value =
     time_UTC_adjust_seconds (time_tm, rounding_mode,
-			     variable_length_seconds_before_1972);
+			     variable_length_seconds_before_year);
   if (return_value != 0)
     return (return_value);
   
   return_value =
     time_UTC_normalize (time_tm, time_tm->tm_sec,
-			variable_length_seconds_before_1972);
+			variable_length_seconds_before_year);
   return (return_value);
 }
 
@@ -232,7 +232,7 @@ time_UTC_add_months (struct tm *time_tm, int addend,
 int
 time_UTC_add_days (struct tm *time_tm, int addend,
 		   int rounding_mode,
-		   int variable_length_seconds_before_1972)
+		   int variable_length_seconds_before_year)
 {
   int return_value;
   
@@ -269,13 +269,13 @@ time_UTC_add_days (struct tm *time_tm, int addend,
   /* Make sure the value of the seconds field is valid.  */
   return_value =
     time_UTC_adjust_seconds (time_tm, rounding_mode,
-			     variable_length_seconds_before_1972);
+			     variable_length_seconds_before_year);
   if (return_value != 0)
     return (return_value);
   
   return_value =
     time_UTC_normalize (time_tm, time_tm->tm_sec,
-			variable_length_seconds_before_1972);
+			variable_length_seconds_before_year);
   return (return_value);
 }
 
@@ -283,7 +283,7 @@ time_UTC_add_days (struct tm *time_tm, int addend,
 int
 time_UTC_add_hours (struct tm *time_tm, int addend,
 		    int rounding_mode,
-		    int variable_length_seconds_before_1972)
+		    int variable_length_seconds_before_year)
 {
   int return_value;
 
@@ -327,13 +327,13 @@ time_UTC_add_hours (struct tm *time_tm, int addend,
   /* Make sure the seconds field is valid.  */
   return_value =
     time_UTC_adjust_seconds (time_tm, rounding_mode,
-			     variable_length_seconds_before_1972);
+			     variable_length_seconds_before_year);
   if (return_value != 0)
     return (return_value);
 
   return_value =
     time_UTC_normalize (time_tm, time_tm->tm_sec,
-			variable_length_seconds_before_1972);
+			variable_length_seconds_before_year);
   return (return_value);
 }
 
@@ -341,7 +341,7 @@ time_UTC_add_hours (struct tm *time_tm, int addend,
 int
 time_UTC_add_minutes (struct tm *time_tm, int addend,
 		      int rounding_mode,
-		      int variable_length_seconds_before_1972)
+		      int variable_length_seconds_before_year)
 {
   int return_value;
 
@@ -395,13 +395,13 @@ time_UTC_add_minutes (struct tm *time_tm, int addend,
   /* Make sure the seconds field is valid.  */
   return_value =
     time_UTC_adjust_seconds (time_tm, rounding_mode,
-			     variable_length_seconds_before_1972);
+			     variable_length_seconds_before_year);
   if (return_value != 0)
     return (return_value);
 
   return_value =
     time_UTC_normalize (time_tm, time_tm->tm_sec,
-			variable_length_seconds_before_1972);
+			variable_length_seconds_before_year);
   return (return_value);
 }
 
@@ -409,7 +409,7 @@ time_UTC_add_minutes (struct tm *time_tm, int addend,
 int
 time_UTC_add_seconds (struct tm *time_tm,
 		      long long int add_seconds,
-		      int variable_length_seconds_before_1972)
+		      int variable_length_seconds_before_year)
 {
   long long int add_nanoseconds;
   long long int nanoseconds;
@@ -421,7 +421,7 @@ time_UTC_add_seconds (struct tm *time_tm,
   return_value =
     time_UTC_add_seconds_ns (time_tm, &nanoseconds,
 			     add_seconds, add_nanoseconds,
-			     variable_length_seconds_before_1972);
+			     variable_length_seconds_before_year);
   return (return_value);
 }
 
@@ -432,7 +432,7 @@ time_UTC_add_seconds_ns (struct tm *time_tm,
 			 long long int *nanoseconds,
 			 long long int add_seconds,
 			 long long int add_nanoseconds,
-			 int variable_length_seconds_before_1972)
+			 int variable_length_seconds_before_year)
 {
   long long int accumulated_seconds;
   long long int accumulated_nanoseconds;
@@ -466,7 +466,7 @@ time_UTC_add_seconds_ns (struct tm *time_tm,
    * time_tm->tm_sec.  */
   return_value =
     time_UTC_normalize (time_tm, accumulated_seconds,
-			variable_length_seconds_before_1972);
+			variable_length_seconds_before_year);
   *nanoseconds = accumulated_nanoseconds;
   return (return_value);
 }

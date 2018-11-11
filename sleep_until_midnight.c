@@ -1,10 +1,10 @@
 /*
- * File: sleep_until_midnight.c, author: John Sauter, date: January 14, 2017.
+ * File: sleep_until_midnight.c, author: John Sauter, date: November 11, 2018.
  * Sleep until just before midnight, UTC.
  */
 
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ do_sleep ()
   
   time_current_tm (&time_tm);
   time_tm_to_string (&time_tm, &buffer2 [0], sizeof (buffer2));
-  time_UTC_to_local (&time_tm, &local_time_tm, 0);
+  time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
   time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof(buffer1));
   printf ("now: %s local, %s UTC.\n", buffer1, buffer2);
 
@@ -58,15 +58,15 @@ do_sleep ()
   time_tm.tm_min = 58;
   time_tm.tm_sec = 0;
   time_tm_to_string (&time_tm, &buffer2 [0], sizeof (buffer2));
-  time_UTC_to_local (&time_tm, &local_time_tm, 0);
+  time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
   time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof(buffer1));
   printf ("sleep until: %s local, %s UTC.\n", buffer1, buffer2);
 
-  time_sleep_until (&time_tm, 0, 0);
+  time_sleep_until (&time_tm, 0, INT_MIN);
 
   time_current_tm (&time_tm);
   time_tm_to_string (&time_tm, &buffer2 [0], sizeof (buffer2));
-  time_UTC_to_local (&time_tm, &local_time_tm, 0);
+  time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
   time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof(buffer1));
   printf ("after sleep, now: %s local, %s UTC.\n", buffer1, buffer2);
   
@@ -82,7 +82,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "sleep_until_midnight\n"
-	       " Version 1.0 2017-01-14\n"
+	       " Version 1.1 2018-11-11\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"
