@@ -1,3 +1,6 @@
+2018-11-25 2:1:0
+  Improve the algorithm for anticipating future leap seconds.
+  
 2018-11-11 2:0:0
   Replace variable_length_seconds_before_1972 with
   variable_length_seconds_before_year.  To use fixed-length
