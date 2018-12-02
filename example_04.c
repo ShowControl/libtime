@@ -75,7 +75,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "example_4\n"
-	       " Version 1.1 2018-11-11\n"
+	       " Version 1.2 2018-12-02\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"
