@@ -72,11 +72,11 @@
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2018 by John Sauter},
-  pdfdate={2018-12-01},
+  pdfdate={2018-12-02},
   pdflicenseurl={http://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}  
 }
-\date{2018-12-01}
+\date{2018-12-02}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -355,9 +355,13 @@ inaccurate by up to one second, even on modern file systems.
 However, see section \ref{section:KernelRecommendations} for a
 recommendation for making the file times accurate.
 
+\subsection{strftime}
+Strftime has formatting code \%s, which outputs the number of seconds
+since the Epoch.  Don't use this.
+
 \subsection{time}
-Instead of returning the current time as a {\ttfamily time\_t}, return it as
-a \verb|tm|.
+Time returns the current time as a {\ttfamily time\_t}.
+Instead, return it as a \verb|tm|.
 \inputminted[firstline=34]{c}{time_current_tm.c}
 \embedfile[desc={Return the current time in a tm structure},
   mimetype={text/x-c}]{time_current_tm.c}
@@ -696,9 +700,40 @@ those time stamps to readable text.
 Construct a base date of January 1, 1970 at 00:00:00.  Add the time stamp
 minus 10 to it, specifying that seconds before 1972 are variable length.
 Convert the result to text.  The code looks like this:
-\inputminted[firstline=41,lastline=68]{c}{example_04.c}
+\inputminted[firstline=41,lastline=67]{c}{example_04.c}
 \embedfile[desc={Example code for International Atomic Time},
   mimetype={text/x-c}]{example_04.c}
+
+If you find the use of variable-length seconds before 1972 troublesome,
+see the next example.
+
+\subsection{Displaying PTP time stamps}
+\label{example:PTP}
+IEEE 1588, known as Precision Time Protocol or PTP, counts fixed-length
+seconds since an epoch.  The SMPTE ST-2059-2 profile specifies that the epoch is
+\num{63072010} seconds before January 1, 1972 at 00:00:00 UTC.  That definition
+avoids the complexity of variable length seconds before 1972, and is
+effectively the same as the TAI integer in the previous example
+for dates after January 1, 1972, since there are \num{63072000}
+variable-length seconds between January 1, 1970 and January 1, 1972.
+
+PTP always measures fixed-length seconds, so how should we display
+dates between January 1, 1970 and January 1, 1972?  I suggest that
+such times be displayed by pretending that fixed-length seconds
+were being used during that time.  Thus, converting a PTP time
+to text for display will show a time that does not correspond to
+contemporary civil time between January 1, 1970 and January 1, 1972.
+
+The code is similar to the previous example, but using
+fixed-length seconds before 1972.  The display is intended to be
+more readable than the ISO 8601 format used in the previous example.
+PTP times \num{15638408} and \num{47174409} correspond to the leap
+seconds that are needed to keep a count of fixed-length seconds
+synchronized with the rotation of the Earth.
+
+\inputminted[firstline=41,lastline=74]{c}{example_05.c}
+\embedfile[desc={Example code for PTP}
+  mimetype={text/x-c}]{example_05.c}
 
 \section{Limitations}
 \subsection{Unpredictable Rotation of the Earth}
@@ -778,8 +813,10 @@ programs, but some kernel changes would result in better UTC support.
 \section{Update History}
 
 \begin{description}
+\item[2018-12-02 2:3:0] Add information on converting IEEE 1588 (PTP)
+  times to readable text.
 \item[2018-12-01 2:2:0] Delay the December 2077 leap second by
-  three months.
+  six months.
 \item[2018-11-25 2:1:0] Improve the algorithm for anticipating future
   leap seconds.
 \item[2018-11-11 2:0:0] Changed ``variable length seconds before 1972''

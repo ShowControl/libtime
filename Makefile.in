@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: December 1, 2018.
+# File: Makefile.am for libtime, author: John Sauter, date: December 2, 2018.
 
 
 
@@ -97,11 +97,11 @@ host_triplet = @host@
 # Conditionally build the PDF.
 @ENABLE_PDF_TRUE@am__append_1 = avoid_time_t.pdf
 noinst_PROGRAMS = example_02$(EXEEXT) example_03$(EXEEXT) \
-	example_04$(EXEEXT) test_time$(EXEEXT) test_diff$(EXEEXT) \
-	test_add$(EXEEXT) test_ep$(EXEEXT) test_local$(EXEEXT) \
-	print_DTAI$(EXEEXT) sleep_until_midnight$(EXEEXT) \
-	POSIX_epoch$(EXEEXT) powers_of_two$(EXEEXT) \
-	check_time$(EXEEXT)
+	example_04$(EXEEXT) example_05$(EXEEXT) test_time$(EXEEXT) \
+	test_diff$(EXEEXT) test_add$(EXEEXT) test_ep$(EXEEXT) \
+	test_local$(EXEEXT) print_DTAI$(EXEEXT) \
+	sleep_until_midnight$(EXEEXT) POSIX_epoch$(EXEEXT) \
+	powers_of_two$(EXEEXT) check_time$(EXEEXT)
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
@@ -185,6 +185,9 @@ example_03_DEPENDENCIES = libtime.la
 example_04_SOURCES = example_04.c
 example_04_OBJECTS = example_04.$(OBJEXT)
 example_04_DEPENDENCIES = libtime.la
+example_05_SOURCES = example_05.c
+example_05_OBJECTS = example_05.$(OBJEXT)
+example_05_DEPENDENCIES = libtime.la
 powers_of_two_SOURCES = powers_of_two.c
 powers_of_two_OBJECTS = powers_of_two.$(OBJEXT)
 powers_of_two_DEPENDENCIES = libtime.la
@@ -227,12 +230,12 @@ am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/POSIX_epoch.Po \
 	./$(DEPDIR)/check_time.Po ./$(DEPDIR)/example_02.Po \
 	./$(DEPDIR)/example_03.Po ./$(DEPDIR)/example_04.Po \
-	./$(DEPDIR)/int128_to_string.Plo ./$(DEPDIR)/powers_of_two.Po \
-	./$(DEPDIR)/print_DTAI.Po ./$(DEPDIR)/sleep_until_midnight.Po \
-	./$(DEPDIR)/test_add.Po ./$(DEPDIR)/test_diff.Po \
-	./$(DEPDIR)/test_ep.Po ./$(DEPDIR)/test_local.Po \
-	./$(DEPDIR)/test_time.Po ./$(DEPDIR)/time_copy.Plo \
-	./$(DEPDIR)/time_current_tm.Plo \
+	./$(DEPDIR)/example_05.Po ./$(DEPDIR)/int128_to_string.Plo \
+	./$(DEPDIR)/powers_of_two.Po ./$(DEPDIR)/print_DTAI.Po \
+	./$(DEPDIR)/sleep_until_midnight.Po ./$(DEPDIR)/test_add.Po \
+	./$(DEPDIR)/test_diff.Po ./$(DEPDIR)/test_ep.Po \
+	./$(DEPDIR)/test_local.Po ./$(DEPDIR)/test_time.Po \
+	./$(DEPDIR)/time_copy.Plo ./$(DEPDIR)/time_current_tm.Plo \
 	./$(DEPDIR)/time_current_tm_nano.Plo ./$(DEPDIR)/time_diff.Plo \
 	./$(DEPDIR)/time_length.Plo ./$(DEPDIR)/time_local_add.Plo \
 	./$(DEPDIR)/time_local_normalize.Plo \
@@ -265,13 +268,13 @@ am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(libtime_la_SOURCES) $(nodist_libtime_la_SOURCES) \
 	POSIX_epoch.c check_time.c example_02.c example_03.c \
-	example_04.c powers_of_two.c print_DTAI.c \
+	example_04.c example_05.c powers_of_two.c print_DTAI.c \
 	sleep_until_midnight.c test_add.c test_diff.c test_ep.c \
 	test_local.c test_time.c
 DIST_SOURCES = $(libtime_la_SOURCES) POSIX_epoch.c check_time.c \
-	example_02.c example_03.c example_04.c powers_of_two.c \
-	print_DTAI.c sleep_until_midnight.c test_add.c test_diff.c \
-	test_ep.c test_local.c test_time.c
+	example_02.c example_03.c example_04.c example_05.c \
+	powers_of_two.c print_DTAI.c sleep_until_midnight.c test_add.c \
+	test_diff.c test_ep.c test_local.c test_time.c
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -669,6 +672,7 @@ verify_files.sh
 ACLOCAL_AMFLAGS = -I m4
 dist_doc_DATA = README COPYING LICENSE AUTHORS ChangeLog INSTALL NEWS \
 	$(am__append_1)
+example_05_LDADD = libtime.la
 example_04_LDADD = libtime.la
 example_03_LDADD = libtime.la
 example_02_LDADD = libtime.la
@@ -724,7 +728,7 @@ check_time_LDADD = libtime.la
 # See the NEWS file (and the revision history in the PDF) for the history
 # of the version-info.
 #
-libtime_la_LDFLAGS = -version-info 2:2:0
+libtime_la_LDFLAGS = -version-info 2:3:0
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.
@@ -862,6 +866,10 @@ example_04$(EXEEXT): $(example_04_OBJECTS) $(example_04_DEPENDENCIES) $(EXTRA_ex
 	@rm -f example_04$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(example_04_OBJECTS) $(example_04_LDADD) $(LIBS)
 
+example_05$(EXEEXT): $(example_05_OBJECTS) $(example_05_DEPENDENCIES) $(EXTRA_example_05_DEPENDENCIES) 
+	@rm -f example_05$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(example_05_OBJECTS) $(example_05_LDADD) $(LIBS)
+
 powers_of_two$(EXEEXT): $(powers_of_two_OBJECTS) $(powers_of_two_DEPENDENCIES) $(EXTRA_powers_of_two_DEPENDENCIES) 
 	@rm -f powers_of_two$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(powers_of_two_OBJECTS) $(powers_of_two_LDADD) $(LIBS)
@@ -905,6 +913,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/example_02.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/example_03.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/example_04.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/example_05.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/int128_to_string.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/powers_of_two.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/print_DTAI.Po@am__quote@ # am--include-marker
@@ -1521,6 +1530,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/example_02.Po
 	-rm -f ./$(DEPDIR)/example_03.Po
 	-rm -f ./$(DEPDIR)/example_04.Po
+	-rm -f ./$(DEPDIR)/example_05.Po
 	-rm -f ./$(DEPDIR)/int128_to_string.Plo
 	-rm -f ./$(DEPDIR)/powers_of_two.Po
 	-rm -f ./$(DEPDIR)/print_DTAI.Po
@@ -1599,6 +1609,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/example_02.Po
 	-rm -f ./$(DEPDIR)/example_03.Po
 	-rm -f ./$(DEPDIR)/example_04.Po
+	-rm -f ./$(DEPDIR)/example_05.Po
 	-rm -f ./$(DEPDIR)/int128_to_string.Plo
 	-rm -f ./$(DEPDIR)/powers_of_two.Po
 	-rm -f ./$(DEPDIR)/print_DTAI.Po

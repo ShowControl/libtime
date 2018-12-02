@@ -1,5 +1,5 @@
 /*
- * File: example_04.c, author: John Sauter, date: December 2, 2018.
+ * File: example_05.c, author: John Sauter, date: December 2, 2018.
  */
 /*
  * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
@@ -38,31 +38,38 @@
 
 static int debug_level = 0;
 
-/* Example 4: using TAI.  Time_stamp_value is the TAI integer
- * that is to be converted to a readable format.  */
+/* Example 5: using PTP (IEEE 1588) with the SMPTE ST-2059-2 profile.  */
 void
-example_4 (long long int time_stamp_value)
+example_5 (long long int time_stamp_value)
 {
   struct tm time1_tm;
   struct tm time2_tm;
-  char buffer1 [64];
+  struct tm time3_tm;
+  char buffer1 [128];
 
-  /* Construct the base date of 1970-01-01T00:00:00Z.  */
+  /* Construct the base date of 1972-01-01T00:00:00Z.  */
   time_current_tm (&time1_tm);
-  time1_tm.tm_year = 1970 - 1900;
+  time1_tm.tm_year = 1972 - 1900;
   time1_tm.tm_mon = 1 - 1;
   time1_tm.tm_mday = 1;
   time1_tm.tm_hour = 0;
   time1_tm.tm_min = 0;
   time1_tm.tm_sec = 0;
 
-  /* Add the time stamp, which is the integer representation of TAI.  */
+  /* Add the time stamp, which is an integer.  Note that the epoch
+   * for SMPTE ST-2059-2 is 63,072,010 seconds before the base date.
+   * PTP always uses fixed-length (SI) seconds.  */
   time_copy_tm (&time1_tm, &time2_tm);
-  time_UTC_add_seconds (&time2_tm, time_stamp_value - 10, 1972);
-  time_tm_to_string (&time2_tm, &buffer1 [0], sizeof (buffer1));
+  time_UTC_add_seconds (&time2_tm, time_stamp_value - 63072010, INT_MIN);
+
+  /* Convert to local time and use strftime to make a very readable 
+   * display.  */
+  time_UTC_to_local (&time2_tm, &time3_tm, INT_MIN);
+  strftime (&buffer1 [0], sizeof (buffer1),
+	    "%A, %B %d, %Y, %I:%M:%S %p %Z", &time3_tm);
 
   /* Print the result.  */
-  printf ("%lld TAI is %s.\n", time_stamp_value, buffer1);
+  printf ("PTP %lld displays as %s.\n", time_stamp_value, buffer1);
   return;
 }
 
@@ -74,8 +81,8 @@ usage (FILE * fp, int argc, char **argv)
     {
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
-	       "example_4\n"
-	       " Version 1.1 2018-11-11\n"
+	       "example_5\n"
+	       " Version 1.0 2018-12-02\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"
@@ -96,6 +103,8 @@ static const struct option long_options[] = {
 int
 main (int argc, char **argv)
 {
+
+  int date_val;
   
   for (;;)
     {
@@ -125,8 +134,11 @@ main (int argc, char **argv)
 	  exit (EXIT_FAILURE);
 	}
     }
- 
-  example_4 (1483228836);
+
+  example_5 (0);
+  example_5 (15638408);
+  example_5 (47174409);
+  example_5 (63072010);
   exit (EXIT_SUCCESS);
 
   return 0;
