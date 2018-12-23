@@ -1,5 +1,5 @@
 /*
- * File: check_time.c, author: John Sauter, date: November 11, 2018.
+ * File: check_time.c, author: John Sauter, date: December 17, 2018.
  * Used by "make check" to be sure the subroutines work.
  */
 /*
@@ -981,7 +981,7 @@ do_test ()
     }
   nanoseconds = nanoseconds - program_start_nanoseconds;
   time_val = (double) seconds1 + (double) nanoseconds / (double) 1e9;
-  printf ("Successful completion.\n", time_val);
+  printf ("Successful completion.\n");
   return 0;
 }
 
