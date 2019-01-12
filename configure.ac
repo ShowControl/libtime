@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([time], [2018.12.23], [John_Sauter@systemeyescomputerstore.com],
+AC_INIT([time], [2019.01.12], [John_Sauter@systemeyescomputerstore.com],
 [libtime],["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([time_diff.c])
@@ -54,3 +54,5 @@ AC_CHECK_FUNCS([clock_gettime localtime_r memset strerror])
 
 AC_CONFIG_FILES([Makefile libtime.pc])
 AC_OUTPUT
+
+# End of file configure.ac

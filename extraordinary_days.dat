@@ -1,7 +1,7 @@
 #
 # Table of Extraordinary Days.
 #
-# Copyright © 2018 by John Sauter.
+# Copyright © 2019 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 #
@@ -46,7 +46,7 @@
 # been updated.  If you find yourself using this file after its EXPIRATION_DATE,
 # look for an updated version of the file.  If necessary you can update it
 # yourself, using IERS Bulletin C.  This file is current as of IERS Bulletin
-# C 56, dated July 5, 2018.  Extraordinary days after the expiration date
+# C 57, dated January 7, 2019.  Extraordinary days after the expiration date
 # are projections, and are subject to change in later revisions of this file.
 #
 # CHECKSUM is 64 hex digits of the SHA256 hash of this file, excluding the
@@ -55,8 +55,8 @@
 #
 START_DATE=990575       # 1 Jan -2000
 END_DATE=2634167        # 1 Jan 2500
-EXPIRATION_DATE=2458663 # 28 June 2019
-CHECKSUM=f128580647e179b7bfc3f3758f39d0e1410197f34e3414f76455844866278d44
+EXPIRATION_DATE=2458846 # 28 Dec 2019
+CHECKSUM=1066900ba8b1c778f5e09eac22b064ff57b74b816b4e86fd21f5b96cfd8b1c98
 #
 # The data extends from -2000 through 2499.
 #
