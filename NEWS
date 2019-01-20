@@ -1,3 +1,6 @@
+2019-01-20 2:6:0
+  Advance the June 2095 leap second by six months, moving it
+  back to December 2094.
 2019-01-12 2:5:0
   Update to IERS Bulletin C57, issued January 7, 2019, which
   states that no leap second will be introduced at the end of June,
@@ -5,14 +8,14 @@
   months, at least.
   
 2018-12-23 2:4:0
-  Delay the December 2094 leap second by six months.
+  Delay the December 2094 leap second by six months to June 2095.
   
 2018-12-02 2:3:0
   Add information about converting IEEE 1588 (PTP) times to
   readable text.
   
 2018-12-01 2:2:0
-  Delay the December 2077 leap second six months.
+  Delay the December 2077 leap second six months to June 2078.
   
 2018-11-25 2:1:0
   Improve the algorithm for anticipating future leap seconds.
