@@ -1,6 +1,14 @@
+2019-03-16 2:7:0
+  Advance the next leap second by six months, from June 2020
+  to December 2019.  Adjust the rest of the leap seconds
+  in the twenty-first century also.  These changes are due
+  to using a better method of projecting the rotation rate
+  of the Earth into the future.
+  
 2019-01-20 2:6:0
   Advance the June 2095 leap second by six months, moving it
   back to December 2094.
+  
 2019-01-12 2:5:0
   Update to IERS Bulletin C57, issued January 7, 2019, which
   states that no leap second will be introduced at the end of June,
