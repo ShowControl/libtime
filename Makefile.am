@@ -1,4 +1,4 @@
-# File: Makefile.am for libtime, author: John Sauter, date: March 19, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: March 24, 2019.
 
 lib_LTLIBRARIES = libtime.la
 libtime_la_SOURCES = time_copy.c \
@@ -112,7 +112,7 @@ check_time_LDADD = libtime.la
 # See the NEWS file (and the revision history in the PDF) for the history
 # of the version-info.
 #
-libtime_la_LDFLAGS = -version-info 2:7:0
+libtime_la_LDFLAGS = -version-info 2:8:0
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.

@@ -1,3 +1,10 @@
+2019-03-24 2:8:0
+  Delay the next leap second by six months, from December 2019
+  to June 2020.  Adjust some of the other leap seconds in the
+  twenty-first century also.  These changes are due to using
+  a slightly better method of projecting the rotation of the
+  Earth in the future.
+  
 2019-03-16 2:7:0
   Advance the next leap second by six months, from June 2020
   to December 2019.  Adjust the rest of the leap seconds
