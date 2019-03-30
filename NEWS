@@ -1,3 +1,8 @@
+2019-03-30 2:9:0
+  Delay the December 2039 leap second by six months to June
+  2040, and the June 2065 leap second by six months to
+  December 2065.
+  
 2019-03-24 2:8:0
   Delay the next leap second by six months, from December 2019
   to June 2020.  Adjust some of the other leap seconds in the
