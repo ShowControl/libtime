@@ -2,7 +2,7 @@ Libtime is a package of subroutines to manipulate time values.
 They are notable for handling leap seconds correctly by avoiding
 the use of POSIX time_t for telling time.
 
-Notes to users:
+Notes to those who write software that calls libtime:
 
 You will need GNU make, python version 3 and its jdcal module.
 Install GNU Make from the operating system repository.  Install
@@ -27,30 +27,40 @@ To compile and link your program prog.c, which uses the library, do this:
     gcc -L/usr/local/lib/ -Wl,-rpath=/usr/local/lib prog.c -ltime -o prog
     
 The documentation for the time subroutines is in avoid_time_t.pdf, which you
-can create by adding --enable-pdf to the ./configure line beforen running make.
+can create by adding --enable-pdf to the ./configure line befor running make.
 You will need LaTeX and several of its packages to compile it.  Sudo make
 install will then install the PDF file in /usr/local/share/doc/libtime.
 
 If it is not convenient to compile the documentation, it is also available
 at this URL:
 
-<https://commons.wikimedia.org/wiki/File:Avoid_Using_POSIX_time_t_for_Telling_Time.pdf>
+https://commons.wikimedia.org/wiki/File:Avoid_Using_POSIX_time_t_for_Telling_Time.pdf
 
 In addition, there is concise documentation in man libtime.
 
 
-Notes to developers:
+Notes to those who maintain libtime:
 
 To create the documentation file, invoke ./configure with --enable-pdf.
 You will need LaTeX to build it.  Building the distribution kit builds
-the PDF automatically.
+the PDF automatically.  For the convenience of those who write programs
+that call libtime, the documentation is also kept at this URL:
+
+https://commons.wikimedia.org/wiki/File:Avoid_Using_POSIX_time_t_for_Telling_Time.pdf
 
 The version number is the distribution date, since the unpredictability
 of leap seconds means the program will never be complete.  When updating
 the version number in configure.ac, don't forget to update the sharable
 image version triplet, which is in Makefile.am, NEWS and avoid_time_t.tex.
 The date also appears in avoid_time_t.tex, in three places: in the
-PDF metadata, on the title page, and in the revision history.
+PDF metadata, on the title page, and in the revision history.  The date
+is also in file references.bib, so other documents can refer to the
+current version.  That file is alse used by "Extending Coordinated
+Universal Time to Dates Before 1972", at this URL:
+
+https://commons.wikimedia.org/wiki/File:Extending_Coordinated_Universal_Time_to_Dates_Before_1972.pdf
+
+That document is the source for the leap seconds table.
 
 There are several test program in the distribution kit, which are built
 automatically.  I use test_ep to be sure all of the entry points are

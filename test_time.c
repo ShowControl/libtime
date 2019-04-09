@@ -1,10 +1,10 @@
 /*
- * File: test_time.c, author: John Sauter, date: November 11, 2018.
+ * File: test_time.c, author: John Sauter, date: April 4, 2019.
  * Test the time subroutines.
  */
 
 /*
- * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
+#include <stddef.h>
 #include <time.h>
 #include <sys/time.h>
 #include <sys/timex.h>
@@ -81,6 +82,26 @@ do_logging (char *log_file_name)
   long long int target_nanoseconds;
   struct tm target_time_tm;
   long long int add_nanoseconds;
+
+  printf ("Size of TM struture is: %d bytes or %d ints.\n",
+	  sizeof (base_time_tm), sizeof (base_time_tm) / sizeof (int));
+  printf ("Offset of tm_sec is: %d.\n", offsetof (struct tm, tm_sec));
+  printf ("Offset of tm_min is: %d.\n", offsetof (struct tm, tm_min));
+  printf ("Offset of tm_hour is: %d.\n", offsetof (struct tm, tm_hour));
+  printf ("Offset of tm_mday is: %d.\n", offsetof (struct tm, tm_mday));
+  printf ("Offset of tm_mon is: %d.\n", offsetof (struct tm, tm_mon));
+  printf ("Offset of tm_year is: %d.\n", offsetof (struct tm, tm_year));
+  printf ("Offset of tm_wday is: %d.\n", offsetof (struct tm, tm_wday));
+  printf ("Offset of tm_yday is: %d.\n", offsetof (struct tm, tm_yday));
+  printf ("Offset of tm_isdst is: %d.\n", offsetof (struct tm, tm_isdst));
+  printf ("Size of tm_isdst is: %d.\n",
+	  sizeof(((struct tm *)0)->tm_isdst));
+  printf ("Offset of tm_gmtoff is: %d.\n", offsetof (struct tm, tm_gmtoff));
+  printf ("Size of tm_gmtoff is: %d.\n",
+	  sizeof(((struct tm *)0)->tm_gmtoff));
+  printf ("Offset of tm_zone is: %d.\n", offsetof (struct tm, tm_zone));
+  printf ("Size of tm_zone is: %d.\n",
+	  sizeof(((struct tm *)0)->tm_zone));
   
   log_file = fopen (log_file_name, "a+");
   if (log_file == NULL)
@@ -159,7 +180,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options]\n\n"
 	       "log the progress of time.\n"
-	       " Version 1.1 2018-11-11\n"
+	       " Version 1.2 2019-04-04\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-o | --output-file   Where to put the log file\n"
