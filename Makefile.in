@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: April 20, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: April 27, 2019.
 
 
 
@@ -111,9 +111,9 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(top_srcdir)/configure \
-	$(am__configure_deps) $(dist_check_SCRIPTS) $(dist_check_DATA) \
-	$(am__dist_doc_DATA_DIST) $(include_HEADERS) \
-	$(am__DIST_COMMON)
+	$(am__configure_deps) $(dist_check_SCRIPTS) $(python_PYTHON) \
+	$(dist_check_DATA) $(am__dist_doc_DATA_DIST) \
+	$(include_HEADERS) $(am__DIST_COMMON)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
@@ -148,9 +148,9 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(man3dir)" \
-	"$(DESTDIR)$(docdir)" "$(DESTDIR)$(pkgconfigdir)" \
-	"$(DESTDIR)$(includedir)"
+am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pythondir)" \
+	"$(DESTDIR)$(man3dir)" "$(DESTDIR)$(docdir)" \
+	"$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libtime_la_LIBADD =
 am_libtime_la_OBJECTS = time_copy.lo time_current_tm.lo \
@@ -280,6 +280,10 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
+am__py_compile = PYTHON=$(PYTHON) $(SHELL) $(py_compile)
+am__pep3147_tweak = \
+  sed -e 's|\.py$$||' -e 's|[^/]*$$|&.*.pyc\n&.*.pyo|'
+py_compile = $(top_srcdir)/py-compile
 man3dir = $(mandir)/man3
 NROFF = nroff
 MANS = $(dist_man_MANS)
@@ -488,7 +492,7 @@ TEST_LOG_COMPILE = $(TEST_LOG_COMPILER) $(AM_TEST_LOG_FLAGS) \
 am__DIST_COMMON = $(dist_man_MANS) $(srcdir)/Makefile.in \
 	$(srcdir)/config.h.in $(srcdir)/libtime.pc.in AUTHORS COPYING \
 	ChangeLog INSTALL NEWS README compile config.guess config.sub \
-	depcomp install-sh ltmain.sh missing test-driver
+	depcomp install-sh ltmain.sh missing py-compile test-driver
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -656,6 +660,7 @@ libtime_la_SOURCES = time_copy.c \
 	time_subroutines.h \
 	int128_to_string.c \
 	read_extraordinary_days_table.py \
+	demo_python.py \
 	extraordinary_days.dat \
 	avoid_time_t.tex \
 	references.bib \
@@ -686,6 +691,7 @@ sleep_until_midnight_LDADD = libtime.la
 POSIX_epoch_LDADD = libtime.la
 powers_of_two_LDADD = libtime.la
 check_time_LDADD = libtime.la
+python_PYTHON = time_subroutines.py
 
 # The version-info below is used by libtool's versioning system.
 # It specifies three integers: current, revision and age.
@@ -728,7 +734,7 @@ check_time_LDADD = libtime.la
 # See the NEWS file (and the revision history in the PDF) for the history
 # of the version-info.
 #
-libtime_la_LDFLAGS = -version-info 2:11:0
+libtime_la_LDFLAGS = -version-info 2:12:0
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.
@@ -975,6 +981,49 @@ clean-libtool:
 
 distclean-libtool:
 	-rm -f libtool config.lt
+install-pythonPYTHON: $(python_PYTHON)
+	@$(NORMAL_INSTALL)
+	@list='$(python_PYTHON)'; dlist=; list2=; test -n "$(pythondir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(pythondir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(pythondir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then b=; else b="$(srcdir)/"; fi; \
+	  if test -f $$b$$p; then \
+	    $(am__strip_dir) \
+	    dlist="$$dlist $$f"; \
+	    list2="$$list2 $$b$$p"; \
+	  else :; fi; \
+	done; \
+	for file in $$list2; do echo $$file; done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(pythondir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(pythondir)" || exit $$?; \
+	done || exit $$?; \
+	if test -n "$$dlist"; then \
+	  $(am__py_compile) --destdir "$(DESTDIR)" \
+	                    --basedir "$(pythondir)" $$dlist; \
+	else :; fi
+
+uninstall-pythonPYTHON:
+	@$(NORMAL_UNINSTALL)
+	@list='$(python_PYTHON)'; test -n "$(pythondir)" || list=; \
+	py_files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$py_files" || exit 0; \
+	dir='$(DESTDIR)$(pythondir)'; \
+	pyc_files=`echo "$$py_files" | sed 's|$$|c|'`; \
+	pyo_files=`echo "$$py_files" | sed 's|$$|o|'`; \
+	st=0; \
+	for files in "$$py_files" "$$pyc_files" "$$pyo_files"; do \
+	  $(am__uninstall_files_from_dir) || st=$$?; \
+	done; \
+	dir='$(DESTDIR)$(pythondir)/__pycache__'; \
+	echo "$$py_files" | $(am__pep3147_tweak) | $(am__base_list) | \
+	  while read files; do \
+	    $(am__uninstall_files_from_dir) || st=$$?; \
+	  done || exit $$?; \
+	exit $$st
 install-man3: $(dist_man_MANS)
 	@$(NORMAL_INSTALL)
 	@list1=''; \
@@ -1479,7 +1528,7 @@ check: $(BUILT_SOURCES)
 all-am: Makefile $(PROGRAMS) $(LTLIBRARIES) $(MANS) $(DATA) $(HEADERS) \
 		config.h
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(man3dir)" "$(DESTDIR)$(docdir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(includedir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pythondir)" "$(DESTDIR)$(man3dir)" "$(DESTDIR)$(docdir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(includedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -1573,7 +1622,7 @@ info: info-am
 info-am:
 
 install-data-am: install-dist_docDATA install-includeHEADERS \
-	install-man install-pkgconfigDATA
+	install-man install-pkgconfigDATA install-pythonPYTHON
 
 install-dvi: install-dvi-am
 
@@ -1652,7 +1701,8 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-dist_docDATA uninstall-includeHEADERS \
-	uninstall-libLTLIBRARIES uninstall-man uninstall-pkgconfigDATA
+	uninstall-libLTLIBRARIES uninstall-man uninstall-pkgconfigDATA \
+	uninstall-pythonPYTHON
 
 uninstall-man: uninstall-man3
 
@@ -1672,20 +1722,23 @@ uninstall-man: uninstall-man3
 	install-html-am install-includeHEADERS install-info \
 	install-info-am install-libLTLIBRARIES install-man \
 	install-man3 install-pdf install-pdf-am install-pkgconfigDATA \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
+	install-ps install-ps-am install-pythonPYTHON install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am pdf-local \
 	ps ps-am recheck tags tags-am uninstall uninstall-am \
 	uninstall-dist_docDATA uninstall-includeHEADERS \
 	uninstall-libLTLIBRARIES uninstall-man uninstall-man3 \
-	uninstall-pkgconfigDATA
+	uninstall-pkgconfigDATA uninstall-pythonPYTHON
 
 .PRECIOUS: Makefile
 
 
 clean-local:
 	rm -rf _minted-avoid_time_t/
+	rm -rf __pycache__
+	rm -rf autom4te.cache
+	rm -rf *~
 
 dtai_table.h : read_extraordinary_days_table.py extraordinary_days.dat
 	python3 $(srcdir)/read_extraordinary_days_table.py \
@@ -1697,13 +1750,15 @@ pdf-local: avoid_time_t.pdf
 
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	example_02.c example_03.c \
-	example_03_output.txt libtime.pc $(libtime_la_SOURCES)
+	example_03_output.txt libtime.pc time_subroutines.py \
+	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 
 avoid_time_t.bbl : avoid_time_t.tex references.bib example_02.c example_03.c \
-	dtai_table.h example_03_output.txt $(libtime_la_SOURCES)
+	dtai_table.h example_03_output.txt time_subroutines.py \
+	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export BIBINPUTS="$(srcdir):" && kpsewhich -var-value BIBINPUTS && bibtex $(builddir)/avoid_time_t.aux
 

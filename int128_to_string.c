@@ -1,9 +1,9 @@
 /*
- * File: int128_to_string.c, author: John Sauter, date: May 7, 2017.
+ * File: int128_to_string.c, author: John Sauter, date: April 28, 2019.
  */
 
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
  *    e-mail: John_Sauter@systemeyescomputerstore.com
  */
 
+#include <string.h>
 #include "time_subroutines.h"
 
 /* Convert a 128-bit integer to a string.  
@@ -41,7 +42,7 @@
  * original recursive decimal print subroutine for the DEC PDP-1
  * in 1964.  */
 int
-int128_to_string (__int128 value, char *result, int result_size)
+int128_to_string (__int128 *value_p, char *result, int result_size)
 {
   __int128 positive_value;
   __int128 remaining_digits;
@@ -51,11 +52,15 @@ int128_to_string (__int128 value, char *result, int result_size)
   int current_digit;
   char *result_pointer;
   volatile __int128 volatile_value;
+  __int128 value;
   
   size_remaining = result_size;
   result_pointer = result;
   character_count = 0;
 
+  /* Don't require the value parameter to be 16-byte aligned.  */
+  memcpy (&value, value_p, sizeof(value));
+  
   /* If the value is negative, produce a minus sign
    * and then produce its absolute value.  */
   if (value < 0)
@@ -123,7 +128,7 @@ int128_to_string (__int128 value, char *result, int result_size)
   if (remaining_digits != 0)
     {
       remaining_count =
-	int128_to_string (remaining_digits,
+	int128_to_string (&remaining_digits,
 			  result_pointer, size_remaining);
       result_pointer = result_pointer + remaining_count;
       size_remaining = size_remaining - remaining_count;

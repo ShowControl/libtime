@@ -1,5 +1,5 @@
 /*
- * File: test_time.c, author: John Sauter, date: April 4, 2019.
+ * File: test_time.c, author: John Sauter, date: April 28, 2019.
  * Test the time subroutines.
  */
 
@@ -135,7 +135,7 @@ do_logging (char *log_file_name)
 			      text_buffer_1, sizeof(text_buffer_1));
       time_tm_nano_to_integer (&now_tm, nanoseconds,
 			       &current_time_int128);
-      int128_to_string (current_time_int128,
+      int128_to_string (&current_time_int128,
 			text_buffer_2, sizeof(text_buffer_2));
       time_tm_to_integer (&now_tm, &current_time_long_long_int);
       time_UTC_to_local (&now_tm, &local_time_tm, INT_MIN);

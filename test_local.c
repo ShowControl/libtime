@@ -87,7 +87,7 @@ do_test ()
 
   printf ("Big number -10.\n");
   big_number = -10;
-  int128_to_string (big_number, &buffer1 [0], sizeof (buffer1));
+  int128_to_string (&big_number, &buffer1 [0], sizeof (buffer1));
   if ((buffer1 [0] != '-') || (buffer1 [1] != '1') ||
       (buffer1 [2] != '0'))
     {
@@ -98,7 +98,7 @@ do_test ()
 
   printf ("Big number 0.\n");
   big_number = 0;
-  int128_to_string (big_number, &buffer1 [0], sizeof (buffer1));
+  int128_to_string (&big_number, &buffer1 [0], sizeof (buffer1));
   if ((buffer1 [0] != '0') || (buffer1 [1] != 0))
     {
       printf ("wrong result from int128_to_string: \n"
@@ -111,9 +111,9 @@ do_test ()
   big_number = 1;
   for (i=0;i<127;i++)
     {
-      int128_to_string (big_number, &buffer1 [0], sizeof (buffer1));
+      int128_to_string (&big_number, &buffer1 [0], sizeof (buffer1));
       big_number = big_number * 2;
-      int128_to_string (big_number, &buffer2 [0], sizeof (buffer2));
+      int128_to_string (&big_number, &buffer2 [0], sizeof (buffer2));
       if (debug_level > 0)
 	{
 	  printf ("%d: Big number doubled, from %s to %s.\n",
@@ -121,7 +121,7 @@ do_test ()
 	}
     }
       
-  int128_to_string (big_number, &buffer1 [0], sizeof (buffer1));
+  int128_to_string (&big_number, &buffer1 [0], sizeof (buffer1));
   if (strcmp (&buffer1 [0], "-170141183460469231731687303715884105728") != 0)
     {
       printf ("wrong result from int128_to_string: \n"
@@ -159,7 +159,7 @@ do_test ()
 			  &buffer1 [0], sizeof(buffer1));
   time_tm_nano_to_integer (&time_tm, nanoseconds, &big_number);
   time_tm_to_integer (&time_tm, &the_time);
-  int128_to_string (big_number, &buffer2 [0], sizeof (buffer2));
+  int128_to_string (&big_number, &buffer2 [0], sizeof (buffer2));
   printf ("now: %s\n     as integers:  %s, %lld.\n",
 	  buffer1, buffer2, the_time);
       

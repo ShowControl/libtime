@@ -1,8 +1,8 @@
 /*
- * File: powers_of_two.c, author: John Sauter, date: January 14, 2017.
+ * File: powers_of_two.c, author: John Sauter, date: April 28, 2019.
  */
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ powers_of_two ()
   value = 1;
   for (power=0;power<128;power++)
     {
-      int128_to_string (value, &buffer1 [0], sizeof (buffer1));
+      int128_to_string (&value, &buffer1 [0], sizeof (buffer1));
       printf ("2**%d = %s.\n", power, buffer1);
       value = value * 2;
     }

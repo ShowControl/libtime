@@ -2,12 +2,13 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([time], [2019.04.20], [John_Sauter@systemeyescomputerstore.com],
+AC_INIT([time], [2019.04.28], [John_Sauter@systemeyescomputerstore.com],
 [libtime],["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([time_diff.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIRS([m4])
+AM_PATH_PYTHON([3.5])
 
 # Use maintainer mode because files extracted from a PDF file
 # lose their modification dates, and we don't want the end user

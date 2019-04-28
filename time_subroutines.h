@@ -1,10 +1,10 @@
 /*
- * File: time_subroutines.h, author: John Sauter, date: November 11, 2018.
+ * File: time_subroutines.h, author: John Sauter, date: April 28, 2019.
  * Header file for subroutines to deal with UTC time.
  */
 
 /*
- * Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@
 
 /* Convert a 128-bit integer to a string.  */
 int
-int128_to_string (__int128 value,
+int128_to_string (__int128 *value,
 		  char *result, int result_size);
 
 /* Copy a tm structure.  */
@@ -154,7 +154,11 @@ time_local_add_years (struct tm *time_tm, int addend,
 		      int variable_length_seconds_before_year);
 
 /* Make sure all of the fields of a tm structure containing 
- * local time are within their valid ranges.  */
+ * local time are within their valid ranges.  Also set tm_wday to 
+ * the day of the week and tm_yday to the day of the year for the date 
+ * as specified by the year (tm_year), month (tm_mon) and day of the
+ * month (tm_mday).  Whenever a tm structure is changed by these
+ * subroutines it is normalized before it is returned.  */
 int
 time_local_normalize (struct tm *time_tm,
 		      long long int seconds,
@@ -206,7 +210,7 @@ time_UTC_add_days (struct tm *time_tm, int addend,
 int
 time_UTC_add_hours (struct tm *time_tm, int addend,
 		    int rounding_mode,
-		    int variable_length_seconds_after_year);
+		    int variable_length_seconds_before_year);
 
 /* Add minutes to a Coordinated Universal Time.  */
 int
@@ -243,13 +247,17 @@ time_UTC_add_years (struct tm *time_tm, int addend,
 
 /* Make sure all of the fields of a tm structure containing a
  * Coordinated Universal Time are within their valid ranges.  
- */
+ * Also set tm_wday to the day of the week and tm_yday to the 
+ * day of the year for the date as specified by the year (tm_year), 
+ * month (tm_mon) and day of the month (tm_mday).  
+ * Whenever a tm structure is changed by these subroutines 
+ * it is normalized before it is returned.  */
 int
 time_UTC_normalize (struct tm *time_tm,
 		    long long int seconds,
 		    int variable_length_seconds_before_year);
 
-/* Convert Coordinated Universal Time to local time.  */
+/* Convert a Coordinated Universal Time to local time.  */
 int
 time_UTC_to_local (struct tm *coordinated_universal_time,
 		   struct tm *local_time,

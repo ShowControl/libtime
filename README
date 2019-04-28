@@ -18,16 +18,20 @@ Now you can install the libtime library the usual way:
     make
     sudo make install
 
-In your source code, define the entry points with:
+In your C source code, define the entry points with:
 
     #include <time_subroutines.h>
     
 To compile and link your program prog.c, which uses the library, do this:
 
     gcc -L/usr/local/lib/ -Wl,-rpath=/usr/local/lib prog.c -ltime -o prog
-    
+
+In your Python source code, define the entry points with:
+
+   import time_subroutines
+   
 The documentation for the time subroutines is in avoid_time_t.pdf, which you
-can create by adding --enable-pdf to the ./configure line befor running make.
+can create by adding --enable-pdf to the ./configure line before running make.
 You will need LaTeX and several of its packages to compile it.  Sudo make
 install will then install the PDF file in /usr/local/share/doc/libtime.
 

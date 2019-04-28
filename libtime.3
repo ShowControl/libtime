@@ -1,4 +1,4 @@
-.TH LIBTIME 3 "2018-11-11" "John Sauter"
+.TH LIBTIME 3 "2019-04-28" "John Sauter"
 .SH NAME
 libtime \- manipulate representations of time
 .SH SYMOPSIS
@@ -15,7 +15,7 @@ on the \fI TM \fR structure, and take leap seconds into account.
 See below for a reference to the full documentation.
 .sp
 .TP
-int int128_to_string (__int128 value, char *result, int result_size);
+int int128_to_string (__int128 *value, char *result, int result_size);
 Convert a 128-bit integer to a string.
 Value is the input; result is the output, whose size is limited
 to result_size bytes.

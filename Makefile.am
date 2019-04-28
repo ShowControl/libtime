@@ -1,4 +1,4 @@
-# File: Makefile.am for libtime, author: John Sauter, date: April 20, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: April 27, 2019.
 
 lib_LTLIBRARIES = libtime.la
 libtime_la_SOURCES = time_copy.c \
@@ -20,6 +20,7 @@ libtime_la_SOURCES = time_copy.c \
 	time_subroutines.h \
 	int128_to_string.c \
 	read_extraordinary_days_table.py \
+	demo_python.py \
 	extraordinary_days.dat \
 	avoid_time_t.tex \
 	references.bib \
@@ -35,6 +36,9 @@ verify_files.sh
 
 clean-local:
 	rm -rf _minted-avoid_time_t/
+	rm -rf __pycache__
+	rm -rf autom4te.cache
+	rm -rf *~
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -56,6 +60,7 @@ noinst_PROGRAMS = example_02 example_03 example_04 example_05 \
 test_time test_diff \
 test_add test_ep test_local print_DTAI sleep_until_midnight POSIX_epoch \
 powers_of_two check_time
+
 example_05_LDADD = libtime.la
 example_04_LDADD = libtime.la
 example_03_LDADD = libtime.la
@@ -70,6 +75,8 @@ sleep_until_midnight_LDADD = libtime.la
 POSIX_epoch_LDADD = libtime.la
 powers_of_two_LDADD = libtime.la
 check_time_LDADD = libtime.la
+
+python_PYTHON = time_subroutines.py
 
 # The version-info below is used by libtool's versioning system.
 # It specifies three integers: current, revision and age.
@@ -112,7 +119,7 @@ check_time_LDADD = libtime.la
 # See the NEWS file (and the revision history in the PDF) for the history
 # of the version-info.
 #
-libtime_la_LDFLAGS = -version-info 2:11:0
+libtime_la_LDFLAGS = -version-info 3:0:0
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.
@@ -130,13 +137,15 @@ pdf-local: avoid_time_t.pdf
 
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	example_02.c example_03.c \
-	example_03_output.txt libtime.pc $(libtime_la_SOURCES)
+	example_03_output.txt libtime.pc time_subroutines.py \
+	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 
 avoid_time_t.bbl : avoid_time_t.tex references.bib example_02.c example_03.c \
-	dtai_table.h example_03_output.txt $(libtime_la_SOURCES)
+	dtai_table.h example_03_output.txt time_subroutines.py \
+	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export BIBINPUTS="$(srcdir):" && kpsewhich -var-value BIBINPUTS && bibtex $(builddir)/avoid_time_t.aux
 

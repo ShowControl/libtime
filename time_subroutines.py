@@ -1,0 +1,364 @@
+#!python3
+# -*- coding: utf-8
+
+# Python interface to libtime, April 28, 2019.
+
+# Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#   The author's contact information is as follows:
+#     John Sauter
+#     System Eyes Computer Store
+#     20A Northwest Blvd.  Ste 345
+#     Nashua, NH  03063-4066
+#     telephone: (603) 424-1188
+#     e-mail: John_Sauter@systemeyescomputerstore.com
+
+import ctypes
+import ctypes.util
+
+# Translation into ctypes of the POSIX tm structure:
+class tm (ctypes.Structure):
+    _fields_ = [
+        ("tm_sec", ctypes.c_int),
+        ("tm_min", ctypes.c_int),
+        ("tm_hour", ctypes.c_int),
+        ("tm_mday", ctypes.c_int),
+        ("tm_mon", ctypes.c_int),
+        ("tm_year", ctypes.c_int),
+        ("tm_wday", ctypes.c_int),
+        ("tm_yday", ctypes.c_int),
+        ("tm_isdst", ctypes.c_int),
+        ("tm_pad1", ctypes.c_int),
+        ("tm_gmtoff", ctypes.c_long),
+        ("tm_zone", ctypes.POINTER(ctypes.c_char_p))
+    ]
+    def __str__(self):
+        string_p = ctypes.create_string_buffer (256)
+        time_tm_to_string (self, string_p, ctypes.sizeof(string_p))
+        return (string_p.value.decode("utf-8"))
+
+# A 128-bit integer.
+class int128 (ctypes.Structure):
+    _fields_ = [
+        ("low_bits", ctypes.c_ulonglong),
+        ("high_bits", ctypes.c_longlong)
+    ]
+    def __str__(self):
+        string_p = ctypes.create_string_buffer (256)
+        int128_to_string (self, string_p, ctypes.sizeof (string_p))
+        return (string_p.value.decode("utf-8"))
+
+# Note that if you install libtime in /usr/local/lib, which is the
+# default location, you will need to set LD_LIBRARY_PATH to include it.    
+library_name = ctypes.util.find_library("time")
+sub = ctypes.CDLL(library_name)
+
+# Translation into ctypes of time_subroutines.h:
+
+sub.int128_to_string.argtypes = [ctypes.POINTER(int128),
+                                 ctypes.c_char_p, ctypes.c_int]
+"""Convert a 128-bit integer to a string."""
+def int128_to_string (value, result_p, result_size):
+    return (sub.int128_to_string (value, result_p, result_size))
+            
+sub.time_copy_tm.argtypes = [ctypes.POINTER(tm),
+                             ctypes.POINTER(tm)]
+"""Copy a tm structure."""
+def time_copy_tm (in_tm, out_tm):
+    return (sub.time_copy_tm (in_tm, out_tm))
+
+sub.time_current_tm.argtypes = [ctypes.POINTER(tm)]
+"""Fetch the current time, without nanoseconds."""
+def time_current_tm (tm):
+    return (sub.time_current_tm (tm))
+            
+sub.time_current_tm_nano.argtypes = [ctypes.POINTER(tm),
+                                     ctypes.POINTER(ctypes.c_int)]
+"""Fetch the current time, including nanoseconds."""
+def time_current_tm_nano (tm):
+    result_p = ctypes.create_string_buffer (ctypes.sizeof(ctypes.c_int))
+    result_p = ctypes.cast (result_p, ctypes.POINTER(ctypes.c_int))
+    return_value = sub.time_current_tm_nano (tm, result_p)
+    return (return_value, result_p.contents.value)
+
+sub.time_diff.argtypes = [ctypes.POINTER(tm), ctypes.POINTER(tm), ctypes.c_int]
+sub.time_diff.restype = ctypes.c_longlong
+"""Compute the difference between two times in seconds."""
+def time_diff (tm_A, tm_B, variable_length_seconds_before_year):
+    return (sub.time_diff (tm_A, tm_B, variable_length_seconds_before_year))
+
+sub.time_DTAI.argtypes = [ctypes.c_int, ctypes.c_int]
+"""Fetch the difference between TAI and UTC at the beginning
+of the specified Julian Day Number."""
+def time_DTAI (Julian_day_number, variable_length_seconds_before_year):
+    return (sub.time_DTAI (Julian_day_number,
+                           variable_length_seconds_before_year))
+
+sub.time_Julian_day_number.argtypes = [ctypes.c_int, ctypes.c_int,
+                                       ctypes.c_int]
+"""Compute the Julian Day Number corresponding to a date."""
+def time_Julian_day_number (year, month, day):
+    return (sub.time_Julian_day_number (year, month, day))
+
+sub.time_length_local_minute.argtypes = [ctypes.POINTER(tm), ctypes.c_int]
+"""Compute the length of the current minute of local time."""
+def time_length_local_minute (tm, variable_length_seconds_before_year):
+    return (sub.time_length_local_minute (tm,
+                                          variable_length_seconds_before_year))
+
+sub.time_length_month.argtypes = [ctypes.POINTER(tm)]
+"""Compute the length of the current month."""
+def time_length_month (tm):
+    return (sub.time_length_month (tm))
+
+sub.time_length_prev_local_minute.argtypes = [ctypes.POINTER(tm),
+                                              ctypes.c_int]
+"""Compute the length of the previous minute of local time."""
+def time_length_prev_local_minute (tm, variable_length_seconds_before_year):
+    return (sub.time_length_prev_local_minute (tm,
+                                           variable_length_seconds_before_year))
+
+sub.time_length_prev_month.argtypes = [ctypes.POINTER(tm)]
+"""Compute the length of the previous month."""
+def time_length_prev_month (tm):
+    return (sub.time_length_prev_month (tm))
+
+sub.time_length_prev_UTC_minute.argtypes = [ctypes.POINTER(tm),
+                                            ctypes.c_int]
+"""Compute the length of the previous minute of Coordinated Universal Time."""
+def time_length_prev_UTC_minute (tm, variable_length_seconds_before_year):
+    return (sub.time_length_prev_UTC_minute (tm,
+                                        variable_length_seconds_before_year))
+
+sub.time_length_UTC_minute.argtypes = [ctypes.POINTER(tm),
+                                       ctypes.c_int]
+"""Compute the length of the current minute of Coordinated Universal Time."""
+def time_length_UTC_minute (tm, variable_length_seconds_before_year):
+    return (sub.time_length_UTC_minute (tm,
+                                        variable_length_seconds_before_year))
+
+sub.time_local_add_days.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+                                    ctypes.c_int, ctypes.c_int]
+"""Add days to a local time."""
+def time_local_add_days (tm, addend, rounding_mode,
+                         variable_length_seconds_before_year):
+    return (sub.time_local_add_days (tm, addend, rounding_mode,
+                                     variable_length_seconds_before_year))
+
+sub.time_local_add_hours.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+                                     ctypes.c_int, ctypes.c_int]
+"""Add hours to a local time."""
+def time_local_add_hours (tm, addend, rounding_mode,
+                          variable_length_seconds_before_year):
+    return (sub.time_local_add_hours (tm, addend, rounding_mode,
+                                      variable_length_seconds_before_year))
+    
+sub.time_local_add_minutes.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+                                       ctypes.c_int, ctypes.c_int]
+"""Add minutes to a local time."""
+def time_local_add_minutes (tm, addend, rounding_mode,
+                            variable_length_seconds_before_year):
+    return (sub.time_local_add_minutes (tm, addend, rounding_mode,
+                                        variable_length_seconds_before_year))
+
+sub.time_local_add_months.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+                                      ctypes.c_int, ctypes.c_int]
+"""Add months to a local time."""
+def time_add_months (tm, addend, rounding_mode,
+                     variable_length_seconds_before_year):
+    return (sub.time_add_months (tm, addend, rounding_mode,
+                                 variable_length_seconds_before_year))
+
+sub.time_local_add_seconds.argtypes = [ctypes.POINTER(tm), ctypes.c_longlong,
+                                       ctypes.c_int]
+"""Add seconds to a local time."""
+def time_local_add_seconds (tm, add_seconds,
+                            variable_length_seconds_before_year):
+    return (sub.time_local_add_seconds (tm, add_seconds,
+                                        variable_length_seconds_before_year))
+
+sub.time_local_add_seconds_ns.argtypes = [ctypes.POINTER(tm),
+                                          ctypes.POINTER(ctypes.c_longlong),
+                                          ctypes.c_longlong,
+                                          ctypes.c_longlong, ctypes.c_int]
+"""Add seconds and nanoseconds to a local time."""
+def time_local_add_seconds_ns (tm, add_seconds, add_nanoseconds,
+                               variable_length_seconds_before_year):
+    result_p = ctypes.create_string_buffer (ctypes.sizeof(ctypes.c_longlong))
+    result_p = ctypes.cast (result_p, ctypes.POINTER(ctypes.c_longlong))
+    return_value = sub.time_local_add_seconds_ns (tm, result_p, add_seconds,
+                                                  add_nanoseconds,
+                                            variable_length_seconds_before_year)
+    return (return_value, result_p.contents.value)
+
+
+sub.time_local_add_years.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+                                     ctypes.c_int, ctypes.c_int]
+"""Add years to a local time."""
+def time_local_add_years (tm, addend, rounding_mode,
+                          variable_length_seconds_before_year):
+    return (sub.time_local_add_years (tm, addend, rounding_mode,
+                                      variable_length_seconds_before_year))
+
+sub.time_local_normalize.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+                                     ctypes.c_int]
+"""Make sure all of the fields in a tm structure containing local time
+are within their valid ranges.  Also, set tm_wday to
+the day of the week and tm_yday to the day of the year for the date
+as specified by the year (tm_year), month (tm_mon) and 
+day of the month (tm_mday).  Whenever a tm structure is changed by these
+subroutines it is normalized before it is returned."""
+def time_local_normalize (tm, seconds, variable_length_seconds_before_year):
+    return (sub.time_local_normalize (tm, seconds,
+                                      variable_length_seconds_before_year))
+
+sub.time_local_to_UTC.argtypes = [ctypes.POINTER(tm), ctypes.POINTER(tm),
+                                  ctypes.c_int]
+"""Convert local time to Coordinated Universal Time."""
+def time_local_to_UTC (local_time, coordinated_universal_time,
+                       variable_length_seconds_before_year):
+    return (sub.time_local_to_UTC (local_time, coordinated_universal_time,
+                                   variable_length_seconds_before_year))
+
+sub.time_sleep_until.argtypes = [ctypes.POINTER(tm), ctypes.c_int, ctypes.c_int]
+"""Sleep until a specified Coordinated Universal Time."""
+def time_sleep_until (tm, nanoseconds, variable_length_seconds_before_year):
+    return (sub.time_sleep_until (tm, nanoseconds,
+                                  variable_length_seconds_before_year))
+
+sub.time_tm_nano_to_integer.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+                                        ctypes.POINTER(int128)]
+"""Convert time and nanoseconds to a 128-bit integer."""
+def time_tm_nano_to_integer (tm, input_nanoseconds):
+    result_p = ctypes.create_string_buffer (ctypes.sizeof(int128))
+    result_p = ctypes.cast (result_p, ctypes.POINTER(int128))
+    return_value = sub.time_tm_nano_to_integer (tm, input_nanoseconds, result_p)
+    return (return_value, result_p.contents)
+
+sub.time_tm_nano_to_string.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+                                       ctypes.c_char_p, ctypes.c_int]
+"""Convert the time and nanoseconds to a string."""
+def time_tm_nano_to_string (tm, input_nanoseconds, current_time_string,
+                            current_time_string_length):
+    return (sub.time_tm_nano_to_string (tm, input_nanoseconds,
+                                        current_time_string,
+                                        current_time_string_length))
+
+sub.time_tm_to_integer.argtypes = [ctypes.POINTER(tm),
+                                   ctypes.POINTER(ctypes.c_longlong)]
+"""Convert the time to a long long integer."""
+def time_tm_to_integer (tm):
+    result_p = ctypes.create_string_buffer (ctypes.sizeof(ctypes.c_longlong))
+    result_p = ctypes.cast (result_p, ctypes.POINTER(ctypes.c_longlong))
+    return_value = sub.time_tm_to_integer (tm, result_p)
+    return (return_value, result_p.contents.value)
+
+sub.time_tm_to_string.argtypes = [ctypes.POINTER(tm), ctypes.c_char_p,
+                                  ctypes.c_int]
+"""Convert the time to a string."""
+def time_tm_to_string (input_tm, current_time_string,
+                       current_time_string_length):
+    return (sub.time_tm_to_string (input_tm, current_time_string,
+                                   current_time_string_length))
+
+sub.time_UTC_add_days.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+                                  ctypes.c_int, ctypes.c_int]
+"""Add days to a Coordinated Universal Time."""
+def time_UTC_add_days (tm, addend, rounding_mode,
+                       variable_length_seconds_before_year):
+    return (sub.time_UTC_add_days (tm, addend, rounding_mode,
+                                   variable_length_seconds_before_year))
+
+sub.time_UTC_add_hours.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+                                   ctypes.c_int, ctypes.c_int]
+"""Add hours to a Coordinated Universal Time."""
+def time_UTC_add_hours (tm, addend, rounding_mode,
+                        variable_length_seconds_before_year):
+    return (sub.time_UTC_add_hours (tm, addend, rounding_mode,
+                                    variable_length_seconds_before_year))
+
+sub.time_UTC_add_minutes.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+                                     ctypes.c_int, ctypes.c_int]
+"""Add minutes to a Coordinated Universal Time."""
+def time_UTC_add_minutes (tm, addend, rounding_mode,
+                          variable_length_seconds_before_year):
+    return (sub.time_UTC_add_minutes (tm, addend, rounding_mode,
+                                      variable_length_seconds_before_year))
+
+sub.time_UTC_add_months.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+                                    ctypes.c_int, ctypes.c_int]
+"""Add months to a Coordinated Universal Time."""
+def time_UTC_add_months (tm, addend, rounding_mode,
+                         variable_length_seconds_before_year):
+    return (sub.time_UTC_add_months (tm, addend, rounding_mode,
+                                     variable_length_seconds_before_year))
+
+sub.time_UTC_add_seconds.argtypes = [ctypes.POINTER(tm), ctypes.c_longlong,
+                                     ctypes.c_int]
+"""Add seconds to a Coordinated Universal Time."""
+def time_UTC_add_seconds (tm, add_seconds, variable_length_seconds_before_year):
+    return (sub.time_UTC_add_seconds (tm, add_seconds,
+                                      variable_length_seconds_before_year))
+
+sub.time_UTC_add_seconds_ns.argtypes = [ctypes.POINTER(tm),
+                                        ctypes.POINTER(ctypes.c_longlong),
+                                        ctypes.c_longlong, ctypes.c_longlong,
+                                        ctypes.c_int]
+"""Add seconds and nanoseconds to a Coordinated Universal Time."""
+def time_UTC_add_seconds_ns (tm, add_seconds, add_nanoseconds,
+                             variable_length_seconds_before_year):
+    result_p = ctypes.create_string_buffer (ctypes.sizeof(ctypes.c_longlong))
+    result_p = ctypes.cast (result_p, ctypes.POINTER(ctypes.c_longlong))
+    return_value = sub.time_UTC_add_seconds_ns (tm, result_p, add_seconds,
+                                                add_nanoseconds,
+                                            variable_length_seconds_before_year)
+    return (return_value, result_p.contents.value)
+                                         
+sub.time_UTC_add_years.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+                                   ctypes.c_int, ctypes.c_int]
+"""Add years to a Coordinated Universal Time."""
+def time_UTC_add_years (tm, addend, rounding_mode,
+                        variable_length_seconds_before_year):
+    return (sub.time_UTC_add_years (tm, addend, rounding_mode,
+                                    variable_length_seconds_before_year))
+    
+sub.time_UTC_normalize.argtypes = [ctypes.POINTER(tm), ctypes.c_longlong,
+                                   ctypes.c_int]
+"""Make sure all of the fields of a tm structure containing a
+Coordinated Universal TIme are within their valid ranges.
+Also set tm_wday to the day of the week and tm_yday to the 
+day of the year for the date as specified by the year (tm_year), 
+month (tm_mon) and day of the month (tm_mday).  
+Whenever a tm structure is changed by these subroutines 
+it is normalized before it is returned."""
+def time_UTC_normalize (tm, seconds, variable_length_seconds_before_year):
+    return (sub.time_UTC_normalize (tm, seconds,
+                                    variable_length_seconds_before_year))
+
+sub.time_UTC_to_local.argtypes = [ctypes.POINTER(tm), ctypes.POINTER(tm),
+                                  ctypes.c_int]
+
+"""Convert a Coordinated Universal Time to local time."""
+def time_UTC_to_local (coordinated_universal_time, local_time,
+                       variable_length_seconds_before_year):
+    return (sub.time_UTC_to_local (coordinated_universal_time, local_time,
+                                   variable_length_seconds_before_year))
+
+# Int_min and int_max are constants used in variable_length_seconds_before_year.
+int_min = (-ctypes.c_uint(-1).value) // 2
+int_max = (ctypes.c_uint(-1).value) // 2
+
+# End of file time_subroutines.py
