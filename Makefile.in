@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: April 27, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: May 19, 2019.
 
 
 
@@ -661,6 +661,8 @@ libtime_la_SOURCES = time_copy.c \
 	int128_to_string.c \
 	read_extraordinary_days_table.py \
 	demo_python.py \
+	test_python_interface.py \
+	example_06.py \
 	extraordinary_days.dat \
 	avoid_time_t.tex \
 	references.bib \
@@ -731,10 +733,10 @@ python_PYTHON = time_subroutines.py
 #  3. Programs may need to be changed, recompiled, and relinked in order to
 #     use the new version. Bump current, set revision and age to 0.
 #
-# See the NEWS file (and the revision history in the PDF) for the history
+# See the NEWS file (and the update history in the PDF) for the history
 # of the version-info.
 #
-libtime_la_LDFLAGS = -version-info 2:12:0
+libtime_la_LDFLAGS = -version-info 3:1:0
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.
@@ -1749,7 +1751,7 @@ pdf-local: avoid_time_t.pdf
 .PHONEY: pdf-local
 
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
-	example_02.c example_03.c \
+	example_02.c example_03.c example_06.py \
 	example_03_output.txt libtime.pc time_subroutines.py \
 	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
@@ -1775,6 +1777,7 @@ clean-local: clean-local-check
 .PHONEY: clean-local-check
 clean-local-check:
 	if [ -e "copied_from_srcdir" ] ; then rm -f check_time_expected_output.txt ; rm copied_from_srcdir ; fi
+	rm -f *.pyc
 
 # End of file Makefile.AM
 

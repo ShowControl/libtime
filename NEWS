@@ -1,3 +1,7 @@
+2019-05-19 3:1:0
+  Delay the December 2050 leap second by six months to
+  June of 2051.  Add a Python example.
+  
 2019-04-28 3:0:0
   Add support for Python.  Int128_to_string takes its value
   argument by reference instead of by value.
