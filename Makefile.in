@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: May 19, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: June 4, 2019.
 
 
 
@@ -736,7 +736,7 @@ python_PYTHON = time_subroutines.py
 # See the NEWS file (and the update history in the PDF) for the history
 # of the version-info.
 #
-libtime_la_LDFLAGS = -version-info 3:1:0
+libtime_la_LDFLAGS = -version-info 3:2:0
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.

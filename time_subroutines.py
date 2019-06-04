@@ -1,7 +1,7 @@
 #!python3
 # -*- coding: utf-8
 
-# Python interface to libtime, April 28, 2019.
+# Python interface to libtime, June 4, 2019.
 
 # Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
@@ -338,7 +338,7 @@ def time_UTC_add_years (tm, addend, rounding_mode,
 sub.time_UTC_normalize.argtypes = [ctypes.POINTER(tm), ctypes.c_longlong,
                                    ctypes.c_int]
 """Make sure all of the fields of a tm structure containing a
-Coordinated Universal TIme are within their valid ranges.
+Coordinated Universal Time are within their valid ranges.
 Also set tm_wday to the day of the week and tm_yday to the 
 day of the year for the date as specified by the year (tm_year), 
 month (tm_mon) and day of the month (tm_mday).  

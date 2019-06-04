@@ -72,11 +72,11 @@
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2019 by John Sauter},
-  pdfdate={2019-05-19},
+  pdfdate={2019-06-04},
   pdflicenseurl={http://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}  
 }
-\date{2019-05-19}
+\date{2019-06-04}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -110,7 +110,7 @@ hours ($tm\_hour$), days since January 1 of the year ($tm\_yday$),
 and calendar year minus 1900 ($tm\_year$)) is related to a time
 represented as seconds since the Epoch, according to the expression below.
 
-If the year is $<1970$ or the value is negative, the relationship is
+If the year is $< 1970$ or the value is negative, the relationship is
 undefined.
 If the year is $\geq 1970$ and the value is non-negative, the value is
 related to a Coordinated Universal Time name according to the
@@ -171,7 +171,8 @@ too much: be a count of seconds and encode Coordinated Universal Time.
 The first stage in solving the problems is to separate these two jobs.
 
 \subsection{Encoding Coordinated Universal Time}
-A good way to represent Coordinated Universal Time is with the \verb|tm| data
+A good way to represent Coordinated Universal Time is with the
+POSIX {\ttfamily tm} data
 structure.  It contains integers for the year, month, day, hour, minute
 and second.  To encode it into an integer you can do this:
 \begin{multline*}
@@ -229,7 +230,7 @@ Gettimeofday is equivalent to clock\_gettime with clock ID set to
 CLOCK\_REAL\-TIME, except for the time zone, which should not be used.
 
 Clock\_gettime with clock ID set to CLOCK\_REAL\-TIME can be replaced by
-a function which returns the current time in a \verb|tm| structure along
+a function which returns the current time in a {\ttfamily tm} structure along
 with the number of nanoseconds since the last second.
 \inputminted[firstline=34]{c}{time_current_tm_nano.c}
 \embedfile[desc={Return the current time including nanoseconds},
@@ -243,7 +244,8 @@ same rate as CLOCK\_REAL\-TIME.
 
 Clock\_nanosleep with clock ID set to CLOCK\_REAL\-TIME and with flag
 TIMER\_ABS\-TIME set can be replaced by a function which accepts
-a time in a \verb|tm| structure and a count of nanoseconds since that second.
+a time in a {\ttfamily tm} structure and a count of nanoseconds
+since that second.
 \inputminted[firstline=32]{c}{time_sleep_until.c}
 \embedfile[desc={Sleep until the specified time},
   mimetype={text/plain}]{time_sleep_until.c}
@@ -266,7 +268,7 @@ If asctime isn't flexible enough, use strftime or see subsection
 \subsection{difftime}
 \label{subsection:difftime}
 Difftime can be replaced by a function which returns the time in seconds
-between two times expressed using the \verb|tm| structure.
+between two times expressed using the {\ttfamily tm} structure.
 \inputminted[firstline=37]{c}{time_diff.c}
 \embedfile[desc={Compute the number of seconds between two times},
   mimetype={text/plain}]{time_diff.c}
@@ -297,18 +299,18 @@ for details.
 
 \subsection{gmtime and gmtime\_r}
 Gmtime and gmtime\_r convert from {\ttfamily time\_t} to
-the \verb|tm| structure,
+the {\ttfamily tm} structure,
 representing Coordinated Universal Time.  We don't
 need this function since our primary representation for time is the
-\verb|tm| structure representing Coordinated Universal Time,
+{\ttfamily tm} structure representing Coordinated Universal Time,
 and we are not using {\ttfamily time\_t}.
 
 \subsection{localtime and localtime\_r}
 \label{subsection:localtime}
 Localtime and localtime\_r convert a {\ttfamily time\_t} into
-a \verb|tm| structure that
+a {\ttfamily tm} structure that
 represents local time.  We can replace this with a function that takes
-as input a \verb|tm| structure that represents Coordinated Universal Time.
+as input a {\ttfamily tm} structure that represents Coordinated Universal Time.
 \inputminted[firstline=32]{c}{time_utc_to_local.c}
 \embedfile[desc={Convert Coordinated Universal Time to local time},
   mimetype={text/plain}]{time_utc_to_local.c}
@@ -319,9 +321,9 @@ and subsection \ref{subsection:timelocaladd} for time\_local\_normalize.
 
 \subsection{mktime}
 \label{subsection:mktime}
-Mktime converts a \verb|tm| structure that represents local time into a
+Mktime converts a {\ttfamily tm} structure that represents local time into a
 {\ttfamily time\_t}.  We can replace this with a function whose output is a
-\verb|tm| structure that represents Coordinated Universal Time.
+{\ttfamily tm} structure that represents Coordinated Universal Time.
 \inputminted[firstline=32]{c}{time_local_to_utc.c}
 \embedfile[desc={Convert local time to Coordinated Universal Time},
   mimetype={text/plain}]{time_local_to_utc.c}
@@ -361,15 +363,15 @@ since the Epoch.  Don't use this.
 
 \subsection{time}
 Time returns the current time as a {\ttfamily time\_t}.
-Instead, return it as a \verb|tm|.
+Instead, return it as a {\ttfamily tm}.
 \inputminted[firstline=34]{c}{time_current_tm.c}
 \embedfile[desc={Return the current time in a tm structure},
   mimetype={text/plain}]{time_current_tm.c}
 
 \subsection{timegm}
-Timegm converts a \verb|tm| structure containing Coordinated Universal Time
+Timegm converts a {\ttfamily tm} structure containing Coordinated Universal Time
 into a {\ttfamily time\_t}.
-We don't need it, since we are using the \verb|tm| structure
+We don't need it, since we are using the {\ttfamily tm} structure
 as our primary representation of time.  However, it is sometimes
 convenient to represent time as a single value instead of a structure.
 \inputminted[firstline=32]{c}{time_tm_to_integer.c}
@@ -397,14 +399,14 @@ here are some subroutines to manipulate a time value.
 
 \subsection{Copy a time}
 \label{subsection:copy}
-Here is how to copy a time value from one \verb|tm| structure to another.
+Here is how to copy a time value from one {\ttfamily tm} structure to another.
 \inputminted[firstline=34]{c}{time_copy.c}
 \embedfile[desc={Copy a time value from one tm structure to another},
   mimetype={text/plain}]{time_copy.c}
 
 \subsection{Adding years, months, days, hours, minutes or seconds}
 \label{subsection:timeUTCadd}
-If you have a time value stored in a \verb|tm| structure, and it represents
+If you have a time value stored in a {\ttfamily tm} structure, and it represents
 Coordinated Universal Time, you can add to the year, month, day, hour,
 minute or second field.  You can decrease these fields by adding a
 negative value.  When the target date is invalid, such as February 31,
@@ -429,7 +431,7 @@ The subroutines above also use time\_UTC\_normalize.
 
 \subsection{Doing the same with local time}
 \label{subsection:timelocaladd}
-If you have a time value stored in a \verb|tm| structure, and it represents
+If you have a time value stored in a {\ttfamily tm} structure, and it represents
 local time, you can add to the year, month, day, hour, minute or
 second field.  You can decrease these fields by adding a negative
 value.  When the target date is invalid, such as February 31,
@@ -508,9 +510,15 @@ that the function can examine (but not change) global variables.
   mimetype={text/plain}]{time_subroutines.h}
 
 \section{Python}
-If you are a Python user, you need to call these subroutines
-from Python.  You can do this using {\ttfamily ctypes}.  Write a module
-to define the interface, as follows:
+The Python module datetime contains a class also called datetime
+which ignores leap seconds, and therefore has the same problem
+as POSIX {\ttfamily time\_t}.  A program written in the Python
+programming language must therefore refrain from using datetime.
+
+You can use the POSIX {\ttfamily tm} data structure in place of datetime,
+and use these same C subroutines to manipulate it using
+{\ttfamily ctypes}.
+Write a module to define the interface, as follows:
 \inputminted[firstline=28,lastline=363]{Python}{time_subroutines.py}
 \embedfile[desc={Module for calling time subroutines from Python},
   mimetype={text/plain}]{time_subroutines.py}
@@ -521,10 +529,13 @@ from Python.  Here is a Python script to demonstrate this:
 \embedfile[desc={Demonstration Python script},
   mimetype={text/plain}]{demo_python.py}
 
-Note that you cannot use the Python datetime module, since it does
-not support leap seconds.  Use these subroutines instead.
+Use the Julian Day Number instead of the proleptic Gregorian ordinal
+from the datetime module, since it covers a wider span of time.
+The {\ttfamily tm} structure is always associated with a time zone.
 
-There is a Python example in subsection \ref{example:PTP_using_Python}
+There is a Python example in subsection \ref{example:PTP_using_Python}.
+It illustrates conversion from POSIX {\ttfamily tm} to
+Python {\ttfamily time.struct\_time}, which is able to represent leap seconds.
 
 \section{Embedded files}
 \label{section:Embedded_files}
@@ -638,7 +649,8 @@ These files are also available on github, at
 
 \section{Examples}
 These examples are intended to illustrate how an application would
-use these subroutines to manipulate time represented in a \verb|tm| structure.
+use these subroutines to manipulate time represented in a
+{\ttfamily tm} structure.
 
 \subsection{Meeting at 9 AM}
 You wish to schedule a meeting in the Chrysanthemum Conference Hall
@@ -647,7 +659,7 @@ so the message sent to their scheduling software will be in
 Coordinated Universal Time.  The Chrysanthemum Conference Hall
 is located in Tokyo, Japan.
 
-Set your time zone to Asia/Tokyo.  Construct a \verb|tm| structure
+Set your time zone to Asia/Tokyo.  Construct a {\ttfamily tm} structure
 containing June 30, 2017, at 9 AM.  Convert that from local time to UTC.
 Convert the UTC time to a string, and send the string to
 the participants.  The string you send should be 2017-06-30T00:00:00Z.
@@ -843,6 +855,8 @@ programs, but some kernel changes would result in better UTC support.
 \section{Update History}
 
 \begin{description}
+\item[2019-06-04 3:2:0] Delay the June 2036 leap second by
+  six months to December of 2036.
 \item[2019-05-19 3:1:0] Delay the December 2050 leap second
   by six months to June of 2051.  Add a Python example.
 \item[2019-04-28 3:0:0] Add support for Python.  Int128\_to\_string
