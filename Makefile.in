@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: June 4, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: June 16, 2019.
 
 
 
@@ -98,8 +98,8 @@ host_triplet = @host@
 @ENABLE_PDF_TRUE@am__append_1 = avoid_time_t.pdf
 noinst_PROGRAMS = example_02$(EXEEXT) example_03$(EXEEXT) \
 	example_04$(EXEEXT) example_05$(EXEEXT) test_time$(EXEEXT) \
-	test_diff$(EXEEXT) test_add$(EXEEXT) test_ep$(EXEEXT) \
-	test_local$(EXEEXT) print_DTAI$(EXEEXT) \
+	test_diff$(EXEEXT) test_JDN$(EXEEXT) test_add$(EXEEXT) \
+	test_ep$(EXEEXT) test_local$(EXEEXT) print_DTAI$(EXEEXT) \
 	sleep_until_midnight$(EXEEXT) POSIX_epoch$(EXEEXT) \
 	powers_of_two$(EXEEXT) check_time$(EXEEXT)
 subdir = .
@@ -197,6 +197,9 @@ print_DTAI_DEPENDENCIES = libtime.la
 sleep_until_midnight_SOURCES = sleep_until_midnight.c
 sleep_until_midnight_OBJECTS = sleep_until_midnight.$(OBJEXT)
 sleep_until_midnight_DEPENDENCIES = libtime.la
+test_JDN_SOURCES = test_JDN.c
+test_JDN_OBJECTS = test_JDN.$(OBJEXT)
+test_JDN_DEPENDENCIES = libtime.la
 test_add_SOURCES = test_add.c
 test_add_OBJECTS = test_add.$(OBJEXT)
 test_add_DEPENDENCIES = libtime.la
@@ -232,10 +235,11 @@ am__depfiles_remade = ./$(DEPDIR)/POSIX_epoch.Po \
 	./$(DEPDIR)/example_03.Po ./$(DEPDIR)/example_04.Po \
 	./$(DEPDIR)/example_05.Po ./$(DEPDIR)/int128_to_string.Plo \
 	./$(DEPDIR)/powers_of_two.Po ./$(DEPDIR)/print_DTAI.Po \
-	./$(DEPDIR)/sleep_until_midnight.Po ./$(DEPDIR)/test_add.Po \
-	./$(DEPDIR)/test_diff.Po ./$(DEPDIR)/test_ep.Po \
-	./$(DEPDIR)/test_local.Po ./$(DEPDIR)/test_time.Po \
-	./$(DEPDIR)/time_copy.Plo ./$(DEPDIR)/time_current_tm.Plo \
+	./$(DEPDIR)/sleep_until_midnight.Po ./$(DEPDIR)/test_JDN.Po \
+	./$(DEPDIR)/test_add.Po ./$(DEPDIR)/test_diff.Po \
+	./$(DEPDIR)/test_ep.Po ./$(DEPDIR)/test_local.Po \
+	./$(DEPDIR)/test_time.Po ./$(DEPDIR)/time_copy.Plo \
+	./$(DEPDIR)/time_current_tm.Plo \
 	./$(DEPDIR)/time_current_tm_nano.Plo ./$(DEPDIR)/time_diff.Plo \
 	./$(DEPDIR)/time_length.Plo ./$(DEPDIR)/time_local_add.Plo \
 	./$(DEPDIR)/time_local_normalize.Plo \
@@ -269,12 +273,12 @@ am__v_CCLD_1 =
 SOURCES = $(libtime_la_SOURCES) $(nodist_libtime_la_SOURCES) \
 	POSIX_epoch.c check_time.c example_02.c example_03.c \
 	example_04.c example_05.c powers_of_two.c print_DTAI.c \
-	sleep_until_midnight.c test_add.c test_diff.c test_ep.c \
-	test_local.c test_time.c
+	sleep_until_midnight.c test_JDN.c test_add.c test_diff.c \
+	test_ep.c test_local.c test_time.c
 DIST_SOURCES = $(libtime_la_SOURCES) POSIX_epoch.c check_time.c \
 	example_02.c example_03.c example_04.c example_05.c \
-	powers_of_two.c print_DTAI.c sleep_until_midnight.c test_add.c \
-	test_diff.c test_ep.c test_local.c test_time.c
+	powers_of_two.c print_DTAI.c sleep_until_midnight.c test_JDN.c \
+	test_add.c test_diff.c test_ep.c test_local.c test_time.c
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -684,6 +688,7 @@ example_04_LDADD = libtime.la
 example_03_LDADD = libtime.la
 example_02_LDADD = libtime.la
 test_time_LDADD = libtime.la
+test_JDN_LDADD = libtime.la
 test_diff_LDADD = libtime.la
 test_add_LDADD = libtime.la
 test_ep_LDADD = libtime.la
@@ -736,7 +741,7 @@ python_PYTHON = time_subroutines.py
 # See the NEWS file (and the update history in the PDF) for the history
 # of the version-info.
 #
-libtime_la_LDFLAGS = -version-info 3:3:0
+libtime_la_LDFLAGS = -version-info 3:4:0
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.
@@ -890,6 +895,10 @@ sleep_until_midnight$(EXEEXT): $(sleep_until_midnight_OBJECTS) $(sleep_until_mid
 	@rm -f sleep_until_midnight$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(sleep_until_midnight_OBJECTS) $(sleep_until_midnight_LDADD) $(LIBS)
 
+test_JDN$(EXEEXT): $(test_JDN_OBJECTS) $(test_JDN_DEPENDENCIES) $(EXTRA_test_JDN_DEPENDENCIES) 
+	@rm -f test_JDN$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(test_JDN_OBJECTS) $(test_JDN_LDADD) $(LIBS)
+
 test_add$(EXEEXT): $(test_add_OBJECTS) $(test_add_DEPENDENCIES) $(EXTRA_test_add_DEPENDENCIES) 
 	@rm -f test_add$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(test_add_OBJECTS) $(test_add_LDADD) $(LIBS)
@@ -926,6 +935,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/powers_of_two.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/print_DTAI.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sleep_until_midnight.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_JDN.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_add.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_diff.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_ep.Po@am__quote@ # am--include-marker
@@ -1586,6 +1596,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/powers_of_two.Po
 	-rm -f ./$(DEPDIR)/print_DTAI.Po
 	-rm -f ./$(DEPDIR)/sleep_until_midnight.Po
+	-rm -f ./$(DEPDIR)/test_JDN.Po
 	-rm -f ./$(DEPDIR)/test_add.Po
 	-rm -f ./$(DEPDIR)/test_diff.Po
 	-rm -f ./$(DEPDIR)/test_ep.Po
@@ -1665,6 +1676,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/powers_of_two.Po
 	-rm -f ./$(DEPDIR)/print_DTAI.Po
 	-rm -f ./$(DEPDIR)/sleep_until_midnight.Po
+	-rm -f ./$(DEPDIR)/test_JDN.Po
 	-rm -f ./$(DEPDIR)/test_add.Po
 	-rm -f ./$(DEPDIR)/test_diff.Po
 	-rm -f ./$(DEPDIR)/test_ep.Po

@@ -4,7 +4,7 @@
 # read_extraordinary_days_table is a sample program which illustrates how
 # to read the table of extraordinary days.
 
-#   Copyright © 2017 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ import argparse
 parser = argparse.ArgumentParser (
   formatter_class=argparse.RawDescriptionHelpFormatter,
   description='Read the table of extraordinary days.',
-  epilog='Copyright © 2017 by John Sauter' + '\n' +
+  epilog='Copyright © 2019 by John Sauter' + '\n' +
   'License GPL3+: GNU GPL version 3 or later; ' + '\n' +
   'see <http://gnu.org/licenses/gpl.html> for the full text ' +
   'of the license.' + '\n' +
@@ -49,7 +49,7 @@ parser = argparse.ArgumentParser (
 parser.add_argument ('input_file',
                      help='the table of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_extraordinary_days_table 2.1 2017-01-27',
+                     version='read_extraordinary_days_table 2.2 2019-06-16',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -102,7 +102,7 @@ error_counter = 0
 month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
                "Aug", "Sep", "Oct", "Nov", "Dec"] 
 def greg (jdn, separator):
-  ymdf = jd2gcal (float(jdn), 0.0)
+  ymdf = jd2gcal (float(jdn), 0.5)
   year_no = ymdf [0]
   month_no = ymdf [1]
   day_no = ymdf [2]

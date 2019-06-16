@@ -1,4 +1,4 @@
-# File: Makefile.am for libtime, author: John Sauter, date: June 4, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: June 16, 2019.
 
 lib_LTLIBRARIES = libtime.la
 libtime_la_SOURCES = time_copy.c \
@@ -59,7 +59,7 @@ if ENABLE_PDF
 endif
 
 noinst_PROGRAMS = example_02 example_03 example_04 example_05 \
-test_time test_diff \
+test_time test_diff test_JDN \
 test_add test_ep test_local print_DTAI sleep_until_midnight POSIX_epoch \
 powers_of_two check_time
 
@@ -68,6 +68,7 @@ example_04_LDADD = libtime.la
 example_03_LDADD = libtime.la
 example_02_LDADD = libtime.la
 test_time_LDADD = libtime.la
+test_JDN_LDADD = libtime.la
 test_diff_LDADD = libtime.la
 test_add_LDADD = libtime.la
 test_ep_LDADD = libtime.la
@@ -121,7 +122,7 @@ python_PYTHON = time_subroutines.py
 # See the NEWS file (and the update history in the PDF) for the history
 # of the version-info.
 #
-libtime_la_LDFLAGS = -version-info 3:3:0
+libtime_la_LDFLAGS = -version-info 3:4:0
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.

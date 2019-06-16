@@ -1,9 +1,9 @@
 /*
- * File: time_diff.c, author: John Sauter, date: November 11, 2018.
+ * File: time_diff.c, author: John Sauter, date: June 16, 2019.
  */
 
 /*
- * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -152,7 +152,7 @@ time_Julian_day_number (int year, int month, int day)
   leap_days = (y / 4) - (y / 100) + (y / 400);
 
   /* Adjust the base date to be November 24, 4714 BC.  */
-  result = year_days + leap_days + prev_days + day - 32045;
+  result = year_days + leap_days + prev_days + day - 32046;
   return (result);
 }
 
