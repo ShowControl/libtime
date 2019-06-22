@@ -1,3 +1,6 @@
+2019-06-22 3:5:0
+  Be more careful with the definition and display of Julian Day Numbers.
+  
 2019-06-16 3:4:0
   Delay the June 2020 leap second to June 2021 and generally
   adjust the leap seconds by using a new algorithm to predict them.

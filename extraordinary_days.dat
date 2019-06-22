@@ -23,7 +23,11 @@
 # day.  Data lines must be ascending: earlier dates must come before later ones.
 #
 # The Julian Day Number is a simple count of days, starting on
-# November 24, -4713.  DTAI is the difference between International Atomic
+# November 24, -4713.  This file contains only the integer part of the
+# Julian Day number: to get a proper Julian Day Number add 0.5.  If you
+# prefer to use Modified Julian Days (MJD) subtract 2400000.
+#
+# DTAI is the difference between International Atomic
 # Time (TAI) and Coordinated Universal Time (UTC).  That value is 0
 # on January 1, 1958.  Every extraordinary day changes the value of DTAI
 # at its end by +1 for days with 86,401 seconds, or -1 for days with 86,399
@@ -53,10 +57,10 @@
 # CHECKSUM line.  The sample reading software verifies the checksum, to
 # defend against accidental corruption.
 #
-START_DATE=990575       # 1 Jan -2000
-END_DATE=2634167        # 1 Jan 2500
-EXPIRATION_DATE=2458846 # 28 Dec 2019
-CHECKSUM=2a957d7377508547bc7b8bc56643cab3681c5e2d85d2aaadd7b5db4ef6d229c6
+START_DATE=990574       # 1 Jan -2000
+END_DATE=2634166        # 1 Jan 2500
+EXPIRATION_DATE=2458845 # 28 Dec 2019
+CHECKSUM=973a4b927196dc8d86bca2f12f9761068767c5a2dd9500548701dcb60a21d7c9
 #
 # The data extends from -2000 through 2499.
 #

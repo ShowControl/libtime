@@ -1,7 +1,7 @@
 #!python3
 # -*- coding: utf-8
 
-# Python interface to libtime, June 4, 2019.
+# Python interface to libtime, June 17, 2019.
 
 # Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
@@ -109,7 +109,11 @@ def time_DTAI (Julian_day_number, variable_length_seconds_before_year):
 
 sub.time_Julian_day_number.argtypes = [ctypes.c_int, ctypes.c_int,
                                        ctypes.c_int]
-"""Compute the Julian Day Number corresponding to a date."""
+"""Compute the Julian Day Number corresponding to a date.
+Note that this subroutine returns just the integer part
+of the Julian Day Number.  Add 0.5 to get the real Julian
+Day Number, or subtract 2400000 to get the Modified Julian
+Day Number (MJD)."""
 def time_Julian_day_number (year, month, day):
     return (sub.time_Julian_day_number (year, month, day))
 

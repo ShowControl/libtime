@@ -1,5 +1,5 @@
 /*
- * File: time_subroutines.h, author: John Sauter, date: April 28, 2019.
+ * File: time_subroutines.h, author: John Sauter, date: June 17, 2019.
  * Header file for subroutines to deal with UTC time.
  */
 
@@ -66,7 +66,11 @@ time_DTAI (int Julian_day_number,
 	   int variable_length_seconds_before_year)
   __attribute__ ((const));
 
-/* Compute the Julian Day Number corresponding to a date.  */
+/* Compute the Julian Day Number corresponding to a date.  
+ * Note that this returns just the integer part of the
+ * Julian Day Number.  Add 0.5 to get the real Julian Day
+ * Number, or subtract 2400000 to get the Modified Julian
+ * Day Number (MJD).  */
 int
 time_Julian_day_number (int year, int month, int day)
   __attribute__ ((const));

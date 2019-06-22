@@ -1,5 +1,5 @@
 /*
- * File: test_JDN.c, author: John Sauter, date: June 16, 2019.
+ * File: test_JDN.c, author: John Sauter, date: June 18, 2019.
  * Test the JDN conversion.
  */
 
@@ -59,7 +59,7 @@ display_JDN (int year_no, int month_no, int mday_no)
   int the_JDN;
   
   the_JDN = time_Julian_day_number (year_no, month_no, mday_no);
-  printf ("Year %i Month %i Day %i is JDN %i.\n",
+  printf ("Year %i Month %i Day %i is JDN %i.5.\n",
 	  year_no, month_no, mday_no, the_JDN);
   return;
 }

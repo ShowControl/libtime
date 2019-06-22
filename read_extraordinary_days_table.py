@@ -49,7 +49,7 @@ parser = argparse.ArgumentParser (
 parser.add_argument ('input_file',
                      help='the table of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_extraordinary_days_table 2.2 2019-06-16',
+                     version='read_extraordinary_days_table 2.3 2019-06-19',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -205,15 +205,15 @@ for byte_string in file_data:
     lod = int(matchd.groupdict () ['lod'])
     DTAI = int(matchd.groupdict () ['DTAI'])
     if jdn in extraordinary_days:
-      print ("Julian Day Number " + str(jdn) + " seen more than once.")
+      print ("Julian Day Number " + str(jdn) + ".5 seen more than once.")
       error_counter = error_counter + 1
     if jdn < previous_jdn:
-      print ("Julian Day Number " + str(jdn) + " out of order.")
+      print ("Julian Day Number " + str(jdn) + ".5 out of order.")
       error_counter = error_counter + 1
 
     if (first_data_line == 0):
       if (abs(int(DTAI) - int(previous_DTAI)) != 1):
-        print ("At Julian Day Number " + str(jdn) + ", DTAI of " + str(DTAI) +
+        print ("At Julian Day Number " + str(jdn) + ".5, DTAI of " + str(DTAI) +
                " does not differ from the previous DTAI of " +
                str(previous_DTAI) + " by plus or minus 1." + "\n")
         error_counter = error_counter + 1
@@ -223,7 +223,7 @@ for byte_string in file_data:
     previous_DTAI = DTAI
     first_data_line = 0
     if (do_trace == 1):
-      tracefile.write ("At Julian Day Number " + str(jdn) +
+      tracefile.write ("At Julian Day Number " + str(jdn) + ".5" +
                        " DTAI was " + str(DTAI) + "." + "\n")
     continue
 
@@ -243,7 +243,8 @@ if ("START_DATE" not in symbol_values):
 else:
   start_date = symbol_values ["START_DATE"]
   if (verbosity_level > 0):
-    print ("Start date is " + str(start_date) + " = " + greg (start_date, " "))
+    print ("Start date is " + str(start_date) + ".5 = " +
+           greg (start_date, " "))
   if (have_latex_start_jdn == 0):
     latex_start_jdn = int(start_date)
   if (have_gnuplot_start_jdn == 0):
@@ -257,7 +258,7 @@ if ("END_DATE" not in symbol_values):
 else:
   end_date = symbol_values ["END_DATE"]
   if (verbosity_level > 0):
-    print ("End date is " + str(end_date) + " = " + greg (end_date, " "))
+    print ("End date is " + str(end_date) + ".5 = " + greg (end_date, " "))
   if (have_latex_end_jdn == 0):
     latex_end_jdn = int(end_date)
   if (have_gnuplot_end_jdn == 0):
@@ -271,14 +272,14 @@ if ("EXPIRATION_DATE" not in symbol_values):
 else:
   expiration_date = int(symbol_values ["EXPIRATION_DATE"])
   if (verbosity_level > 0):
-    print ("Expiration date is " + str(expiration_date) + " = " + 
+    print ("Expiration date is " + str(expiration_date) + ".5 = " + 
            greg (expiration_date, " "))
   today = datetime.datetime.now()
   today_jdn_pair = gcal2jd (today.year, today.month, today.day)
-  today_jdn = int(today_jdn_pair [0] + today_jdn_pair [1] + 0.5)
+  today_jdn = int(today_jdn_pair [0] + today_jdn_pair [1] - 0.5)
   if (verbosity_level > 1):
     print ("Today, " + greg (today_jdn, " ") + ", " +
-           " expressed as a Julian Day Number, is " + str(today_jdn))
+           " expressed as a Julian Day Number, is " + str(today_jdn) + ".5.")
   if (today_jdn > expiration_date):
     print ("This file has expired.  You should find a later version," +
            " or update it yourself" + "\n" +
@@ -289,12 +290,14 @@ else:
 if (error_counter == 0):
   for extraordinary_day in extraordinary_days:
     if (extraordinary_day < int(symbol_values["START_DATE"])):
-      print ("Julian Day Number " + str(extraordinary_day) +
-             " is before the start date of " + symbol_values["START_DATE"])
+      print ("Julian Day Number " + str(extraordinary_day) + ".5" +
+             " is before the start date of " + symbol_values["START_DATE"] +
+             ".5.")
       error_counter = error_counter + 1
       if (extraordinary_day > int(symbol_values["END_DATE"])):
-        print ("Julian Day NUmber " + str(extraordinary_day) +
-               " is after the end date of " + symbol_values["END_DATE"])
+        print ("Julian Day NUmber " + str(extraordinary_day) + ".5"
+               " is after the end date of " + symbol_values["END_DATE"] +
+               ".5.")
         error_counter = error_counter + 1
 
 # If there are still no errors, compute the checksum.
@@ -339,8 +342,8 @@ if ((do_latex_output == 1) & (error_counter == 0)):
   latex_output_file = open (latex_output_file_name, 'wt')
   latex_output_file.write ("\\begin{longtable}{|r|r|r|l|}" + "\n")
   latex_output_file.write ("\\caption{Extraordinary days ")
-  latex_output_file.write ("from " + greg (latex_start_jdn, " ") + " to " +
-                           greg (latex_end_jdn, " ") + "} \\\\" + "\n")
+  latex_output_file.write ("from " + greg (latex_start_jdn, " ") + ".5 to " +
+                           greg (latex_end_jdn, " ") + ".5} \\\\" + "\n")
   latex_output_file.write ("\\hline Julian Day Number &" +
                            " length in seconds &" +
                            " DTAI &" +
@@ -355,7 +358,7 @@ if ((do_latex_output == 1) & (error_counter == 0)):
         jdn_length = day_length [extraordinary_day]
       else:
         jdn_length = 86400
-      latex_output_file.write ("\\num{" + str(extraordinary_day) + "} & " +
+      latex_output_file.write ("\\num{" + str(extraordinary_day) + ".5} & " +
                                "\\num{" + str(jdn_length) + "} & " +
                                "\\num{" + str(DTAI) + "} & " +
                                "\\# " + greg (extraordinary_day, " ") +
@@ -377,13 +380,13 @@ if ((do_gnuplot_output == 1) & (error_counter == 0)):
       DTAI = extraordinary_days [extraordinary_day]
       if (first_point_plotted == 0):
         if (extraordinary_day > gnuplot_start_jdn):
-          gnuplot_output_file.write (str (gnuplot_start_jdn) + " " +
+          gnuplot_output_file.write (str (gnuplot_start_jdn) + ".5 " +
                                      str (DTAI) + "\n")
         first_point_plotted = 1
-      gnuplot_output_file.write (str (extraordinary_day) + " " +
+      gnuplot_output_file.write (str (extraordinary_day) + ".5 " +
                                  str (DTAI) + "\n")
 
-  gnuplot_output_file.write (str (gnuplot_end_jdn) + " " +
+  gnuplot_output_file.write (str (gnuplot_end_jdn) + ".5 " +
                              str (DTAI) + "\n")
   gnuplot_output_file.close()
 
