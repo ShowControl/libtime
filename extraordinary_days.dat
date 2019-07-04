@@ -50,17 +50,18 @@
 # been updated.  If you find yourself using this file after its EXPIRATION_DATE,
 # look for an updated version of the file.  If necessary you can update it
 # yourself, using IERS Bulletin C.  This file is current as of IERS Bulletin
-# C 57, dated January 7, 2019.  Extraordinary days after the expiration date
+# C 58, dated July 4, 2019.  Extraordinary days after the expiration date
 # are projections, and are subject to change in later revisions of this file.
 #
 # CHECKSUM is 64 hex digits of the SHA256 hash of this file, excluding the
 # CHECKSUM line.  The sample reading software verifies the checksum, to
-# defend against accidental corruption.
+# defend against accidental corruption.  It also displays the correct checksum
+# in case you are updating the file yourself.
 #
 START_DATE=990574       # 1 Jan -2000
 END_DATE=2634166        # 1 Jan 2500
-EXPIRATION_DATE=2458845 # 28 Dec 2019
-CHECKSUM=973a4b927196dc8d86bca2f12f9761068767c5a2dd9500548701dcb60a21d7c9
+EXPIRATION_DATE=2459028 # 28 Jun 2020
+CHECKSUM=60ad27b70b20ee6c49d70f8ede5f005cee8f43231ce777f4bacc8a4a0fc6521e
 #
 # The data extends from -2000 through 2499.
 #

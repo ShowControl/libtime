@@ -1,3 +1,9 @@
+2019-07-04 3:6:0
+  Update to IERS Bulletin C 58, issued July 4, 2019, which
+  states that no leap second will be introduced at the end of
+  December 2019, so UTC-TAI will remain at -37 seconds for the next six
+  months, at least.
+  
 2019-06-22 3:5:0
   Be more careful with the definition and display of Julian Day Numbers.
   
@@ -18,7 +24,7 @@
   June of 2051.  Add a Python example.
   
 2019-04-28 3:0:0
-  Add support for Python.  Int128_to_string takes its value
+  Add support for Python.  Int128_to_string now takes its value
   argument by reference instead of by value.
   
 2019-04-20 2:11:0
@@ -53,7 +59,7 @@
   back to December 2094.
   
 2019-01-12 2:5:0
-  Update to IERS Bulletin C57, issued January 7, 2019, which
+  Update to IERS Bulletin C 57, issued January 7, 2019, which
   states that no leap second will be introduced at the end of June,
   2019, so UTC-TAI will remain at -37 seconds for the next six
   months, at least.
@@ -89,7 +95,7 @@
   rate of the Earth, projected into the future.
   
 2018-07-15 1:12:0
-  Update to IERS Bulletin C56, issued July 5, 2018, which states
+  Update to IERS Bulletin C 56, issued July 5, 2018, which states
   that no leap second will be introduced at the end of December,
   2018, so UTC-TAI will remain at -37 seconds for the next six
   months, at least.
