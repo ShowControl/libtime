@@ -1,3 +1,7 @@
+2019-07-27 3:7:0
+  Update the leap seconds before 1840 based on the latest research on
+  the rotation of the Earth.
+  
 2019-07-04 3:6:0
   Update to IERS Bulletin C 58, issued July 4, 2019, which
   states that no leap second will be introduced at the end of
