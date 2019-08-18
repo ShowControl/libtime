@@ -122,7 +122,7 @@ python_PYTHON = time_subroutines.py
 # See the NEWS file (and the update history in the PDF) for the history
 # of the version-info.
 #
-libtime_la_LDFLAGS = -version-info 3:7:0
+libtime_la_LDFLAGS = -version-info 3:8:0
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.
