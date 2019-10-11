@@ -1,5 +1,5 @@
 /*
- * File: time_diff.c, author: John Sauter, date: June 16, 2019.
+ * File: time_diff.c, author: John Sauter, date: October 11, 2019.
  */
 
 /*
@@ -112,9 +112,14 @@ time_diff (struct tm *A_tm, struct tm *B_tm,
 
 /* Compute the Julian Day Number corresponding to a specified
  * year, month and day in the Gregorian calender.  
- * Here, a Julian Day Number refers to a day as a whole, rather 
- * than to a particular moment within a day.  Day 0 is November 24,
- * 4714 BC, and Julian Day Numbers are always integers.  */
+ * A Julian Day starts at noon, so the Julian Day Number that 
+ * marks the start of a calendar day ends with .5.  We are only 
+ * concerned with days as a whole, and we would like to work with 
+ * integers, so we drop the .5 from the Julian Day Number that 
+ * marks the start of the calendar day.  If you wish to use the 
+ * number returned by this subroutine as a proper Julian Day 
+ * Number, append .5 to it.
+ */
 int
 time_Julian_day_number (int year, int month, int day)
 {
