@@ -1,3 +1,7 @@
+2019-11-05 3:14:0
+  Simplify the Makefile and clean up the example and test programs for rpmbuild.
+  Distribute an RPMBUILD spec file.
+  
 2019-10-31 3:13:0
   Delay the December 2021 leap second by six months to June 2022
   and the June 2037 leap second by six months to December 2037.

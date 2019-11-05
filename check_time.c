@@ -1,5 +1,5 @@
 /*
- * File: check_time.c, author: John Sauter, date: April 28, 2019.
+ * File: check_time.c, author: John Sauter, date: November 3, 2019.
  * Used by "make check" to be sure the subroutines work.
  */
 /*
@@ -61,7 +61,6 @@ do_test ()
   long long int seconds1, seconds2, seconds3;
   long long int the_time;
   __int128 big_number;
-  double time_val;
 
   printf ("Program start.\n");
   time_current_tm_nano (&program_start_tm, &program_start_nanoseconds);
@@ -125,7 +124,7 @@ do_test ()
     {
       printf ("Time is flowing backwards.\n");
       printf ("Start time is %s.  Current time is %s.\n",
-	      buffer4, &buffer2);
+	      buffer4, buffer2);
       printf ("Current: %s is \n     %s and %d nanoseconds\n",
 	      buffer1, buffer2, nanoseconds);
     }
@@ -980,7 +979,6 @@ do_test ()
       printf ("program ran from %s to %s.\n", buffer1, buffer2);
     }
   nanoseconds = nanoseconds - program_start_nanoseconds;
-  time_val = (double) seconds1 + (double) nanoseconds / (double) 1e9;
   printf ("Successful completion.\n");
   return 0;
 }

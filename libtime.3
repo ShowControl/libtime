@@ -1,11 +1,12 @@
-.TH LIBTIME 3 "2019-04-28" "John Sauter"
+.TH LIBTIME 3 "2019-11-04" "John Sauter"
 .SH NAME
 libtime \- manipulate representations of time
 .SH SYMOPSIS
-.B #include </usr/local/include/time_subroutines.h>
+.B #include <time_subroutines.h>
 .sp
 These subroutines are packaged in a library called libtime which is
-installed by default in /usr/local/lib.  To include them when linking,
+installed in either /usr/lib or /usr/local/lib.  In the latter case,
+to include them when linking,
 specify \fB -L/usr/local/lib -Wl,-rpath -Wl,/usr/local/lib -ltime \fR
 in your GCC command line.
 .SH DESCRIPTION
@@ -60,6 +61,10 @@ This function is used internally to
 determine the number of leap seconds between two dates.  If
 variable_length_seconds_before_year is greater than INT_MIN,
 leap seconds before January 1 of the specified year are ignored.
+Note that Julian days start at noon, so midnight would be an
+integer plus 0.5.  For convenience this subroutine just takes
+the integer part of the Julian Day Number, with the understanding
+that the number plus 0.5 is midnight of the specified day.
 .sp
 .TP
 int time_Julian_day_number (int year, int month, int day);
@@ -74,6 +79,10 @@ which extends the Gregorian leap year rules back in time.  The Gregorian and
 Proleptic Gregorian calendars matche dates to seasons better than the Julian
 calendar.  This function is used internally to turn a date into a simpler
 count of days.
+Note that Julian days start at noon, so midnight would be an
+integer plus 0.5.  For convenience this subroutine just takes
+the integer part of the Julian Day Number, with the understanding
+that the number plus 0.5 is midnight of the specified day.
 .sp
 .TP
 int time_length_local_minute (struct tm *time_tm, int variable_length_seconds_before_year);

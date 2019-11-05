@@ -1,5 +1,5 @@
 /*
- * File: test_JDN.c, author: John Sauter, date: June 18, 2019.
+ * File: test_JDN.c, author: John Sauter, date: November 2, 2019.
  * Test the JDN conversion.
  */
 
@@ -41,18 +41,8 @@
 
 #include "time_subroutines.h"
 
-static char *output_file = NULL;
-static double running_time = 0.0;
-static double delay_time = 0.0;
 static int debug_level = 0;
 
-/* routine to exit with an error message */
-static void
-errno_exit (const char *s)
-{
-  fprintf (stderr, "%s error %d, %s\n", s, errno, strerror (errno));
-  exit (EXIT_FAILURE);
-}
 static void
 display_JDN (int year_no, int month_no, int mday_no)
 {

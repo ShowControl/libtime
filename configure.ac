@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([time], [2019.10.31], [John_Sauter@systemeyescomputerstore.com],
+AC_INIT([time], [2019.11.05], [John_Sauter@systemeyescomputerstore.com],
 [libtime],["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([time_diff.c])
@@ -32,6 +32,53 @@ AM_CONDITIONAL([ENABLE_PDF], [test "$enable_pdf" = "yes"])
 # Libtool
 LT_PREREQ([2.2])
 LT_INIT()
+
+#
+# The version-info below is used by libtool's versioning system.
+# It specifies three integers: current, revision and age.
+# Each release of a library might change the global functions that
+# it supports, by adding new entry points, removing old entry points,
+# or changing the arguments of existing entry points.
+# The values change on each release, depending on the nature of the changes
+# to the library.  Here are the change rules from the GNU Libtool
+# documentation:
+#
+#  1. Start with version information of ‘0:0:0’ for each libtool library.
+#  2. Update the version information only immediately before a public
+#     release of your software. More frequent updates are unnecessary,
+#     and only guarantee that the current interface number gets larger faster.
+#  3. If the library source code has changed at all since the last update,
+#     then increment revision (‘c:r:a’ becomes ‘c:r+1:a’).
+#  4. If any interfaces have been added, removed, or changed since the last
+#     update, increment current, and set revision to 0.
+#  5. If any interfaces have been added since the last public release,
+#     then increment age.
+#  6. If any interfaces have been removed or changed since the last public
+#     release, then set age to 0.
+#
+# The following explanation may help to understand the above rules a bit
+# better: consider that there are three possible kinds of reactions from
+# users of your library to changes in a shared library:
+#
+#  1. Programs using the previous version may use the new version as drop-in
+#     replacement, and programs using the new version can also work with the
+#     previous one. In other words, no recompiling nor relinking is needed.
+#     In this case, bump revision only, don’t touch current nor age.
+#  2. Programs using the previous version may use the new version as drop-in
+#     replacement, but programs using the new version may use APIs not present
+#     in the previous one. In other words, a program linking against the new
+#     version may fail with “unresolved symbols” if linking against the old
+#     version at runtime: set revision to 0, bump current and age.
+#  3. Programs may need to be changed, recompiled, and relinked in order to
+#     use the new version. Bump current, set revision and age to 0.
+#
+# See the NEWS file (and the update history in the PDF) for the history
+# of the version-info.  When these values are changed, the parallel values
+# in the libtime.spec file must also be changed.
+#
+AC_SUBST(libtool_version_current,"3")
+AC_SUBST(libtool_version_revision, "14")
+AC_SUBST(libtool_version_age, "0")
 
 # Checks for programs.
 AC_PROG_CC

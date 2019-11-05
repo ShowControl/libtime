@@ -1,8 +1,8 @@
 /*
- * File: example_05.c, author: John Sauter, date: December 2, 2018.
+ * File: example_05.c, author: John Sauter, date: November 3, 2019.
  */
 /*
- * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -103,8 +103,6 @@ static const struct option long_options[] = {
 int
 main (int argc, char **argv)
 {
-
-  int date_val;
   
   for (;;)
     {

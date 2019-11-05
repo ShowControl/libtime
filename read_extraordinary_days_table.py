@@ -27,6 +27,7 @@
 #     telephone: (603) 424-1188
 #     e-mail: John_Sauter@systemeyescomputerstore.com
 
+import os
 import sys
 import re
 import hashlib
@@ -49,7 +50,7 @@ parser = argparse.ArgumentParser (
 parser.add_argument ('input_file',
                      help='the table of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_extraordinary_days_table 2.3 2019-06-19',
+                     version='read_extraordinary_days_table 2.4 2019-11-02',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -65,8 +66,10 @@ parser.add_argument ('--gnuplot-start-jdn', metavar='gnuplot_start_jdn',
                      help='earliest date to put in the plot')
 parser.add_argument ('--gnuplot-end-jdn', metavar='gnuplot_end_jdn',
                      help='latest date to put in the plot')
-parser.add_argument ('--c-output', metavar='c_output_file',
-                     help='write data for a C program')
+parser.add_argument ('--c-output-h', metavar='c_output_h_file',
+                     help='write .h data for a C program')
+parser.add_argument ('--c-output-tab', metavar='c_output_tab_file',
+                     help='write .tab data for a C program')
 parser.add_argument ('--c-start-jdn', metavar='c_start_jdn',
                      help='earliest date to put in the C file')
 parser.add_argument ('--c-end-jdn', metavar='c_end_jdn',
@@ -90,7 +93,8 @@ gnuplot_start_jdn = 0
 gnuplot_end_jdn = 0
 have_gnuplot_start_jdn = 0
 have_gnuplot_end_jdn = 0
-do_c_output = 0
+do_c_output_h = 0
+do_c_output_tab = 0
 c_start_jdn = 0
 c_end_jdn = 0
 have_c_start_jdn = 0
@@ -150,9 +154,13 @@ if (arguments ['gnuplot_end_jdn'] != None):
   have_gnuplot_end_jdn = 1
   gnuplot_end_date = int(arguments ['gnuplot_end_jdn'])
     
-if (arguments ['c_output'] != None):
-  do_c_output = 1
-  c_output_file_name = arguments ['c_output']
+if (arguments ['c_output_h'] != None):
+  do_c_output_h = 1
+  c_output_h_file_name = arguments ['c_output_h']
+
+if (arguments ['c_output_tab'] != None):
+  do_c_output_tab = 1
+  c_output_tab_file_name = arguments ['c_output_tab']
 
 if (arguments ['c_start_jdn'] != None):
   have_c_start_jdn = 1
@@ -397,42 +405,49 @@ if ((do_gnuplot_output == 1) & (error_counter == 0)):
 # Number of the day which starts (not ends, as in the above examples)
 # with a new value of DTAI, and that new DTAI value.
 #
-if ((do_c_output == 1) & (error_counter == 0)):
-  c_output_file = open (c_output_file_name + ".tab", 'wt')
+if ((do_c_output_tab == 1) & (error_counter == 0)):
+  c_output_tab_file = open (c_output_tab_file_name, 'wt')
   first_date_written = 0
-  number_of_entries = 0
   for extraordinary_day in sorted(extraordinary_days.keys()):
     if ((extraordinary_day >= c_start_jdn) &
         (extraordinary_day <= c_end_jdn)):
       DTAI = extraordinary_days [extraordinary_day]
       if (first_date_written == 0):
         if (extraordinary_day > c_start_jdn):
-          c_output_file.write (
+          c_output_tab_file.write (
             "{" + str (c_start_jdn + 1) + ", " + str (DTAI) + "}, " +
             "/* " + greg(c_start_jdn+1, " ") + " */\n")
         first_date_written = 1
-        number_of_entries = number_of_entries + 1
-      c_output_file.write (
+      c_output_tab_file.write (
         "{" + str (extraordinary_day+1) + ", " + str (DTAI) + "}, " +
         "/* " + greg(extraordinary_day+1, " ") + " */\n")
-      number_of_entries = number_of_entries + 1
 
-  c_output_file.write (
+  c_output_tab_file.write (
     "{" + str (c_end_jdn) + ", " + str (DTAI) + "}, " +
     "/* " + greg(c_end_jdn, " ") + " */\n")
-  number_of_entries = number_of_entries + 1
-  c_output_file.close()
+  c_output_tab_file.close()
 
-  #
-  # Also write a header file giving the size of the table.
-  #
-  c_output_file = open (c_output_file_name + ".h", 'wt')
-  c_output_file.write (
+#
+# If requested, write a .h file to allocate memory for the above
+# table.
+#
+if ((do_c_output_h == 1) & (error_counter == 0)):
+  number_of_entries = 0
+  for extraordinary_day in sorted(extraordinary_days.keys()):
+    if ((extraordinary_day >= c_start_jdn) &
+        (extraordinary_day <= c_end_jdn)):
+      number_of_entries = number_of_entries + 1
+  number_of_entries = number_of_entries + 2
+  c_output_h_file = open (c_output_h_file_name, 'wt')
+  c_output_h_file.write (
     "#define DTAI_ENTRY_COUNT " + str(number_of_entries) + "\n")
-  c_output_file.close()
+  c_output_h_file.close()
 
 if (do_trace == 1):
   tracefile.close()
 
 if (error_counter > 0):
   print ("Encountered " + str(error_counter) + " errors.")
+  sys.exit(os.EX_DATAERR)
+
+sys.exit(os.EX_OK)

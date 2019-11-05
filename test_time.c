@@ -1,5 +1,5 @@
 /*
- * File: test_time.c, author: John Sauter, date: April 28, 2019.
+ * File: test_time.c, author: John Sauter, date: November 3, 2019.
  * Test the time subroutines.
  */
 
@@ -83,24 +83,24 @@ do_logging (char *log_file_name)
   struct tm target_time_tm;
   long long int add_nanoseconds;
 
-  printf ("Size of TM struture is: %d bytes or %d ints.\n",
+  printf ("Size of TM struture is: %ld bytes or %ld ints.\n",
 	  sizeof (base_time_tm), sizeof (base_time_tm) / sizeof (int));
-  printf ("Offset of tm_sec is: %d.\n", offsetof (struct tm, tm_sec));
-  printf ("Offset of tm_min is: %d.\n", offsetof (struct tm, tm_min));
-  printf ("Offset of tm_hour is: %d.\n", offsetof (struct tm, tm_hour));
-  printf ("Offset of tm_mday is: %d.\n", offsetof (struct tm, tm_mday));
-  printf ("Offset of tm_mon is: %d.\n", offsetof (struct tm, tm_mon));
-  printf ("Offset of tm_year is: %d.\n", offsetof (struct tm, tm_year));
-  printf ("Offset of tm_wday is: %d.\n", offsetof (struct tm, tm_wday));
-  printf ("Offset of tm_yday is: %d.\n", offsetof (struct tm, tm_yday));
-  printf ("Offset of tm_isdst is: %d.\n", offsetof (struct tm, tm_isdst));
-  printf ("Size of tm_isdst is: %d.\n",
+  printf ("Offset of tm_sec is: %ld.\n", offsetof (struct tm, tm_sec));
+  printf ("Offset of tm_min is: %ld.\n", offsetof (struct tm, tm_min));
+  printf ("Offset of tm_hour is: %ld.\n", offsetof (struct tm, tm_hour));
+  printf ("Offset of tm_mday is: %ld.\n", offsetof (struct tm, tm_mday));
+  printf ("Offset of tm_mon is: %ld.\n", offsetof (struct tm, tm_mon));
+  printf ("Offset of tm_year is: %ld.\n", offsetof (struct tm, tm_year));
+  printf ("Offset of tm_wday is: %ld.\n", offsetof (struct tm, tm_wday));
+  printf ("Offset of tm_yday is: %ld.\n", offsetof (struct tm, tm_yday));
+  printf ("Offset of tm_isdst is: %ld.\n", offsetof (struct tm, tm_isdst));
+  printf ("Size of tm_isdst is: %ld.\n",
 	  sizeof(((struct tm *)0)->tm_isdst));
-  printf ("Offset of tm_gmtoff is: %d.\n", offsetof (struct tm, tm_gmtoff));
-  printf ("Size of tm_gmtoff is: %d.\n",
+  printf ("Offset of tm_gmtoff is: %ld.\n", offsetof (struct tm, tm_gmtoff));
+  printf ("Size of tm_gmtoff is: %ld.\n",
 	  sizeof(((struct tm *)0)->tm_gmtoff));
-  printf ("Offset of tm_zone is: %d.\n", offsetof (struct tm, tm_zone));
-  printf ("Size of tm_zone is: %d.\n",
+  printf ("Offset of tm_zone is: %ld.\n", offsetof (struct tm, tm_zone));
+  printf ("Size of tm_zone is: %ld.\n",
 	  sizeof(((struct tm *)0)->tm_zone));
   
   log_file = fopen (log_file_name, "a+");

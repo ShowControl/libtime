@@ -1,0 +1,34 @@
+Building on Fedora Copr, November 5, 2019
+
+To build libtime using Fedora Copr, and thus have an internet-accessible
+repository, proceed as follows:
+
+1. Perform whatever updates are called for to the libtime sources.
+
+2. Update the version number to today's date, and update the version-info
+   triplet, in all the places where they appear.
+
+3. Build and test the libtime tarball.
+
+4. Copy the tarball to ~/rpmbuild/SOURCES/
+
+5. cd ~/rpmbuild/SOURCES
+
+6. Use this command to create the SRPM in ~/rpmbuild/SRPMS/ and
+   verify that the RPM can be built on my configuration.
+   rpmbuild -ta <name of the tarball>.
+
+7. cd ~/rpmbuild/SRPMS
+
+8. Make sure the spec file is able to deal with OpenSUSE:
+   mock -r opensuse-tumbleweed-x86_64 <name of the SRPM file>
+
+9. Now use Fedora COPR to build all of the configurations:
+   copr-cli build libtime <name of the SRPM>
+
+9. When the build is finished, use an internet browser to connect to
+   the Fedora Copr weh site, log in, and examine the results of the
+   build.  You can also adjust which platforms are built.  Re-run
+   the previous step to do the build again.  Refresh the repositories
+   if all is well.
+   
