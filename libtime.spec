@@ -1,7 +1,7 @@
 Name:           libtime
-Version:        2019.11.05
+Version:        2019.11.06
 Release:        1%{?dist}
-Summary:        A library to manipulate time values
+Summary:        Manipulate time values
 
 License:        GPLv3+
 URL:            https://github.com/ShowControl/libtime/
@@ -12,11 +12,11 @@ BuildRequires:  make
 BuildRequires:  python3 >= 3.5, python3-jdcal
 BuildRequires:  git
 
-Provides: libtime
+ExcludeArch:    i386
+# Needs 128-bit integer support in gcc
 
 %description
-A library to manipulate time values stored in a tm structure.  Using this
-library you can avoid using POSIX time_t for telling time.
+Manipulate time values stored in a POSIX tm structure.
 
 # The following must match the values in configure.ac.
 %global libtool_version_current 3
@@ -33,25 +33,45 @@ library you can avoid using POSIX time_t for telling time.
 %install
 %make_install
 
-%post
+%package devel
+Summary: Manipulate time values stored in a POSIX tm structure
+Requires: libtime = %{version}
 
-%preun
+%description devel
+The %{name}-devel package contains libraries and header files for
+developing applications that use %{name}.  Use libtime to manipulate
+time values stored in a POSIX tm structure, thus avoiding the use of
+POSIX time_t, which does not support leap seconds.
 
 %files
-%{_includedir}/time_subroutines.h
+%defattr(-,root,root)
 %{_exec_prefix}/lib/python3.*/site-packages/__pycache__/time_subroutines.cpython-3*.pyc
 %{_exec_prefix}/lib/python3.*/site-packages/time_subroutines.py
-%{_libdir}/libtime.a
 %{_libdir}/libtime.la
-%{_libdir}/libtime.so
 %{_libdir}/libtime.so.%{libtool_version_current}
 %{_libdir}/libtime.so.%{libtool_version_current}.%{libtool_version_revision}.%{libtool_version_age}
+%exclude /usr/share/doc/%{name}/AUTHORS
+%exclude /usr/share/doc/%{name}/COPYING
+%exclude /usr/share/doc/%{name}/ChangeLog
+%exclude /usr/share/doc/%{name}/INSTALL
+%exclude /usr/share/doc/%{name}/NEWS
+%exclude /usr/share/doc/%{name}/README
+%exclude /usr/share/doc/%{name}/LICENSE
+%license LICENSE
+
+%files devel
+%defattr(-,root,root)
+%{_includedir}/time_subroutines.h
+%{_libdir}/libtime.a
+%{_libdir}/libtime.so
 %{_libdir}/pkgconfig/libtime.pc
 %{_mandir}/man3/libtime.%{libtool_version_current}.gz
-/usr/share/doc/libtime
-
+%doc AUTHORS COPYING ChangeLog NEWS README
 %doc avoid_time_t.pdf
+%license LICENSE
 
 %changelog
+* Wed Nov  6 2019 John Sauter <John_Sauter@sytemeyescomputerstore.com>
+- 2019.11.06-1 divide into libtime and libtime-devel
 * Tue Nov  5 2019 John Sauter <John_Sauter@sytemeyescomputerstore.com>
-- 2018.11.05-1 initial version of the spec file
+- 2019.11.05-1 initial version of the spec file

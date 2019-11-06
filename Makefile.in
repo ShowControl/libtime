@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: November 4, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: November 5, 2019.
 
 
 
@@ -705,7 +705,8 @@ python_PYTHON = time_subroutines.py
 # The Libtool version-info integers are defined in configure.ac.
 libtime_la_LDFLAGS = -version-info @libtool_version_current@:@libtool_version_revision@:@libtool_version_age@
 
-# The spec file is used to build an RPM for Fedora distributions
+# The spec file is used to build twp RPMs
+# for Fedora and OpenSUSE distributions.
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.
