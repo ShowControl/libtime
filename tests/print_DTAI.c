@@ -1,10 +1,9 @@
 /*
- * File: sleep_until_midnight.c, author: John Sauter, date: November 11, 2018.
- * Sleep until just before midnight, UTC.
+ * File: print_DTAI.c, author: John Sauter, date: November 7, 2019.
+ * Print the value of DTAI for all days.
  */
-
 /*
- * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -35,54 +34,67 @@
 #include <errno.h>
 #include <time.h>
 
-#include "time_subroutines.h"
+#include "src/time_subroutines.h"
 
 static int debug_level = 0;
 
-/* Sleep until midnight  */
+/* Print the value of DTAI for all Julian Day Numbers.  */
 void
-do_sleep ()
+do_test (int variable_length_seconds_before_year)
 {
+
+  int JDN, new_JDN, value, old_value;
   struct tm time_tm;
-  struct tm local_time_tm;
   char buffer1 [64];
-  char buffer2 [64];
-  
-  time_current_tm (&time_tm);
-  time_tm_to_string (&time_tm, &buffer2 [0], sizeof (buffer2));
-  time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
-  time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof(buffer1));
-  printf ("now: %s local, %s UTC.\n", buffer1, buffer2);
 
-  time_tm.tm_hour = 23;
-  time_tm.tm_min = 58;
+  time_current_tm (&time_tm);
+  time_tm.tm_year = -4000 - 1900;
+  time_tm.tm_mon = 0;
+  time_tm.tm_mday = 1;
+  time_tm.tm_hour = 0;
+  time_tm.tm_min = 0;
   time_tm.tm_sec = 0;
-  time_tm_to_string (&time_tm, &buffer2 [0], sizeof (buffer2));
-  time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
-  time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof(buffer1));
-  printf ("sleep until: %s local, %s UTC.\n", buffer1, buffer2);
 
-  time_sleep_until (&time_tm, 0, INT_MIN);
-
-  time_current_tm (&time_tm);
-  time_tm_to_string (&time_tm, &buffer2 [0], sizeof (buffer2));
-  time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
-  time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof(buffer1));
-  printf ("after sleep, now: %s local, %s UTC.\n", buffer1, buffer2);
-  
-  return;
+  JDN = time_Julian_day_number (time_tm.tm_year + 1900,
+				time_tm.tm_mon + 1,
+				time_tm.tm_mday);
+  old_value = 0;
+  while (JDN <= 3000000)
+    {
+      value = time_DTAI (JDN, variable_length_seconds_before_year);
+      if (value != old_value)
+	{
+	  time_tm_to_string (&time_tm, &buffer1 [0], sizeof (buffer1));
+	  printf ("JDN %d (%s) has DTAI %d.\n", JDN, buffer1, value);
+	  old_value = value;
+	}
+      
+      time_UTC_add_days (&time_tm, 1, 1,
+			 variable_length_seconds_before_year);
+      new_JDN = time_Julian_day_number (time_tm.tm_year + 1900,
+					time_tm.tm_mon + 1,
+					time_tm.tm_mday);
+      if (new_JDN != (JDN + 1))
+	{
+	  printf ("Problem in time_Julian_day.\n");
+	  return;
+	}
+      
+      JDN = new_JDN;
+    }
 }
 
 /* Print a helpful message.  */
 static void
 usage (FILE * fp, int argc, char **argv)
 {
+
   if (argc >= 1)
     {
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
-	       "sleep_until_midnight\n"
-	       " Version 1.1 2018-11-11\n"
+	       "print DTAI for all Julian Day Numbers.\n"
+	       "Version 1.2 2019-11-07\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"
@@ -99,10 +111,12 @@ static const struct option long_options[] = {
   {0, 0, 0, 0}
 };
 
-/* main program: parse options, perform sleep and exit. */
+/* main program: parse options, perform test and exit. */
 int
 main (int argc, char **argv)
 {
+
+  int variable_length_seconds_before_year;
   
   for (;;)
     {
@@ -132,8 +146,17 @@ main (int argc, char **argv)
 	  exit (EXIT_FAILURE);
 	}
     }
- 
-  do_sleep ();
+
+  printf ("argc is %d.\n", argc);
+
+  variable_length_seconds_before_year = INT_MIN;
+  if (argc > 1)
+    variable_length_seconds_before_year = atoi (argv [optind]);
+  if (variable_length_seconds_before_year != INT_MIN)
+    printf ("variable-length seconds before %d.\n",
+	    variable_length_seconds_before_year);
+
+  do_test (variable_length_seconds_before_year);
   exit (EXIT_SUCCESS);
 
   return 0;

@@ -1,5 +1,5 @@
 /*
- * File: test_time.c, author: John Sauter, date: November 3, 2019.
+ * File: test_time.c, author: John Sauter, date: November 7, 2019.
  * Test the time subroutines.
  */
 
@@ -39,7 +39,7 @@
 #include <sys/time.h>
 #include <sys/timex.h>
 
-#include "time_subroutines.h"
+#include "src/time_subroutines.h"
 
 static char *output_file = NULL;
 static double running_time = 0.0;

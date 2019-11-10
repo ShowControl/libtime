@@ -1,5 +1,5 @@
 /*
- * File: example_05.c, author: John Sauter, date: November 3, 2019.
+ * File: example_02.c, author: John Sauter, date: November 9, 2019.
  */
 /*
  * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
@@ -26,7 +26,6 @@
  *    e-mail: John_Sauter@systemeyescomputerstore.com
  */
 
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>		/* getopt_long() */
@@ -34,43 +33,65 @@
 #include <errno.h>
 #include <time.h>
 
-#include "time_subroutines.h"
+#include "../src/time_subroutines.h"
 
 static int debug_level = 0;
 
-/* Example 5: using PTP (IEEE 1588) with the SMPTE ST-2059-2 profile.  */
+/* Example 2: Periodic Backups.  */
 void
-example_5 (long long int time_stamp_value)
+example_2 ()
 {
-  struct tm time1_tm;
-  struct tm time2_tm;
-  struct tm time3_tm;
-  char buffer1 [128];
+  struct tm time_tm;
+  struct tm local_time_tm;
+  struct tm backup_tm;
+  struct tm extra_time_tm;
+  struct tm int_time_tm;
+  char buffer1 [64];
+  char buffer2 [64];
+  int found_time, day_incr, diff;
+  
+  time_current_tm (&time_tm);
+  time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
+  time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof(buffer1));
+  printf ("now: %s\n", buffer1);
+  local_time_tm.tm_hour = 3;
+  local_time_tm.tm_min = 0;
+  local_time_tm.tm_sec = 0;
 
-  /* Construct the base date of 1972-01-01T00:00:00Z.  */
-  time_current_tm (&time1_tm);
-  time1_tm.tm_year = 1972 - 1900;
-  time1_tm.tm_mon = 1 - 1;
-  time1_tm.tm_mday = 1;
-  time1_tm.tm_hour = 0;
-  time1_tm.tm_min = 0;
-  time1_tm.tm_sec = 0;
+  found_time = 0;
+  day_incr = 1;
+  while (!found_time)
+    {
+      time_copy_tm (&local_time_tm, &extra_time_tm);
+      time_local_add_days (&extra_time_tm, day_incr, 1, INT_MIN);
+      if ((extra_time_tm.tm_wday == 0) ||
+	  (extra_time_tm.tm_wday == 1))
+	day_incr = day_incr + 1;
+      else
+	found_time = 1;
+    }
 
-  /* Add the time stamp, which is an integer.  Note that the epoch
-   * for SMPTE ST-2059-2 is 63,072,010 seconds before the base date.
-   * PTP always uses fixed-length (SI) seconds.  */
-  time_copy_tm (&time1_tm, &time2_tm);
-  time_UTC_add_seconds (&time2_tm, time_stamp_value - 63072010, INT_MIN);
+  time_local_to_UTC (&extra_time_tm, &time_tm, INT_MIN);
+  time_tm_to_string (&time_tm, &buffer1 [0], sizeof (buffer1));
+  printf ("Next scheduled backup is at %s.\n", buffer1);
 
-  /* Convert to local time and use strftime to make a very readable 
-   * display.  */
-  time_UTC_to_local (&time2_tm, &time3_tm, INT_MIN);
-  strftime (&buffer1 [0], sizeof (buffer1),
-	    "%A, %B %d, %Y, %I:%M:%S %p %Z", &time3_tm);
-
-  /* Print the result.  */
-  printf ("PTP %lld displays as %s.\n", time_stamp_value, buffer1);
-  return;
+  /* To illustrate, assume the last backup was 29 days ago.  
+   */
+  time_current_tm (&backup_tm);
+  time_UTC_add_days (&backup_tm, -29, -1, INT_MIN);
+  time_tm_to_string (&backup_tm, &buffer2 [0], sizeof (buffer2));
+  printf ("Assume the last full backup was %s.\n", buffer2);
+  
+  time_local_add_months (&extra_time_tm, -1, 1, INT_MIN);
+  time_local_to_UTC (&extra_time_tm, &int_time_tm, INT_MIN);
+  time_tm_to_string (&int_time_tm, &buffer1 [0], sizeof (buffer1));
+  printf ("One month before the next scheduled backup is %s.\n",
+	  buffer1);
+  diff = time_diff (&int_time_tm, &backup_tm, INT_MIN);
+  if (diff < 0)
+    printf ("Next backup is full.\n");
+  else
+    printf ("Next backup is incremental.\n");
 }
 
 /* Print a helpful message.  */
@@ -81,8 +102,8 @@ usage (FILE * fp, int argc, char **argv)
     {
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
-	       "example_5\n"
-	       " Version 1.0 2018-12-02\n"
+	       "example_2\n"
+	       " Version 1.2 2019-11-07\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"
@@ -99,7 +120,7 @@ static const struct option long_options[] = {
   {0, 0, 0, 0}
 };
 
-/* main program: parse options, perform example and exit. */
+/* main program: parse options, perform test and exit. */
 int
 main (int argc, char **argv)
 {
@@ -132,11 +153,8 @@ main (int argc, char **argv)
 	  exit (EXIT_FAILURE);
 	}
     }
-
-  example_5 (0);
-  example_5 (15638408);
-  example_5 (47174409);
-  example_5 (63072010);
+ 
+  example_2 ();
   exit (EXIT_SUCCESS);
 
   return 0;

@@ -1,13 +1,14 @@
-Libtime is a package of subroutines for 64-bit computers to manipulate
-time values.  They are notable for handling leap seconds correctly by
+Libtime is a package of subroutines for the manipulation of time values
+on 64-bit computers.  The subroutines handle leap seconds correctly by
 avoiding the use of POSIX time_t for telling time.
 
-Notes to those who write software that calls libtime:
+Notes to those who write software that calls libtime subroutines:
 
-If you install libtime from the tarball you will need GNU make,
+If you wish to install libtime from the tarball you will need GNU make,
 python version 3 and its jdcal module.  Install GNU Make from
-the operating system repository.  Install the jdcal module with pip.
-First install pip if it isn't installed by default.  The package name
+the operating system repository.  Install the jdcal module either from
+the operating sytstem repository or with pip.  To install using pip,
+first install pip if it isn't installed by default.  The package name
 on both Ubuntu and Fedora is python3-pip.
 
 Then use pip to install jdcal:
@@ -23,21 +24,24 @@ In your C source code, define the entry points with:
 
     #include <time_subroutines.h>
     
-To compile and link your program prog.c, which uses the library, do this:
+To compile and link your program prog.c, which uses the library installed
+in /usr/local/lib, do this:
 
     gcc -L/usr/local/lib/ -Wl,-rpath=/usr/local/lib prog.c -ltime -o prog
 
 If you install libtime from an RPM (that is, through your Linux distribution's
 repository, or the equivalent) the library is installed in /usr/lib, so
-you need specify only -ltime to compile and link with it.
+you need specify only -ltime to compile and link with it.  There are
+two RPMs: libtime-devel for you and libtime for your users, which
+lacks the documentation and include files.
 
 In your Python source code, define the entry points with:
 
    import time_subroutines
    
-The documentation for the time subroutines is in avoid_time_t.pdf.
+Comprehensive documentation for the time subroutines is in avoid_time_t.pdf.
 If you are installing from an RPM this will be in /usr/share/doc/libtime/.
-If you are installing from the tarball you can create it by adding
+If you are installing from the tarball you can create the PDF by adding
 --enable-pdf to the ./configure line before running make, or doing
 a second run of make with make pdf.  You will need LaTeX and many of its
 packages to compile the PDF.  Sudo make install will then install the file
@@ -56,15 +60,16 @@ Notes to those who maintain libtime:
 To create the documentation file, invoke ./configure with --enable-pdf.
 You will need LaTeX to build it.  Building the distribution kit builds
 the PDF automatically.  For the convenience of those who write programs
-that call libtime, the documentation is also kept at this URL:
+that call the libtime subroutines, the documentation is also kept at this
+URL:
 
 https://commons.wikimedia.org/wiki/File:Avoid_Using_POSIX_time_t_for_Telling_Time.pdf
 
-The version number is the distribution date, since the unpredictability
-of leap seconds means the program will never be complete.  When updating
-the version number in configure.ac, don't forget to update the sharable
-image version triplet, which is in configure.ac, libtime.spec, NEWS and
-avoid_time_t.tex.
+The version number of libtime is the distribution date, since the
+unpredictability of leap seconds means the library will never be complete.
+When updating the version number in configure.ac, don't forget to update
+the sharable image version triplet, which is in configure.ac, NEWS and
+the revision history section of avoid_time_t.tex.
 
 The date also appears in avoid_time_t.tex, in three places: in the
 PDF metadata, on the title page, and in the revision history.  The date
@@ -75,7 +80,7 @@ Universal Time to Dates Before 1972", at this URL:
 https://commons.wikimedia.org/wiki/File:Extending_Coordinated_Universal_Time_to_Dates_Before_1972.pdf
 
 That document is the source for the leap seconds table, which is built
-from extraordinary_days.dat.
+from file extraordinary_days.dat.
 
 There are several test program in the distribution kit, which are built
 automatically.  I use test_ep to be sure all of the entry points are
@@ -84,4 +89,46 @@ make distcheck and I also extract all of the embedded files from the PDF
 into a clean directory and make sure the result builds.
 
 The restriction to 64-bit platforms is due to using 128-bit integers,
-which are not supported by gcc on 32-bit platforms.
+which are not supported by gcc on 32-bit platforms.  Some platforms
+to not have python3-jdcal available, which is needed at build time.
+
+I have not tried to port libtime to the Ubuntu distribution of GNU/Linux,
+but Alien seems to create reasonable .deb files from the libtime and
+libtime-devel RPMs.
+
+Here is the checklist I use to be sure I am distributing working software:
+
+1. Perform whatever updates are called for to the libtime sources.
+
+2. Update the version number to today's date, and update the version-info
+   triplet, in all the places where they appear.
+
+3. Build and test the libtime tarball.
+
+4. Copy the tarball to ~/rpmbuild/SOURCES/
+
+5. cd ~/rpmbuild/SOURCES
+
+6. Use the following command to create the SRPM in ~/rpmbuild/SRPMS/ and
+   verify that the RPM can be built on my computer.
+   rpmbuild -ta <name of the tarball>.
+
+7. cd ~/rpmbuild/SRPMS
+
+8. Make sure the spec file is able to deal with OpenSUSE:
+   mock -r opensuse-tumbleweed-x86_64 <name of the SRPM file>
+
+9. Now use Fedora COPR to build all of the configurations:
+   copr-cli build libtime <name of the SRPM>
+
+9. When the build is finished, use an internet browser to connect to
+   the Fedora Copr web site, log in, and examine the results of the
+   build.  I can also adjust which platforms are built, in which case
+   I re-run the previous step to do the build again.  Refresh the
+   repositories if all is well.
+   
+10. Create an empty subdirectory.  Copy the PDF file to it.
+    Use Okular to extract all of its embedded files.
+    bash fix_files.sh.  ./configure.  Make.  Make check.
+    Make PDF.  Make dist.  Make distcheck.
+

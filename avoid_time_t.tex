@@ -1,3 +1,4 @@
+
 \documentclass[letterpaper,twoside]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -72,11 +73,11 @@
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2019 by John Sauter},
-  pdfdate={2019-11-06},
+  pdfdate={2019-11-09},
   pdflicenseurl={http://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}  
 }
-\date{2019-11-06}
+\date{2019-11-09}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -243,9 +244,9 @@ CLOCK\_REAL\-TIME, except for the time zone, which should not be used.
 Clock\_gettime with clock ID set to CLOCK\_REAL\-TIME can be replaced by
 a function which returns the current time in a {\ttfamily tm} structure along
 with the number of nanoseconds since the last second.
-\inputminted[firstline=34]{c}{time_current_tm_nano.c}
+\inputminted[firstline=34]{c}{src/time_current_tm_nano.c}
 \embedfile[desc={Return the current time including nanoseconds},
-  mimetype={text/plain}]{time_current_tm_nano.c}
+  mimetype={text/plain}]{src/time_current_tm_nano.c}
 
 \subsection{clock\_nanosleep}
 Clock\_nanosleep with clock ID set to CLOCK\_REAL\-TIME and with flag
@@ -257,9 +258,9 @@ Clock\_nanosleep with clock ID set to CLOCK\_REAL\-TIME and with flag
 TIMER\_ABS\-TIME set can be replaced by a function which accepts
 a time in a {\ttfamily tm} structure and a count of nanoseconds
 since that second.
-\inputminted[firstline=32]{c}{time_sleep_until.c}
+\inputminted[firstline=32]{c}{src/time_sleep_until.c}
 \embedfile[desc={Sleep until the specified time},
-  mimetype={text/plain}]{time_sleep_until.c}
+  mimetype={text/plain}]{src/time_sleep_until.c}
 See subsection \ref{subsection:difftime} for time\_diff
 and an explanation of variable\_length\_sec\-onds\_before\_year.
 
@@ -280,9 +281,9 @@ If asctime isn't flexible enough, use strftime or see subsection
 \label{subsection:difftime}
 Difftime can be replaced by a function which returns the time in seconds
 between two times expressed using the {\ttfamily tm} structure.
-\inputminted[firstline=37]{c}{time_diff.c}
+\inputminted[firstline=37]{c}{src/time_diff.c}
 \embedfile[desc={Compute the number of seconds between two times},
-  mimetype={text/plain}]{time_diff.c}
+  mimetype={text/plain}]{src/time_diff.c}
 The table of changes in DTAI is too long to present here in full,
 but here are some of the lines:
 \inputminted[firstline=46880,lastline=46908]{c}{dtai_table.tab}
@@ -323,9 +324,9 @@ Localtime and localtime\_r convert a {\ttfamily time\_t} into
 a {\ttfamily tm} structure that
 represents local time.  We can replace this with a function that takes
 as input a {\ttfamily tm} structure that represents Coordinated Universal Time.
-\inputminted[firstline=32]{c}{time_utc_to_local.c}
+\inputminted[firstline=32]{c}{src/time_utc_to_local.c}
 \embedfile[desc={Convert Coordinated Universal Time to local time},
-  mimetype={text/plain}]{time_utc_to_local.c}
+  mimetype={text/plain}]{src/time_utc_to_local.c}
 See subsection \ref{subsection:copy} for time\_copy\_tm,
 subsection \ref{subsection:timeUTCadd} for
 time\_\-length\_\-prev\_\-UTC\_\-minute,
@@ -336,9 +337,9 @@ and subsection \ref{subsection:timelocaladd} for time\_local\_normalize.
 Mktime converts a {\ttfamily tm} structure that represents local time into a
 {\ttfamily time\_t}.  We can replace this with a function whose output is a
 {\ttfamily tm} structure that represents Coordinated Universal Time.
-\inputminted[firstline=32]{c}{time_local_to_utc.c}
+\inputminted[firstline=32]{c}{src/time_local_to_utc.c}
 \embedfile[desc={Convert local time to Coordinated Universal Time},
-  mimetype={text/plain}]{time_local_to_utc.c}
+  mimetype={text/plain}]{src/time_local_to_utc.c}
 See subsection \ref{subsection:timeUTCadd} for time\_UTC\_normalize.
 
 \subsection{nanosleep}
@@ -376,9 +377,9 @@ since the Epoch.  Don't use this.
 \subsection{time}
 Time returns the current time as a {\ttfamily time\_t}.
 Instead, return it as a {\ttfamily tm}.
-\inputminted[firstline=34]{c}{time_current_tm.c}
+\inputminted[firstline=34]{c}{src/time_current_tm.c}
 \embedfile[desc={Return the current time in a tm structure},
-  mimetype={text/plain}]{time_current_tm.c}
+  mimetype={text/plain}]{src/time_current_tm.c}
 
 \subsection{timegm}
 Timegm converts a {\ttfamily tm} structure containing Coordinated Universal Time
@@ -386,21 +387,21 @@ into a {\ttfamily time\_t}.
 We don't need it, since we are using the {\ttfamily tm} structure
 as our primary representation of time.  However, it is sometimes
 convenient to represent time as a single value instead of a structure.
-\inputminted[firstline=32]{c}{time_tm_to_integer.c}
+\inputminted[firstline=32]{c}{src/time_tm_to_integer.c}
 \embedfile[desc={Convert a time to an integer},
-  mimetype={text/plain}]{time_tm_to_integer.c}
+  mimetype={text/plain}]{src/time_tm_to_integer.c}
 
 The following subroutine goes one step further, by including the
 fraction of a second in the value.
-\inputminted[firstline=32]{c}{time_tm_nano_to_integer.c}
+\inputminted[firstline=32]{c}{src/time_tm_nano_to_integer.c}
 \embedfile[desc={Convert a time to a 128-bit integer},
-  mimetype={text/plain}]{time_tm_nano_to_integer.c}
+  mimetype={text/plain}]{src/time_tm_nano_to_integer.c}
 
 A 128-bit integer cannot be printed with printf, so here is a subroutine
 to convert it to a string.
-\inputminted[firstline=32]{c}{int128_to_string.c}
+\inputminted[firstline=32]{c}{src/int128_to_string.c}
 \embedfile[desc={Convert a 128-bit integer to a string},
-  mimetype={text/plain}]{int128_to_string.c}
+  mimetype={text/plain}]{src/int128_to_string.c}
 
 \section{Beyond POSIX}
 Just being able to do all the POSIX functions isn't enough to persuade
@@ -412,9 +413,9 @@ here are some subroutines to manipulate a time value.
 \subsection{Copy a time}
 \label{subsection:copy}
 Here is how to copy a time value from one {\ttfamily tm} structure to another.
-\inputminted[firstline=34]{c}{time_copy.c}
+\inputminted[firstline=34]{c}{src/time_copy.c}
 \embedfile[desc={Copy a time value from one tm structure to another},
-  mimetype={text/plain}]{time_copy.c}
+  mimetype={text/plain}]{src/time_copy.c}
 
 \subsection{Adding years, months, days, hours, minutes or seconds}
 \label{subsection:timeUTCadd}
@@ -424,22 +425,22 @@ minute or second field.  You can decrease these fields by adding a
 negative value.  When the target date is invalid, such as February 31,
 you can choose whether to round towards the future or towards the past
 to get a valid date.
-\inputminted[firstline=32]{c}{time_utc_add.c}
+\inputminted[firstline=32]{c}{src/time_utc_add.c}
 \embedfile[desc={Change the year, month, day, hour, minute or second
   of a UTC time value},
-  mimetype={text/plain}]{time_utc_add.c}
+  mimetype={text/plain}]{src/time_utc_add.c}
 The routines above use various time\_length subroutines to determine
 the length of the current or previous month or minute.
-\inputminted[firstline=32]{c}{time_length.c}
+\inputminted[firstline=32]{c}{src/time_length.c}
 \embedfile[desc={Determine the length of the current or previous
   month or minute},
-  mimetype={text/plain}]{time_length.c}
+  mimetype={text/plain}]{src/time_length.c}
 
 The subroutines above also use time\_UTC\_normalize.
-\inputminted[firstline=32]{c}{time_utc_normalize.c}
+\inputminted[firstline=32]{c}{src/time_utc_normalize.c}
 \embedfile[desc={Make sure all of the fields of a tm structure
   are in their valid range},
-  mimetype={text/plain}]{time_utc_normalize.c}
+  mimetype={text/plain}]{src/time_utc_normalize.c}
 
 \subsection{Doing the same with local time}
 \label{subsection:timelocaladd}
@@ -449,15 +450,15 @@ second field.  You can decrease these fields by adding a negative
 value.  When the target date is invalid, such as February 31,
 you can choose whether to round towards the future or towards the past
 to get a valid date.
-\inputminted[firstline=32]{c}{time_local_add.c}
+\inputminted[firstline=32]{c}{src/time_local_add.c}
 \embedfile[desc={Change the year, month, day, hour, minute or second
   of a local time value},
-  mimetype={text/plain}]{time_local_add.c}
+  mimetype={text/plain}]{src/time_local_add.c}
 The subroutines above use time\_local\_normalize.
-\inputminted[firstline=32]{c}{time_local_normalize.c}
+\inputminted[firstline=32]{c}{src/time_local_normalize.c}
 \embedfile[desc={Make sure all of the fields of a tm structure
   representing a local time are in their valid range},
-  mimetype={text/plain}]{time_local_normalize.c}
+  mimetype={text/plain}]{src/time_local_normalize.c}
 
 \subsection{Representing a time as a string}
 \label{subsection:tostring}
@@ -465,14 +466,14 @@ If you want to send a time to another computer, or write it into a file,
 it is convenient to be able to convert it to a string.  Here is how you
 can do that.  This subroutine works for both Coordinated Universal Time
 and local time.
-\inputminted[firstline=34]{c}{time_tm_to_string.c}
+\inputminted[firstline=34]{c}{src/time_tm_to_string.c}
 \embedfile[desc={Convert a time to a string},
-  mimetype={text/plain}]{time_tm_to_string.c}
+  mimetype={text/plain}]{src/time_tm_to_string.c}
 
 If you need more precision you can include the nanoseconds:
-\inputminted[firstline=34]{c}{time_tm_nano_to_string.c}
+\inputminted[firstline=34]{c}{src/time_tm_nano_to_string.c}
 \embedfile[desc={Convert a precise time to a string},
-  mimetype={text/plain}]{time_tm_nano_to_string.c}
+  mimetype={text/plain}]{src/time_tm_nano_to_string.c}
 
 \section{International Atomic Time}
 \label{section:International Atomic Time}
@@ -517,9 +518,9 @@ The attribute ``const'' means that the function does not examine
 any values except its arguments, and has no effects except
 to return a value.  The attribute ``pure'' means the same except
 that the function can examine (but not change) global variables.
-\inputminted[firstline=37,lastline=269]{c}{time_subroutines.h}
+\inputminted[firstline=37,lastline=269]{c}{src/time_subroutines.h}
 \embedfile[desc={Header file for time subroutines},
-  mimetype={text/plain}]{time_subroutines.h}
+  mimetype={text/plain}]{src/time_subroutines.h}
 
 \section{Python}
 The Python module datetime contains a class also called datetime
@@ -538,9 +539,9 @@ Write a module to define the interface, as follows:
 This file is included in the PDF as {\ttfamily time\_subroutines.py}.
 Import ctypes and the module, and you can then call the subroutines
 from Python.  Here is a Python script to demonstrate this:
-\inputminted[firstline=27,lastline=92]{Python}{demo_python.py}
+\inputminted[firstline=27,lastline=92]{Python}{tests/demo_python.py}
 \embedfile[desc={Demonstration Python script},
-  mimetype={text/plain}]{demo_python.py}
+  mimetype={text/plain}]{tests/demo_python.py}
 
 Use the Julian Day Number instead of the proleptic Gregorian ordinal
 from the datetime module, since it covers a wider span of time.
@@ -571,28 +572,41 @@ Once the library is built you can install it by typing
 
 If you have the compressed tar file, extract its contents to an empty
 directory, then type {\ttfamily ./configure},
-then {\ttfamily make} and finally {\ttfamily sudo make install}.
+then {\ttfamily make} and finally {\ttfamily sudo make install} to
+install the library.  If you want the PDF you can get it by
+typing {\ttfamily make PDF}.
+
+If you are running the Fedora distribution of GNU/Linux, the code
+described in this document is also available in a repository
+through the Fedora Copr build service.  To enable the repository,
+type {\ttfamily sudo dnf copr enable johnsauter/libtime}.
+You need to have dnf-plugins-core installed.
+Once the repository is enabled you can type
+{\ttfamily sudo dnf install libtime-devel} to install
+the library, include files and documentation, including
+this PDF file.  Your users can install libtime to get just
+the library.
 
 \embedfile[desc={Test program},
-  mimetype={text/plain}]{test_time.c}
+  mimetype={text/plain}]{tests/test_time.c}
 \embedfile[desc={Test program},
-  mimetype={text/plain}]{test_JDN.c}
+  mimetype={text/plain}]{tests/test_JDN.c}
 \embedfile[desc={Test program},
-  mimetype={text/plain}]{test_diff.c}
+  mimetype={text/plain}]{tests/test_diff.c}
 \embedfile[desc={Test program},
-  mimetype={text/plain}]{test_add.c}
+  mimetype={text/plain}]{tests/test_add.c}
 \embedfile[desc={Test all of the entry points},
-  mimetype={text/plain}]{test_ep.c}
+  mimetype={text/plain}]{tests/test_ep.c}
 \embedfile[desc={Make sure all lines of source are tested},
-  mimetype={text/plain}]{test_local.c}
+  mimetype={text/plain}]{tests/test_local.c}
 \embedfile[desc={Regression test program},
-  mimetype={text/plain}]{print_DTAI.c}
+  mimetype={text/plain}]{tests/print_DTAI.c}
 \embedfile[desc={Sample program: sleep until nearly midnight}
-  mimetype={text/plain}]{sleep_until_midnight.c}
+  mimetype={text/plain}]{tests/sleep_until_midnight.c}
 \embedfile[desc={Sample program: print the date of the POSIX epoch}
-  mimetype={text/plain}]{POSIX_epoch.c}
+  mimetype={text/plain}]{tests/POSIX_epoch.c}
 \embedfile[desc={Sample program: print powers of two}
-  mimetype={text/plain}]{powers_of_two.c}
+  mimetype={text/plain}]{tests/powers_of_two.c}
 \embedfile[desc={template configure script for the document, the included
     code and some test and sample programs},
   mimetype={text/plain}]{configure.ac}
@@ -662,7 +676,9 @@ then {\ttfamily make} and finally {\ttfamily sudo make install}.
 \embedfile[desc={fix permissions and directories of files},
   mimetype={text/plain}]{fix_files.sh}
 \embedfile[desc={test the Python interface},
-  mimetype={text/plain}]{test_python_interface.py}
+  mimetype={text/plain}]{tests/test_python_interface.py}
+\embedfile[desc={spec file to build RPMs},
+  mimetype={text/plain}]{libtime.spec}
 
 These files are also available on github, at
 \url{github@github.com:ShowControl/libtime.git}.
@@ -704,9 +720,9 @@ to Coordinated Universal Time.  This is the time of the
 next backup.  If you install the software on December 31, 2016,
 at 21:21:35 in time zone America/New\_York, the first
 scheduled backup will be at 2017-01-03T08:00:00Z.
-\inputminted[firstline=44,lastline=76]{c}{example_02.c}
+\inputminted[firstline=44,lastline=76]{c}{examples/example_02.c}
 \embedfile[desc={Example code for periodic backups},
-  mimetype={text/plain}]{example_02.c}
+  mimetype={text/plain}]{examples/example_02.c}
 
 Subtract one month from the local time computed above, and
 convert it to Coordinated Universal Time.  Compute the
@@ -714,7 +730,7 @@ difference between this time and the time of the last
 full backup.  If the difference is negative, or if there
 has never been a full backup, this backup is full;
 otherwise it is incremental.
-\inputminted[firstline=78,lastline=94]{c}{example_02.c}
+\inputminted[firstline=78,lastline=94]{c}{examples/example_02.c}
 
 \subsection{Rocket over Central Park}
 You are asked to explode a fireworks rocket over Central
@@ -732,9 +748,9 @@ On each day, set the time to 7 PM, convert to UTC, then subtract
 two seconds.  The schedule will accomodate Daylight Saving Time,
 the extra day at the end of February,
 and the leap second at the end of the year.
-\inputminted[firstline=45,lastline=81]{c}{example_03.c}
+\inputminted[firstline=45,lastline=81]{c}{examples/example_03.c}
 \embedfile[desc={Example code for rocket over Central Park},
-  mimetype={text/plain}]{example_03.c}
+  mimetype={text/plain}]{examples/example_03.c}
 
 Here is the schedule for 2016:
 \verbatiminput{example_03_output.txt}
@@ -753,9 +769,9 @@ those time stamps to readable text.
 Construct a base date of January 1, 1970 at 00:00:00.  Add the time stamp
 minus 10 to it, specifying that seconds before 1972 are variable length.
 Convert the result to text.  The code looks like this:
-\inputminted[firstline=41,lastline=67]{c}{example_04.c}
+\inputminted[firstline=41,lastline=67]{c}{examples/example_04.c}
 \embedfile[desc={Example code for International Atomic Time},
-  mimetype={text/plain}]{example_04.c}
+  mimetype={text/plain}]{examples/example_04.c}
 
 If you find the use of variable-length seconds before 1972 troublesome,
 see the next example.
@@ -784,18 +800,18 @@ PTP times \num{15638408} and \num{47174409} correspond to the leap
 seconds that are needed to keep a count of fixed-length seconds
 synchronized with the rotation of the Earth.
 
-\inputminted[firstline=41,lastline=74]{c}{example_05.c}
+\inputminted[firstline=41,lastline=74]{c}{examples/example_05.c}
 \embedfile[desc={Example code for PTP}
-  mimetype={text/plain}]{example_05.c}
+  mimetype={text/plain}]{examples/example_05.c}
 
 \subsection{Displaying PTP time stamps using Python}
 \label{example:PTP_using_Python}
 We wish to display PTP time stamps as in the previous example,
 but we prefer to code in Python.
 
-\inputminted[firstline=27,lastline=69]{Python}{example_06.py}
+\inputminted[firstline=27,lastline=69]{Python}{examples/example_06.py}
 \embedfile[desc={Example Python code for PTP}
-  mimetype={text/plain}]{example_06.py}
+  mimetype={text/plain}]{examples/example_06.py}
   
 \section{Limitations}
 \subsection{Unpredictable Rotation of the Earth}
@@ -877,9 +893,11 @@ programs, but some kernel changes would result in better UTC support.
 \section{Update History}
 
 \begin{description}
-\item[2019-11-06 3:14:0]Simplify the Makefile and clean up the
+\item[2019-11-09 3:14:0]Simplify the Makefile and clean up the
   test programs for rpmbuild.  Include a spec file in the tarball
-  for two RPMs: libtime and libtime-devel.
+  for two RPMs: libtime and libtime-devel.  Move the source
+  and files to their own subdirectory, the example files to theirs,
+  and the test and demo files to theirs.
 \item[2019-10-31 3:13:0]Delay the December 2021 leap second by
   six months to June 2022 and the June 2037 leap second by six
   months to December 2037.

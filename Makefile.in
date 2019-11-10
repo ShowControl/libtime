@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: November 5, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: November 9, 2019.
 
 
 
@@ -153,13 +153,16 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pythondir)" \
 	"$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libtime_la_LIBADD =
-am_libtime_la_OBJECTS = time_copy.lo time_current_tm.lo \
-	time_current_tm_nano.lo time_diff.lo time_length.lo \
-	time_local_add.lo time_local_normalize.lo time_local_to_utc.lo \
-	time_sleep_until.lo time_tm_nano_to_integer.lo \
-	time_tm_nano_to_string.lo time_tm_to_integer.lo \
-	time_tm_to_string.lo time_utc_add.lo time_utc_normalize.lo \
-	time_utc_to_local.lo int128_to_string.lo
+am__dirstamp = $(am__leading_dot)dirstamp
+am_libtime_la_OBJECTS = src/time_copy.lo src/time_current_tm.lo \
+	src/time_current_tm_nano.lo src/time_diff.lo \
+	src/time_length.lo src/time_local_add.lo \
+	src/time_local_normalize.lo src/time_local_to_utc.lo \
+	src/time_sleep_until.lo src/time_tm_nano_to_integer.lo \
+	src/time_tm_nano_to_string.lo src/time_tm_to_integer.lo \
+	src/time_tm_to_string.lo src/time_utc_add.lo \
+	src/time_utc_normalize.lo src/time_utc_to_local.lo \
+	src/int128_to_string.lo
 nodist_libtime_la_OBJECTS =
 libtime_la_OBJECTS = $(am_libtime_la_OBJECTS) \
 	$(nodist_libtime_la_OBJECTS)
@@ -170,50 +173,51 @@ am__v_lt_1 =
 libtime_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(libtime_la_LDFLAGS) $(LDFLAGS) -o $@
-POSIX_epoch_SOURCES = POSIX_epoch.c
-POSIX_epoch_OBJECTS = POSIX_epoch.$(OBJEXT)
+am_POSIX_epoch_OBJECTS = tests/POSIX_epoch.$(OBJEXT)
+POSIX_epoch_OBJECTS = $(am_POSIX_epoch_OBJECTS)
 POSIX_epoch_DEPENDENCIES = libtime.la
 check_time_SOURCES = check_time.c
 check_time_OBJECTS = check_time.$(OBJEXT)
 check_time_DEPENDENCIES = libtime.la
-example_02_SOURCES = example_02.c
-example_02_OBJECTS = example_02.$(OBJEXT)
+am_example_02_OBJECTS = examples/example_02.$(OBJEXT)
+example_02_OBJECTS = $(am_example_02_OBJECTS)
 example_02_DEPENDENCIES = libtime.la
-example_03_SOURCES = example_03.c
-example_03_OBJECTS = example_03.$(OBJEXT)
+am_example_03_OBJECTS = examples/example_03.$(OBJEXT)
+example_03_OBJECTS = $(am_example_03_OBJECTS)
 example_03_DEPENDENCIES = libtime.la
-example_04_SOURCES = example_04.c
-example_04_OBJECTS = example_04.$(OBJEXT)
+am_example_04_OBJECTS = examples/example_04.$(OBJEXT)
+example_04_OBJECTS = $(am_example_04_OBJECTS)
 example_04_DEPENDENCIES = libtime.la
-example_05_SOURCES = example_05.c
-example_05_OBJECTS = example_05.$(OBJEXT)
+am_example_05_OBJECTS = examples/example_05.$(OBJEXT)
+example_05_OBJECTS = $(am_example_05_OBJECTS)
 example_05_DEPENDENCIES = libtime.la
-powers_of_two_SOURCES = powers_of_two.c
-powers_of_two_OBJECTS = powers_of_two.$(OBJEXT)
+am_powers_of_two_OBJECTS = tests/powers_of_two.$(OBJEXT)
+powers_of_two_OBJECTS = $(am_powers_of_two_OBJECTS)
 powers_of_two_DEPENDENCIES = libtime.la
-print_DTAI_SOURCES = print_DTAI.c
-print_DTAI_OBJECTS = print_DTAI.$(OBJEXT)
+am_print_DTAI_OBJECTS = tests/print_DTAI.$(OBJEXT)
+print_DTAI_OBJECTS = $(am_print_DTAI_OBJECTS)
 print_DTAI_DEPENDENCIES = libtime.la
-sleep_until_midnight_SOURCES = sleep_until_midnight.c
-sleep_until_midnight_OBJECTS = sleep_until_midnight.$(OBJEXT)
+am_sleep_until_midnight_OBJECTS =  \
+	tests/sleep_until_midnight.$(OBJEXT)
+sleep_until_midnight_OBJECTS = $(am_sleep_until_midnight_OBJECTS)
 sleep_until_midnight_DEPENDENCIES = libtime.la
-test_JDN_SOURCES = test_JDN.c
-test_JDN_OBJECTS = test_JDN.$(OBJEXT)
+am_test_JDN_OBJECTS = tests/test_JDN.$(OBJEXT)
+test_JDN_OBJECTS = $(am_test_JDN_OBJECTS)
 test_JDN_DEPENDENCIES = libtime.la
-test_add_SOURCES = test_add.c
-test_add_OBJECTS = test_add.$(OBJEXT)
+am_test_add_OBJECTS = tests/test_add.$(OBJEXT)
+test_add_OBJECTS = $(am_test_add_OBJECTS)
 test_add_DEPENDENCIES = libtime.la
-test_diff_SOURCES = test_diff.c
-test_diff_OBJECTS = test_diff.$(OBJEXT)
+am_test_diff_OBJECTS = tests/test_diff.$(OBJEXT)
+test_diff_OBJECTS = $(am_test_diff_OBJECTS)
 test_diff_DEPENDENCIES = libtime.la
-test_ep_SOURCES = test_ep.c
-test_ep_OBJECTS = test_ep.$(OBJEXT)
+am_test_ep_OBJECTS = tests/test_ep.$(OBJEXT)
+test_ep_OBJECTS = $(am_test_ep_OBJECTS)
 test_ep_DEPENDENCIES = libtime.la
-test_local_SOURCES = test_local.c
-test_local_OBJECTS = test_local.$(OBJEXT)
+am_test_local_OBJECTS = tests/test_local.$(OBJEXT)
+test_local_OBJECTS = $(am_test_local_OBJECTS)
 test_local_DEPENDENCIES = libtime.la
-test_time_SOURCES = test_time.c
-test_time_OBJECTS = test_time.$(OBJEXT)
+am_test_time_OBJECTS = tests/test_time.$(OBJEXT)
+test_time_OBJECTS = $(am_test_time_OBJECTS)
 test_time_DEPENDENCIES = libtime.la
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -230,27 +234,32 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/POSIX_epoch.Po \
-	./$(DEPDIR)/check_time.Po ./$(DEPDIR)/example_02.Po \
-	./$(DEPDIR)/example_03.Po ./$(DEPDIR)/example_04.Po \
-	./$(DEPDIR)/example_05.Po ./$(DEPDIR)/int128_to_string.Plo \
-	./$(DEPDIR)/powers_of_two.Po ./$(DEPDIR)/print_DTAI.Po \
-	./$(DEPDIR)/sleep_until_midnight.Po ./$(DEPDIR)/test_JDN.Po \
-	./$(DEPDIR)/test_add.Po ./$(DEPDIR)/test_diff.Po \
-	./$(DEPDIR)/test_ep.Po ./$(DEPDIR)/test_local.Po \
-	./$(DEPDIR)/test_time.Po ./$(DEPDIR)/time_copy.Plo \
-	./$(DEPDIR)/time_current_tm.Plo \
-	./$(DEPDIR)/time_current_tm_nano.Plo ./$(DEPDIR)/time_diff.Plo \
-	./$(DEPDIR)/time_length.Plo ./$(DEPDIR)/time_local_add.Plo \
-	./$(DEPDIR)/time_local_normalize.Plo \
-	./$(DEPDIR)/time_local_to_utc.Plo \
-	./$(DEPDIR)/time_sleep_until.Plo \
-	./$(DEPDIR)/time_tm_nano_to_integer.Plo \
-	./$(DEPDIR)/time_tm_nano_to_string.Plo \
-	./$(DEPDIR)/time_tm_to_integer.Plo \
-	./$(DEPDIR)/time_tm_to_string.Plo ./$(DEPDIR)/time_utc_add.Plo \
-	./$(DEPDIR)/time_utc_normalize.Plo \
-	./$(DEPDIR)/time_utc_to_local.Plo
+am__depfiles_remade = ./$(DEPDIR)/check_time.Po \
+	examples/$(DEPDIR)/example_02.Po \
+	examples/$(DEPDIR)/example_03.Po \
+	examples/$(DEPDIR)/example_04.Po \
+	examples/$(DEPDIR)/example_05.Po \
+	src/$(DEPDIR)/int128_to_string.Plo src/$(DEPDIR)/time_copy.Plo \
+	src/$(DEPDIR)/time_current_tm.Plo \
+	src/$(DEPDIR)/time_current_tm_nano.Plo \
+	src/$(DEPDIR)/time_diff.Plo src/$(DEPDIR)/time_length.Plo \
+	src/$(DEPDIR)/time_local_add.Plo \
+	src/$(DEPDIR)/time_local_normalize.Plo \
+	src/$(DEPDIR)/time_local_to_utc.Plo \
+	src/$(DEPDIR)/time_sleep_until.Plo \
+	src/$(DEPDIR)/time_tm_nano_to_integer.Plo \
+	src/$(DEPDIR)/time_tm_nano_to_string.Plo \
+	src/$(DEPDIR)/time_tm_to_integer.Plo \
+	src/$(DEPDIR)/time_tm_to_string.Plo \
+	src/$(DEPDIR)/time_utc_add.Plo \
+	src/$(DEPDIR)/time_utc_normalize.Plo \
+	src/$(DEPDIR)/time_utc_to_local.Plo \
+	tests/$(DEPDIR)/POSIX_epoch.Po \
+	tests/$(DEPDIR)/powers_of_two.Po tests/$(DEPDIR)/print_DTAI.Po \
+	tests/$(DEPDIR)/sleep_until_midnight.Po \
+	tests/$(DEPDIR)/test_JDN.Po tests/$(DEPDIR)/test_add.Po \
+	tests/$(DEPDIR)/test_diff.Po tests/$(DEPDIR)/test_ep.Po \
+	tests/$(DEPDIR)/test_local.Po tests/$(DEPDIR)/test_time.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -271,14 +280,19 @@ am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(libtime_la_SOURCES) $(nodist_libtime_la_SOURCES) \
-	POSIX_epoch.c check_time.c example_02.c example_03.c \
-	example_04.c example_05.c powers_of_two.c print_DTAI.c \
-	sleep_until_midnight.c test_JDN.c test_add.c test_diff.c \
-	test_ep.c test_local.c test_time.c
-DIST_SOURCES = $(libtime_la_SOURCES) POSIX_epoch.c check_time.c \
-	example_02.c example_03.c example_04.c example_05.c \
-	powers_of_two.c print_DTAI.c sleep_until_midnight.c test_JDN.c \
-	test_add.c test_diff.c test_ep.c test_local.c test_time.c
+	$(POSIX_epoch_SOURCES) check_time.c $(example_02_SOURCES) \
+	$(example_03_SOURCES) $(example_04_SOURCES) \
+	$(example_05_SOURCES) $(powers_of_two_SOURCES) \
+	$(print_DTAI_SOURCES) $(sleep_until_midnight_SOURCES) \
+	$(test_JDN_SOURCES) $(test_add_SOURCES) $(test_diff_SOURCES) \
+	$(test_ep_SOURCES) $(test_local_SOURCES) $(test_time_SOURCES)
+DIST_SOURCES = $(libtime_la_SOURCES) $(POSIX_epoch_SOURCES) \
+	check_time.c $(example_02_SOURCES) $(example_03_SOURCES) \
+	$(example_04_SOURCES) $(example_05_SOURCES) \
+	$(powers_of_two_SOURCES) $(print_DTAI_SOURCES) \
+	$(sleep_until_midnight_SOURCES) $(test_JDN_SOURCES) \
+	$(test_add_SOURCES) $(test_diff_SOURCES) $(test_ep_SOURCES) \
+	$(test_local_SOURCES) $(test_time_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -647,29 +661,30 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+AUTOMAKE_OPTIONS = subdir-objects
 lib_LTLIBRARIES = libtime.la
-libtime_la_SOURCES = time_copy.c \
-	time_current_tm.c \
-	time_current_tm_nano.c \
-	time_diff.c \
-	time_length.c \
-	time_local_add.c \
-	time_local_normalize.c \
-	time_local_to_utc.c \
-	time_sleep_until.c \
-	time_tm_nano_to_integer.c \
-	time_tm_nano_to_string.c \
-	time_tm_to_integer.c \
-	time_tm_to_string.c \
-	time_utc_add.c \
-	time_utc_normalize.c \
-	time_utc_to_local.c \
-	time_subroutines.h \
-	int128_to_string.c \
+libtime_la_SOURCES = src/time_copy.c \
+	src/time_current_tm.c \
+	src/time_current_tm_nano.c \
+	src/time_diff.c \
+	src/time_length.c \
+	src/time_local_add.c \
+	src/time_local_normalize.c \
+	src/time_local_to_utc.c \
+	src/time_sleep_until.c \
+	src/time_tm_nano_to_integer.c \
+	src/time_tm_nano_to_string.c \
+	src/time_tm_to_integer.c \
+	src/time_tm_to_string.c \
+	src/time_utc_add.c \
+	src/time_utc_normalize.c \
+	src/time_utc_to_local.c \
+	src/time_subroutines.h \
+	src/int128_to_string.c \
 	read_extraordinary_days_table.py \
-	demo_python.py \
-	test_python_interface.py \
-	example_06.py \
+	tests/demo_python.py \
+	tests/test_python_interface.py \
+	examples/example_06.py \
 	extraordinary_days.dat \
 	avoid_time_t.tex \
 	references.bib \
@@ -677,6 +692,7 @@ libtime_la_SOURCES = time_copy.c \
 
 nodist_libtime_la_SOURCES = dtai_table.h dtai_table.tab
 dist_man_MANS = libtime.3
+BUILT_SOURCES = dtai_table.h dtai_table.tab 
 CLEANFILES = dtai_table.h dtai_table.tab example_03_output.txt \
 avoid_time_t.out avoid_time_t.brf avoid_time_t.log avoid_time_t.aux \
 avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf check_time_output.txt \
@@ -685,10 +701,30 @@ verify_files.sh
 ACLOCAL_AMFLAGS = -I m4
 dist_doc_DATA = README COPYING LICENSE AUTHORS ChangeLog INSTALL NEWS \
 	$(am__append_1)
+example_02_SOURCES = examples/example_02.c
+example_03_SOURCES = examples/example_03.c
+example_04_SOURCES = examples/example_04.c
+example_05_SOURCES = examples/example_05.c
 example_05_LDADD = libtime.la
 example_04_LDADD = libtime.la
 example_03_LDADD = libtime.la
 example_02_LDADD = libtime.la
+EXTRA_example_02_DEPENDENCIES = libtime.la
+EXTRA_example_03_DEPENDENCIES = libtime.la
+EXTRA_example_04_DEPENDENCIES = libtime.la
+EXTRA_example_05_DEPENDENCIES = libtime.la
+POSIX_epoch_SOURCES = tests/POSIX_epoch.c
+print_DTAI_SOURCES = tests/print_DTAI.c
+test_add_SOURCES = tests/test_add.c
+test_ep_SOURCES = tests/test_ep.c
+test_local_SOURCES = tests/test_local.c
+test_struct_time_SOURCES = tests/test_struct_time.py
+powers_of_two_SOURCES = tests/powers_of_two.c
+sleep_until_midnight_SOURCES = tests/sleep_until_midnight.c
+test_diff_SOURCES = tests/test_diff.c
+test_JDN_SOURCES = tests/test_JDN.c
+test_python_interface_SOURCES = tests/test_python_interface.py
+test_time_SOURCES = tests/test_time.c
 test_time_LDADD = libtime.la
 test_JDN_LDADD = libtime.la
 test_diff_LDADD = libtime.la
@@ -711,7 +747,7 @@ libtime_la_LDFLAGS = -version-info @libtool_version_current@:@libtool_version_re
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.
 EXTRA_DIST = libtime.spec fix_files.sh
-include_HEADERS = time_subroutines.h
+include_HEADERS = src/time_subroutines.h
 
 # Support pgk-config
 pkgconfigdir = $(libdir)/pkgconfig
@@ -721,7 +757,7 @@ pkgconfig_DATA = libtime.pc
 dist_check_DATA = check_time_output.txt check_time_expected_output.txt
 dist_check_SCRIPTS = verify_files_template.sh
 TESTS = verify_files.sh
-all: config.h
+all: $(BUILT_SOURCES) config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
@@ -820,9 +856,53 @@ clean-libLTLIBRARIES:
 	  echo rm -f $${locs}; \
 	  rm -f $${locs}; \
 	}
+src/$(am__dirstamp):
+	@$(MKDIR_P) src
+	@: > src/$(am__dirstamp)
+src/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) src/$(DEPDIR)
+	@: > src/$(DEPDIR)/$(am__dirstamp)
+src/time_copy.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
+src/time_current_tm.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/time_current_tm_nano.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/time_diff.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
+src/time_length.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
+src/time_local_add.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/time_local_normalize.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/time_local_to_utc.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/time_sleep_until.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/time_tm_nano_to_integer.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/time_tm_nano_to_string.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/time_tm_to_integer.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/time_tm_to_string.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/time_utc_add.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
+src/time_utc_normalize.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/time_utc_to_local.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/int128_to_string.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
 
 libtime.la: $(libtime_la_OBJECTS) $(libtime_la_DEPENDENCIES) $(EXTRA_libtime_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libtime_la_LINK) -rpath $(libdir) $(libtime_la_OBJECTS) $(libtime_la_LIBADD) $(LIBS)
+tests/$(am__dirstamp):
+	@$(MKDIR_P) tests
+	@: > tests/$(am__dirstamp)
+tests/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) tests/$(DEPDIR)
+	@: > tests/$(DEPDIR)/$(am__dirstamp)
+tests/POSIX_epoch.$(OBJEXT): tests/$(am__dirstamp) \
+	tests/$(DEPDIR)/$(am__dirstamp)
 
 POSIX_epoch$(EXEEXT): $(POSIX_epoch_OBJECTS) $(POSIX_epoch_DEPENDENCIES) $(EXTRA_POSIX_epoch_DEPENDENCIES) 
 	@rm -f POSIX_epoch$(EXEEXT)
@@ -831,54 +911,86 @@ POSIX_epoch$(EXEEXT): $(POSIX_epoch_OBJECTS) $(POSIX_epoch_DEPENDENCIES) $(EXTRA
 check_time$(EXEEXT): $(check_time_OBJECTS) $(check_time_DEPENDENCIES) $(EXTRA_check_time_DEPENDENCIES) 
 	@rm -f check_time$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(check_time_OBJECTS) $(check_time_LDADD) $(LIBS)
+examples/$(am__dirstamp):
+	@$(MKDIR_P) examples
+	@: > examples/$(am__dirstamp)
+examples/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) examples/$(DEPDIR)
+	@: > examples/$(DEPDIR)/$(am__dirstamp)
+examples/example_02.$(OBJEXT): examples/$(am__dirstamp) \
+	examples/$(DEPDIR)/$(am__dirstamp)
 
 example_02$(EXEEXT): $(example_02_OBJECTS) $(example_02_DEPENDENCIES) $(EXTRA_example_02_DEPENDENCIES) 
 	@rm -f example_02$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(example_02_OBJECTS) $(example_02_LDADD) $(LIBS)
+examples/example_03.$(OBJEXT): examples/$(am__dirstamp) \
+	examples/$(DEPDIR)/$(am__dirstamp)
 
 example_03$(EXEEXT): $(example_03_OBJECTS) $(example_03_DEPENDENCIES) $(EXTRA_example_03_DEPENDENCIES) 
 	@rm -f example_03$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(example_03_OBJECTS) $(example_03_LDADD) $(LIBS)
+examples/example_04.$(OBJEXT): examples/$(am__dirstamp) \
+	examples/$(DEPDIR)/$(am__dirstamp)
 
 example_04$(EXEEXT): $(example_04_OBJECTS) $(example_04_DEPENDENCIES) $(EXTRA_example_04_DEPENDENCIES) 
 	@rm -f example_04$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(example_04_OBJECTS) $(example_04_LDADD) $(LIBS)
+examples/example_05.$(OBJEXT): examples/$(am__dirstamp) \
+	examples/$(DEPDIR)/$(am__dirstamp)
 
 example_05$(EXEEXT): $(example_05_OBJECTS) $(example_05_DEPENDENCIES) $(EXTRA_example_05_DEPENDENCIES) 
 	@rm -f example_05$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(example_05_OBJECTS) $(example_05_LDADD) $(LIBS)
+tests/powers_of_two.$(OBJEXT): tests/$(am__dirstamp) \
+	tests/$(DEPDIR)/$(am__dirstamp)
 
 powers_of_two$(EXEEXT): $(powers_of_two_OBJECTS) $(powers_of_two_DEPENDENCIES) $(EXTRA_powers_of_two_DEPENDENCIES) 
 	@rm -f powers_of_two$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(powers_of_two_OBJECTS) $(powers_of_two_LDADD) $(LIBS)
+tests/print_DTAI.$(OBJEXT): tests/$(am__dirstamp) \
+	tests/$(DEPDIR)/$(am__dirstamp)
 
 print_DTAI$(EXEEXT): $(print_DTAI_OBJECTS) $(print_DTAI_DEPENDENCIES) $(EXTRA_print_DTAI_DEPENDENCIES) 
 	@rm -f print_DTAI$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(print_DTAI_OBJECTS) $(print_DTAI_LDADD) $(LIBS)
+tests/sleep_until_midnight.$(OBJEXT): tests/$(am__dirstamp) \
+	tests/$(DEPDIR)/$(am__dirstamp)
 
 sleep_until_midnight$(EXEEXT): $(sleep_until_midnight_OBJECTS) $(sleep_until_midnight_DEPENDENCIES) $(EXTRA_sleep_until_midnight_DEPENDENCIES) 
 	@rm -f sleep_until_midnight$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(sleep_until_midnight_OBJECTS) $(sleep_until_midnight_LDADD) $(LIBS)
+tests/test_JDN.$(OBJEXT): tests/$(am__dirstamp) \
+	tests/$(DEPDIR)/$(am__dirstamp)
 
 test_JDN$(EXEEXT): $(test_JDN_OBJECTS) $(test_JDN_DEPENDENCIES) $(EXTRA_test_JDN_DEPENDENCIES) 
 	@rm -f test_JDN$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(test_JDN_OBJECTS) $(test_JDN_LDADD) $(LIBS)
+tests/test_add.$(OBJEXT): tests/$(am__dirstamp) \
+	tests/$(DEPDIR)/$(am__dirstamp)
 
 test_add$(EXEEXT): $(test_add_OBJECTS) $(test_add_DEPENDENCIES) $(EXTRA_test_add_DEPENDENCIES) 
 	@rm -f test_add$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(test_add_OBJECTS) $(test_add_LDADD) $(LIBS)
+tests/test_diff.$(OBJEXT): tests/$(am__dirstamp) \
+	tests/$(DEPDIR)/$(am__dirstamp)
 
 test_diff$(EXEEXT): $(test_diff_OBJECTS) $(test_diff_DEPENDENCIES) $(EXTRA_test_diff_DEPENDENCIES) 
 	@rm -f test_diff$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(test_diff_OBJECTS) $(test_diff_LDADD) $(LIBS)
+tests/test_ep.$(OBJEXT): tests/$(am__dirstamp) \
+	tests/$(DEPDIR)/$(am__dirstamp)
 
 test_ep$(EXEEXT): $(test_ep_OBJECTS) $(test_ep_DEPENDENCIES) $(EXTRA_test_ep_DEPENDENCIES) 
 	@rm -f test_ep$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(test_ep_OBJECTS) $(test_ep_LDADD) $(LIBS)
+tests/test_local.$(OBJEXT): tests/$(am__dirstamp) \
+	tests/$(DEPDIR)/$(am__dirstamp)
 
 test_local$(EXEEXT): $(test_local_OBJECTS) $(test_local_DEPENDENCIES) $(EXTRA_test_local_DEPENDENCIES) 
 	@rm -f test_local$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(test_local_OBJECTS) $(test_local_LDADD) $(LIBS)
+tests/test_time.$(OBJEXT): tests/$(am__dirstamp) \
+	tests/$(DEPDIR)/$(am__dirstamp)
 
 test_time$(EXEEXT): $(test_time_OBJECTS) $(test_time_DEPENDENCIES) $(EXTRA_test_time_DEPENDENCIES) 
 	@rm -f test_time$(EXEEXT)
@@ -886,42 +998,46 @@ test_time$(EXEEXT): $(test_time_OBJECTS) $(test_time_DEPENDENCIES) $(EXTRA_test_
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f examples/*.$(OBJEXT)
+	-rm -f src/*.$(OBJEXT)
+	-rm -f src/*.lo
+	-rm -f tests/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/POSIX_epoch.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_time.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/example_02.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/example_03.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/example_04.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/example_05.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/int128_to_string.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/powers_of_two.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/print_DTAI.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sleep_until_midnight.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_JDN.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_add.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_diff.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_ep.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_local.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_time.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_copy.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_current_tm.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_current_tm_nano.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_diff.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_length.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_local_add.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_local_normalize.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_local_to_utc.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_sleep_until.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_tm_nano_to_integer.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_tm_nano_to_string.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_tm_to_integer.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_tm_to_string.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_utc_add.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_utc_normalize.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time_utc_to_local.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@examples/$(DEPDIR)/example_02.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@examples/$(DEPDIR)/example_03.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@examples/$(DEPDIR)/example_04.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@examples/$(DEPDIR)/example_05.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/int128_to_string.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_copy.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_current_tm.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_current_tm_nano.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_diff.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_length.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_local_add.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_local_normalize.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_local_to_utc.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_sleep_until.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_tm_nano_to_integer.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_tm_nano_to_string.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_tm_to_integer.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_tm_to_string.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_utc_add.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_utc_normalize.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_utc_to_local.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/POSIX_epoch.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/powers_of_two.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/print_DTAI.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/sleep_until_midnight.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/test_JDN.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/test_add.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/test_diff.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/test_ep.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/test_local.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/test_time.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -930,22 +1046,25 @@ $(am__depfiles_remade):
 am--depfiles: $(am__depfiles_remade)
 
 .c.o:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 .c.lo:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.lo$$||'`;\
+@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
@@ -955,6 +1074,7 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
+	-rm -rf src/.libs src/_libs
 
 distclean-libtool:
 	-rm -f libtool config.lt
@@ -1505,14 +1625,16 @@ check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) $(dist_check_SCRIPTS) \
 	  $(dist_check_DATA)
 	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
-check: check-am
+check: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(PROGRAMS) $(LTLIBRARIES) $(MANS) $(DATA) $(HEADERS) \
 		config.h
 installdirs:
 	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pythondir)" "$(DESTDIR)$(man3dir)" "$(DESTDIR)$(docdir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(includedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: install-am
+install: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -1542,10 +1664,17 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-rm -f examples/$(DEPDIR)/$(am__dirstamp)
+	-rm -f examples/$(am__dirstamp)
+	-rm -f src/$(DEPDIR)/$(am__dirstamp)
+	-rm -f src/$(am__dirstamp)
+	-rm -f tests/$(DEPDIR)/$(am__dirstamp)
+	-rm -f tests/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool clean-local \
@@ -1553,38 +1682,38 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool clean-local \
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-		-rm -f ./$(DEPDIR)/POSIX_epoch.Po
-	-rm -f ./$(DEPDIR)/check_time.Po
-	-rm -f ./$(DEPDIR)/example_02.Po
-	-rm -f ./$(DEPDIR)/example_03.Po
-	-rm -f ./$(DEPDIR)/example_04.Po
-	-rm -f ./$(DEPDIR)/example_05.Po
-	-rm -f ./$(DEPDIR)/int128_to_string.Plo
-	-rm -f ./$(DEPDIR)/powers_of_two.Po
-	-rm -f ./$(DEPDIR)/print_DTAI.Po
-	-rm -f ./$(DEPDIR)/sleep_until_midnight.Po
-	-rm -f ./$(DEPDIR)/test_JDN.Po
-	-rm -f ./$(DEPDIR)/test_add.Po
-	-rm -f ./$(DEPDIR)/test_diff.Po
-	-rm -f ./$(DEPDIR)/test_ep.Po
-	-rm -f ./$(DEPDIR)/test_local.Po
-	-rm -f ./$(DEPDIR)/test_time.Po
-	-rm -f ./$(DEPDIR)/time_copy.Plo
-	-rm -f ./$(DEPDIR)/time_current_tm.Plo
-	-rm -f ./$(DEPDIR)/time_current_tm_nano.Plo
-	-rm -f ./$(DEPDIR)/time_diff.Plo
-	-rm -f ./$(DEPDIR)/time_length.Plo
-	-rm -f ./$(DEPDIR)/time_local_add.Plo
-	-rm -f ./$(DEPDIR)/time_local_normalize.Plo
-	-rm -f ./$(DEPDIR)/time_local_to_utc.Plo
-	-rm -f ./$(DEPDIR)/time_sleep_until.Plo
-	-rm -f ./$(DEPDIR)/time_tm_nano_to_integer.Plo
-	-rm -f ./$(DEPDIR)/time_tm_nano_to_string.Plo
-	-rm -f ./$(DEPDIR)/time_tm_to_integer.Plo
-	-rm -f ./$(DEPDIR)/time_tm_to_string.Plo
-	-rm -f ./$(DEPDIR)/time_utc_add.Plo
-	-rm -f ./$(DEPDIR)/time_utc_normalize.Plo
-	-rm -f ./$(DEPDIR)/time_utc_to_local.Plo
+		-rm -f ./$(DEPDIR)/check_time.Po
+	-rm -f examples/$(DEPDIR)/example_02.Po
+	-rm -f examples/$(DEPDIR)/example_03.Po
+	-rm -f examples/$(DEPDIR)/example_04.Po
+	-rm -f examples/$(DEPDIR)/example_05.Po
+	-rm -f src/$(DEPDIR)/int128_to_string.Plo
+	-rm -f src/$(DEPDIR)/time_copy.Plo
+	-rm -f src/$(DEPDIR)/time_current_tm.Plo
+	-rm -f src/$(DEPDIR)/time_current_tm_nano.Plo
+	-rm -f src/$(DEPDIR)/time_diff.Plo
+	-rm -f src/$(DEPDIR)/time_length.Plo
+	-rm -f src/$(DEPDIR)/time_local_add.Plo
+	-rm -f src/$(DEPDIR)/time_local_normalize.Plo
+	-rm -f src/$(DEPDIR)/time_local_to_utc.Plo
+	-rm -f src/$(DEPDIR)/time_sleep_until.Plo
+	-rm -f src/$(DEPDIR)/time_tm_nano_to_integer.Plo
+	-rm -f src/$(DEPDIR)/time_tm_nano_to_string.Plo
+	-rm -f src/$(DEPDIR)/time_tm_to_integer.Plo
+	-rm -f src/$(DEPDIR)/time_tm_to_string.Plo
+	-rm -f src/$(DEPDIR)/time_utc_add.Plo
+	-rm -f src/$(DEPDIR)/time_utc_normalize.Plo
+	-rm -f src/$(DEPDIR)/time_utc_to_local.Plo
+	-rm -f tests/$(DEPDIR)/POSIX_epoch.Po
+	-rm -f tests/$(DEPDIR)/powers_of_two.Po
+	-rm -f tests/$(DEPDIR)/print_DTAI.Po
+	-rm -f tests/$(DEPDIR)/sleep_until_midnight.Po
+	-rm -f tests/$(DEPDIR)/test_JDN.Po
+	-rm -f tests/$(DEPDIR)/test_add.Po
+	-rm -f tests/$(DEPDIR)/test_diff.Po
+	-rm -f tests/$(DEPDIR)/test_ep.Po
+	-rm -f tests/$(DEPDIR)/test_local.Po
+	-rm -f tests/$(DEPDIR)/test_time.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-hdr distclean-libtool distclean-tags
@@ -1633,38 +1762,38 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
-		-rm -f ./$(DEPDIR)/POSIX_epoch.Po
-	-rm -f ./$(DEPDIR)/check_time.Po
-	-rm -f ./$(DEPDIR)/example_02.Po
-	-rm -f ./$(DEPDIR)/example_03.Po
-	-rm -f ./$(DEPDIR)/example_04.Po
-	-rm -f ./$(DEPDIR)/example_05.Po
-	-rm -f ./$(DEPDIR)/int128_to_string.Plo
-	-rm -f ./$(DEPDIR)/powers_of_two.Po
-	-rm -f ./$(DEPDIR)/print_DTAI.Po
-	-rm -f ./$(DEPDIR)/sleep_until_midnight.Po
-	-rm -f ./$(DEPDIR)/test_JDN.Po
-	-rm -f ./$(DEPDIR)/test_add.Po
-	-rm -f ./$(DEPDIR)/test_diff.Po
-	-rm -f ./$(DEPDIR)/test_ep.Po
-	-rm -f ./$(DEPDIR)/test_local.Po
-	-rm -f ./$(DEPDIR)/test_time.Po
-	-rm -f ./$(DEPDIR)/time_copy.Plo
-	-rm -f ./$(DEPDIR)/time_current_tm.Plo
-	-rm -f ./$(DEPDIR)/time_current_tm_nano.Plo
-	-rm -f ./$(DEPDIR)/time_diff.Plo
-	-rm -f ./$(DEPDIR)/time_length.Plo
-	-rm -f ./$(DEPDIR)/time_local_add.Plo
-	-rm -f ./$(DEPDIR)/time_local_normalize.Plo
-	-rm -f ./$(DEPDIR)/time_local_to_utc.Plo
-	-rm -f ./$(DEPDIR)/time_sleep_until.Plo
-	-rm -f ./$(DEPDIR)/time_tm_nano_to_integer.Plo
-	-rm -f ./$(DEPDIR)/time_tm_nano_to_string.Plo
-	-rm -f ./$(DEPDIR)/time_tm_to_integer.Plo
-	-rm -f ./$(DEPDIR)/time_tm_to_string.Plo
-	-rm -f ./$(DEPDIR)/time_utc_add.Plo
-	-rm -f ./$(DEPDIR)/time_utc_normalize.Plo
-	-rm -f ./$(DEPDIR)/time_utc_to_local.Plo
+		-rm -f ./$(DEPDIR)/check_time.Po
+	-rm -f examples/$(DEPDIR)/example_02.Po
+	-rm -f examples/$(DEPDIR)/example_03.Po
+	-rm -f examples/$(DEPDIR)/example_04.Po
+	-rm -f examples/$(DEPDIR)/example_05.Po
+	-rm -f src/$(DEPDIR)/int128_to_string.Plo
+	-rm -f src/$(DEPDIR)/time_copy.Plo
+	-rm -f src/$(DEPDIR)/time_current_tm.Plo
+	-rm -f src/$(DEPDIR)/time_current_tm_nano.Plo
+	-rm -f src/$(DEPDIR)/time_diff.Plo
+	-rm -f src/$(DEPDIR)/time_length.Plo
+	-rm -f src/$(DEPDIR)/time_local_add.Plo
+	-rm -f src/$(DEPDIR)/time_local_normalize.Plo
+	-rm -f src/$(DEPDIR)/time_local_to_utc.Plo
+	-rm -f src/$(DEPDIR)/time_sleep_until.Plo
+	-rm -f src/$(DEPDIR)/time_tm_nano_to_integer.Plo
+	-rm -f src/$(DEPDIR)/time_tm_nano_to_string.Plo
+	-rm -f src/$(DEPDIR)/time_tm_to_integer.Plo
+	-rm -f src/$(DEPDIR)/time_tm_to_string.Plo
+	-rm -f src/$(DEPDIR)/time_utc_add.Plo
+	-rm -f src/$(DEPDIR)/time_utc_normalize.Plo
+	-rm -f src/$(DEPDIR)/time_utc_to_local.Plo
+	-rm -f tests/$(DEPDIR)/POSIX_epoch.Po
+	-rm -f tests/$(DEPDIR)/powers_of_two.Po
+	-rm -f tests/$(DEPDIR)/print_DTAI.Po
+	-rm -f tests/$(DEPDIR)/sleep_until_midnight.Po
+	-rm -f tests/$(DEPDIR)/test_JDN.Po
+	-rm -f tests/$(DEPDIR)/test_add.Po
+	-rm -f tests/$(DEPDIR)/test_diff.Po
+	-rm -f tests/$(DEPDIR)/test_ep.Po
+	-rm -f tests/$(DEPDIR)/test_local.Po
+	-rm -f tests/$(DEPDIR)/test_time.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
@@ -1687,7 +1816,7 @@ uninstall-am: uninstall-dist_docDATA uninstall-includeHEADERS \
 
 uninstall-man: uninstall-man3
 
-.MAKE: all check-am install-am install-strip
+.MAKE: all check check-am install install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am am--depfiles am--refresh check \
 	check-TESTS check-am clean clean-cscope clean-generic \
@@ -1714,9 +1843,6 @@ uninstall-man: uninstall-man3
 
 .PRECIOUS: Makefile
 
-#BUILT_SOURCES = dtai_table.h dtai_table.tab 
-time_diff.lo: dtai_table.h dtai_table.tab
-test_local.${OBJEXT}: dtai_table.h dtai_table.tab
 
 clean-local:
 	rm -rf _minted-avoid_time_t/
@@ -1738,14 +1864,15 @@ pdf-local: avoid_time_t.pdf
 
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	dtai_table.tab \
-	example_02.c example_03.c example_06.py \
+	examples/example_02.c examples/example_03.c examples/example_06.py \
 	example_03_output.txt libtime.pc time_subroutines.py \
 	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 
-avoid_time_t.bbl : avoid_time_t.tex references.bib example_02.c example_03.c \
+avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
+	examples/example_03.c examples/example_06.py \
 	dtai_table.h dtai_table.tab example_03_output.txt time_subroutines.py \
 	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex

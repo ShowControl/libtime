@@ -1,10 +1,10 @@
 /*
- * File: test_local.c, author: John Sauter, date: November 11, 2018.
+ * File: test_local.c, author: John Sauter, date: November 7, 2019.
  * See if the subroutines work if compiled locally, instead of being loaded
  * from a library at link time.
  */
 /*
- * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -35,25 +35,25 @@
 #include <errno.h>
 #include <time.h>
 
-#include "time_subroutines.h"
+#include "src/time_subroutines.h"
 
-#include "time_current_tm.c"
-#include "time_current_tm_nano.c"
-#include "time_local_to_utc.c"
-#include "time_tm_nano_to_integer.c"
-#include "time_tm_nano_to_string.c"
-#include "time_utc_to_local.c"
-#include "time_tm_to_integer.c"
-#include "time_diff.c"
-#include "time_tm_to_string.c"
-#include "time_sleep_until.c"
-#include "time_utc_add.c"
-#include "time_utc_normalize.c"
-#include "time_length.c"
-#include "time_copy.c"
-#include "time_local_add.c"
-#include "time_local_normalize.c"
-#include "int128_to_string.c"
+#include "src/time_current_tm.c"
+#include "src/time_current_tm_nano.c"
+#include "src/time_local_to_utc.c"
+#include "src/time_tm_nano_to_integer.c"
+#include "src/time_tm_nano_to_string.c"
+#include "src/time_utc_to_local.c"
+#include "src/time_tm_to_integer.c"
+#include "src/time_diff.c"
+#include "src/time_tm_to_string.c"
+#include "src/time_sleep_until.c"
+#include "src/time_utc_add.c"
+#include "src/time_utc_normalize.c"
+#include "src/time_length.c"
+#include "src/time_copy.c"
+#include "src/time_local_add.c"
+#include "src/time_local_normalize.c"
+#include "src/int128_to_string.c"
 
 static int debug_level = 0;
 

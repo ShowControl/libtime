@@ -1,5 +1,5 @@
 /*
- * File: check_time.c, author: John Sauter, date: November 3, 2019.
+ * File: check_time.c, author: John Sauter, date: November 7, 2019.
  * Used by "make check" to be sure the subroutines work.
  */
 /*
@@ -34,7 +34,7 @@
 #include <errno.h>
 #include <time.h>
 
-#include "time_subroutines.h"
+#include "src/time_subroutines.h"
 
 static int debug_level = 0;
 

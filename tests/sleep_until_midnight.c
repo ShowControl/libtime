@@ -1,8 +1,10 @@
 /*
- * File: example_03.c, author: John Sauter, date: November 11, 2018.
+ * File: sleep_until_midnight.c, author: John Sauter, date: November 7, 2019.
+ * Sleep until just before midnight, UTC.
  */
+
 /*
- * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,7 +28,6 @@
  *    e-mail: John_Sauter@systemeyescomputerstore.com
  */
 
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>		/* getopt_long() */
@@ -34,51 +35,40 @@
 #include <errno.h>
 #include <time.h>
 
-#include "time_subroutines.h"
+#include "src/time_subroutines.h"
 
 static int debug_level = 0;
 
-/* Example 3: Rocket over Central Park.  */
+/* Sleep until midnight  */
 void
-example_3 ()
+do_sleep ()
 {
   struct tm time_tm;
   struct tm local_time_tm;
-  struct tm extra_time_tm;
   char buffer1 [64];
   char buffer2 [64];
-  int month_incr;
   
   time_current_tm (&time_tm);
+  time_tm_to_string (&time_tm, &buffer2 [0], sizeof (buffer2));
   time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
+  time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof(buffer1));
+  printf ("now: %s local, %s UTC.\n", buffer1, buffer2);
 
-  local_time_tm.tm_year = 2016 - 1900;
-  local_time_tm.tm_mon = 1 - 1;
-  local_time_tm.tm_mday = 31;
-  local_time_tm.tm_hour = 19;
-  local_time_tm.tm_min = 0;
-  local_time_tm.tm_sec = 0;
+  time_tm.tm_hour = 23;
+  time_tm.tm_min = 58;
+  time_tm.tm_sec = 0;
+  time_tm_to_string (&time_tm, &buffer2 [0], sizeof (buffer2));
+  time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
+  time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof(buffer1));
+  printf ("sleep until: %s local, %s UTC.\n", buffer1, buffer2);
 
-  month_incr = 0;
-      
-  while (1)
-    {
-      time_copy_tm (&local_time_tm, &extra_time_tm);
-      time_local_add_months (&extra_time_tm, month_incr, -1, INT_MIN);
-      extra_time_tm.tm_hour = 19;
-      extra_time_tm.tm_min = 0;
-      extra_time_tm.tm_sec = 0;
-      if (extra_time_tm.tm_year != (2016 - 1900))
-	break;
-      
-      time_local_to_UTC (&extra_time_tm, &time_tm, INT_MIN);
-      time_UTC_add_seconds (&time_tm, -2, INT_MIN);
-      time_tm_to_string (&time_tm, &buffer1 [0], sizeof (buffer1));
-      time_tm_to_string (&extra_time_tm, &buffer2 [0],
-			 sizeof (buffer2));
-      printf ("%s, 2 sec before %s.\n", buffer1, buffer2);
-      month_incr = month_incr + 1;
-    }
+  time_sleep_until (&time_tm, 0, INT_MIN);
+
+  time_current_tm (&time_tm);
+  time_tm_to_string (&time_tm, &buffer2 [0], sizeof (buffer2));
+  time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
+  time_tm_to_string (&local_time_tm, &buffer1 [0], sizeof(buffer1));
+  printf ("after sleep, now: %s local, %s UTC.\n", buffer1, buffer2);
   
   return;
 }
@@ -91,8 +81,8 @@ usage (FILE * fp, int argc, char **argv)
     {
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
-	       "example_3\n"
-	       " Version 1.1 2018-11-11\n"
+	       "sleep_until_midnight\n"
+	       " Version 1.2 2019-11-07\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"
@@ -109,7 +99,7 @@ static const struct option long_options[] = {
   {0, 0, 0, 0}
 };
 
-/* main program: parse options, perform example and exit. */
+/* main program: parse options, perform sleep and exit. */
 int
 main (int argc, char **argv)
 {
@@ -143,7 +133,7 @@ main (int argc, char **argv)
 	}
     }
  
-  example_3 ();
+  do_sleep ();
   exit (EXIT_SUCCESS);
 
   return 0;

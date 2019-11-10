@@ -1,10 +1,10 @@
 /*
- * File: POSIX_epoch.c, author: John Sauter, date: November 11, 2018.
+ * File: POSIX_epoch.c, author: John Sauter, date: November 7, 2019.
  * Print the date of the POSIX epoch.
  */
 
 /*
- * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@
 #include <errno.h>
 #include <time.h>
 
-#include "time_subroutines.h"
+#include "src/time_subroutines.h"
 
 static int debug_level = 0;
 
@@ -57,7 +57,7 @@ do_print ()
    * and the value of "seconds since the epoch" between.
    * If the times match, the "seconds since the epoch"
    * corresponds to the fetched time.  If not, do the
-   * two fetches over again.  Also, reject the value of
+   * tthre fetches over again.  Also, reject the value of
    * "seconds since the epoch" computed during a leap
    * second, since it isn't well-defined then.  */
   for (;;)
@@ -86,7 +86,7 @@ do_print ()
   time_tm_to_string (&time2_tm, &buffer2 [0], sizeof (buffer2));
   time_tm_to_string (&time3_tm, &buffer3 [0], sizeof (buffer3));
   printf ("Current time is %s.\n" 
-	  "so-called seconds since the POSIX epoch is %d.\n" 
+	  "So-called seconds since the POSIX epoch is %d.\n" 
 	  "%d SI seconds before %s is %s.\n"
 	  "%d wall-clock seconds before %s is %s.\n",
 	  buffer1,
@@ -111,9 +111,10 @@ do_print ()
   time_copy_tm (&time1_tm, &time3_tm);
   time_UTC_add_seconds (&time3_tm, -seconds_count, 1972);
   time_tm_to_string (&time3_tm, &buffer3 [0], sizeof (buffer3));
-  printf ("%d SI seconds before %s is %s\n"
-	  " or %s wall-clock seconds.\n",
-	  seconds_count, buffer1, buffer2, buffer3);
+  printf ("%d SI seconds before %s is %s.\n"
+	  "%d wall-clock seconds before %s is %s..\n",
+	  seconds_count, buffer1, buffer2,
+	  seconds_count, buffer1, buffer3);
     
   return;
 }
@@ -127,7 +128,7 @@ usage (FILE *fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "Print the date of the POSIX epoch\n"
-	       " Version 1.1 2018-11-11\n"
+	       " Version 1.2 2019-11-07\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"

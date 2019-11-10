@@ -1,9 +1,9 @@
 /*
- * File: test_add.c, author: John Sauter, date: November 11, 2018.
+ * File: test_add.c, author: John Sauter, date: November 7, 2019.
  * Test the various time adding entry points.
  */
 /*
- * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@
 #include <errno.h>
 #include <time.h>
 
-#include "time_subroutines.h"
+#include "src/time_subroutines.h"
 
 static int debug_level = 0;
 
@@ -723,7 +723,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "test_add\n"
-	       " Version 1.1 2018-11-11\n"
+	       " Version 1.2 2019-11-07\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"

@@ -1,9 +1,8 @@
 /*
- * File: test_diff.c, author: John Sauter, date: November 11, 2018.
- * Test the diff_time subroutine.
+ * File: example_04.c, author: John Sauter, date: November 9, 2019.
  */
 /*
- * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,7 +26,7 @@
  *    e-mail: John_Sauter@systemeyescomputerstore.com
  */
 
-#define _XOPEN_SOURCE
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>		/* getopt_long() */
@@ -35,56 +34,37 @@
 #include <errno.h>
 #include <time.h>
 
-#include "time_subroutines.h"
+#include "../src/time_subroutines.h"
 
 static int debug_level = 0;
 
-/* Decode two times and print their difference.  */
+/* Example 4: using TAI.  Time_stamp_value is the TAI integer
+ * that is to be converted to a readable format.  */
 void
-do_test (char *A_time, char *B_time)
+example_4 (long long int time_stamp_value)
 {
-  struct tm A_tm, B_tm;
-  long long int seconds;
-  void *err_val;
-  char A_string [256];
-  char B_string [256];
+  struct tm time1_tm;
+  struct tm time2_tm;
+  char buffer1 [64];
 
-  memset (&A_tm, 0, sizeof (A_tm));
-  err_val = strptime (A_time, "%Y-%m-%dT%H:%M:%S", &A_tm);
-  if (err_val == NULL)
-    {
-      printf ("error on A: %s.\n", A_time);
-      return;
-    }
+  /* Construct the base date of 1970-01-01T00:00:00Z.  */
+  time_current_tm (&time1_tm);
+  time1_tm.tm_year = 1970 - 1900;
+  time1_tm.tm_mon = 1 - 1;
+  time1_tm.tm_mday = 1;
+  time1_tm.tm_hour = 0;
+  time1_tm.tm_min = 0;
+  time1_tm.tm_sec = 0;
 
-  memset (&B_tm, 0, sizeof (B_tm));
-  err_val = strptime (B_time, "%Y-%m-%dT%H:%M:%S", &B_tm);
-  if (err_val == 0)
-    {
-      printf ("error on B: %s.\n", B_time);
-      return;
-    }
-  seconds = time_diff (&A_tm, &B_tm, INT_MIN);
-  time_tm_to_string (&A_tm, A_string, sizeof (A_string));
-  time_tm_to_string (&B_tm, B_string, sizeof (B_string));
-  printf ("%s to %s is %lld seconds.\n",
-	  A_string, B_string, seconds);
+  /* Add the time stamp, which is the integer representation of TAI.  */
+  time_copy_tm (&time1_tm, &time2_tm);
+  time_UTC_add_seconds (&time2_tm, time_stamp_value - 10, 1972);
+  time_tm_to_string (&time2_tm, &buffer1 [0], sizeof (buffer1));
 
-  seconds = time_diff (&A_tm, &B_tm, 1972);
-  time_tm_to_string (&A_tm, A_string, sizeof (A_string));
-  time_tm_to_string (&B_tm, B_string, sizeof (B_string));
-  printf ("%s to %s is %lld seconds, "
-	  "with variable-length seconds before 1972.\n",
-	  A_string, B_string, seconds);
-  
-  seconds = time_diff (&A_tm, &B_tm, INT_MAX);
-  time_tm_to_string (&A_tm, A_string, sizeof (A_string));
-  time_tm_to_string (&B_tm, B_string, sizeof (B_string));
-  printf ("%s to %s is %lld seconds with all seconds variable length.\n",
-	  A_string, B_string, seconds);
+  /* Print the result.  */
+  printf ("%lld TAI is %s.\n", time_stamp_value, buffer1);
   return;
 }
-
 
 /* Print a helpful message.  */
 static void
@@ -93,10 +73,9 @@ usage (FILE * fp, int argc, char **argv)
   if (argc >= 1)
     {
       fprintf (fp,
-	       "Usage: %s [options] A_time B_time\n\n"
-	       "print the number of seconds between two times.\n"
-	       "The two times are formatted as %%Y-%%m-%%dT%%H:%%M:%%S.\n"
-	       "Version 3.0 2018-11-11\n"
+	       "Usage: %s [options] \n\n"
+	       "example_4\n"
+	       " Version 1.3 2019-11-07\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"
@@ -113,13 +92,10 @@ static const struct option long_options[] = {
   {0, 0, 0, 0}
 };
 
-/* main program: parse options, perform test and exit. */
+/* main program: parse options, perform example and exit. */
 int
 main (int argc, char **argv)
 {
-
-  char *A_time;
-  char *B_time;
   
   for (;;)
     {
@@ -149,17 +125,8 @@ main (int argc, char **argv)
 	  exit (EXIT_FAILURE);
 	}
     }
-
-  if (argc > 1)
-    {
-      A_time = argv [optind];
-      B_time = argv [optind + 1];
-    } else {
-    usage (stderr, argc, argv);
-    exit (EXIT_FAILURE);
-  }
-  
-  do_test (A_time, B_time);
+ 
+  example_4 (1483228836);
   exit (EXIT_SUCCESS);
 
   return 0;

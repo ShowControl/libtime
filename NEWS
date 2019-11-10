@@ -1,6 +1,8 @@
-2019-11-06 3:14:0
+2019-11-09 3:14:0
   Simplify the Makefile and clean up the example and test programs for rpmbuild.
   Distribute an RPMBUILD spec file for two RPMs: libtime and libtime-devel.
+  Move the source files to their own subdirectories, the examples files
+  to theirs, and the test and demo files to theirs.
   
 2019-10-31 3:13:0
   Delay the December 2021 leap second by six months to June 2022

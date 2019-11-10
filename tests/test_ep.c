@@ -1,5 +1,5 @@
 /*
- * File: test_ep.c, author: John Sauter, date: April 28, 2019.
+ * File: test_ep.c, author: John Sauter, date: November 7, 2019.
  * Call all of the entry points.
  */
 /*
@@ -34,7 +34,7 @@
 #include <errno.h>
 #include <time.h>
 
-#include "time_subroutines.h"
+#include "src/time_subroutines.h"
 
 static int debug_level = 0;
 
@@ -985,7 +985,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "test_local\n"
-	       " Version 1.1 2018-11-11\n"
+	       " Version 1.2 2019-11-07\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"

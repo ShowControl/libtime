@@ -1,8 +1,10 @@
 /*
- * File: example_04.c, author: John Sauter, date: December 2, 2018.
+ * File: test_JDN.c, author: John Sauter, date: November 7, 2019.
+ * Test the JDN conversion.
  */
+
 /*
- * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,43 +28,29 @@
  *    e-mail: John_Sauter@systemeyescomputerstore.com
  */
 
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>		/* getopt_long() */
 #include <string.h>
 #include <errno.h>
+#include <unistd.h>
+#include <stddef.h>
 #include <time.h>
+#include <sys/time.h>
+#include <sys/timex.h>
 
-#include "time_subroutines.h"
+#include "src/time_subroutines.h"
 
 static int debug_level = 0;
 
-/* Example 4: using TAI.  Time_stamp_value is the TAI integer
- * that is to be converted to a readable format.  */
-void
-example_4 (long long int time_stamp_value)
+static void
+display_JDN (int year_no, int month_no, int mday_no)
 {
-  struct tm time1_tm;
-  struct tm time2_tm;
-  char buffer1 [64];
-
-  /* Construct the base date of 1970-01-01T00:00:00Z.  */
-  time_current_tm (&time1_tm);
-  time1_tm.tm_year = 1970 - 1900;
-  time1_tm.tm_mon = 1 - 1;
-  time1_tm.tm_mday = 1;
-  time1_tm.tm_hour = 0;
-  time1_tm.tm_min = 0;
-  time1_tm.tm_sec = 0;
-
-  /* Add the time stamp, which is the integer representation of TAI.  */
-  time_copy_tm (&time1_tm, &time2_tm);
-  time_UTC_add_seconds (&time2_tm, time_stamp_value - 10, 1972);
-  time_tm_to_string (&time2_tm, &buffer1 [0], sizeof (buffer1));
-
-  /* Print the result.  */
-  printf ("%lld TAI is %s.\n", time_stamp_value, buffer1);
+  int the_JDN;
+  
+  the_JDN = time_Julian_day_number (year_no, month_no, mday_no);
+  printf ("Year %i Month %i Day %i is JDN %i.5.\n",
+	  year_no, month_no, mday_no, the_JDN);
   return;
 }
 
@@ -73,29 +61,39 @@ usage (FILE * fp, int argc, char **argv)
   if (argc >= 1)
     {
       fprintf (fp,
-	       "Usage: %s [options] \n\n"
-	       "example_4\n"
-	       " Version 1.2 2018-12-02\n"
+	       "Usage: %s [options]\n\n"
+	       "Display a Julian Day Number.\n"
+	       " Version 1.1 2019-11-07\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
+	       "-y | --year          Year\n"
+	       "-m | --month         Month\n"
+	       "-d | --day           Day of the month\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"
 	       "", argv[0]);
     }
 }
 
 /* Options */
-static const char short_options[] = "hD:";
+static const char short_options[] = "ho:r:d:D:";
 
 static const struct option long_options[] = {
   {"help", no_argument, NULL, 'h'},
+  {"year", required_argument, NULL, 'y'},
+  {"month", required_argument, NULL, 'm'},
+  {"day", required_argument, NULL, 'd'},
   {"debug-level", required_argument, NULL, 'D'},
   {0, 0, 0, 0}
 };
 
-/* main program: parse options, perform example and exit. */
+/* main program: parse options, print result and exit. */
 int
 main (int argc, char **argv)
 {
+
+  int year_no = 1972;
+  int month_no = 6;
+  int mday_no = 30;
   
   for (;;)
     {
@@ -116,6 +114,18 @@ main (int argc, char **argv)
 	  usage (stdout, argc, argv);
 	  exit (EXIT_SUCCESS);
 
+	case 'y':
+	  year_no = atoi (optarg);
+	  break;
+	  
+	case 'm':
+	  month_no = atoi (optarg);
+	  break;
+	  
+	case 'd':
+	  mday_no = atoi (optarg);
+	  break;
+	  
 	case 'D':
 	  debug_level = atoi (optarg);
 	  break;
@@ -125,8 +135,8 @@ main (int argc, char **argv)
 	  exit (EXIT_FAILURE);
 	}
     }
- 
-  example_4 (1483228836);
+
+  display_JDN (year_no, month_no, mday_no);
   exit (EXIT_SUCCESS);
 
   return 0;

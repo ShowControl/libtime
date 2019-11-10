@@ -1,28 +1,30 @@
-# File: Makefile.am for libtime, author: John Sauter, date: November 6, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: November 9, 2019.
+
+AUTOMAKE_OPTIONS = subdir-objects
 
 lib_LTLIBRARIES = libtime.la
-libtime_la_SOURCES = time_copy.c \
-	time_current_tm.c \
-	time_current_tm_nano.c \
-	time_diff.c \
-	time_length.c \
-	time_local_add.c \
-	time_local_normalize.c \
-	time_local_to_utc.c \
-	time_sleep_until.c \
-	time_tm_nano_to_integer.c \
-	time_tm_nano_to_string.c \
-	time_tm_to_integer.c \
-	time_tm_to_string.c \
-	time_utc_add.c \
-	time_utc_normalize.c \
-	time_utc_to_local.c \
-	time_subroutines.h \
-	int128_to_string.c \
+libtime_la_SOURCES = src/time_copy.c \
+	src/time_current_tm.c \
+	src/time_current_tm_nano.c \
+	src/time_diff.c \
+	src/time_length.c \
+	src/time_local_add.c \
+	src/time_local_normalize.c \
+	src/time_local_to_utc.c \
+	src/time_sleep_until.c \
+	src/time_tm_nano_to_integer.c \
+	src/time_tm_nano_to_string.c \
+	src/time_tm_to_integer.c \
+	src/time_tm_to_string.c \
+	src/time_utc_add.c \
+	src/time_utc_normalize.c \
+	src/time_utc_to_local.c \
+	src/time_subroutines.h \
+	src/int128_to_string.c \
 	read_extraordinary_days_table.py \
-	demo_python.py \
-	test_python_interface.py \
-	example_06.py \
+	tests/demo_python.py \
+	tests/test_python_interface.py \
+	examples/example_06.py \
 	extraordinary_days.dat \
 	avoid_time_t.tex \
 	references.bib \
@@ -30,9 +32,8 @@ libtime_la_SOURCES = time_copy.c \
 
 nodist_libtime_la_SOURCES = dtai_table.h dtai_table.tab
 dist_man_MANS = libtime.3
-#BUILT_SOURCES = dtai_table.h dtai_table.tab 
-time_diff.lo: dtai_table.h dtai_table.tab
-test_local.${OBJEXT}: dtai_table.h dtai_table.tab
+BUILT_SOURCES = dtai_table.h dtai_table.tab 
+
 CLEANFILES = dtai_table.h dtai_table.tab example_03_output.txt \
 avoid_time_t.out avoid_time_t.brf avoid_time_t.log avoid_time_t.aux \
 avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf check_time_output.txt \
@@ -65,10 +66,31 @@ test_time test_diff test_JDN \
 test_add test_ep test_local print_DTAI sleep_until_midnight POSIX_epoch \
 powers_of_two check_time
 
+example_02_SOURCES = examples/example_02.c
+example_03_SOURCES = examples/example_03.c
+example_04_SOURCES = examples/example_04.c
+example_05_SOURCES = examples/example_05.c
 example_05_LDADD = libtime.la
 example_04_LDADD = libtime.la
 example_03_LDADD = libtime.la
 example_02_LDADD = libtime.la
+EXTRA_example_02_DEPENDENCIES = libtime.la
+EXTRA_example_03_DEPENDENCIES = libtime.la
+EXTRA_example_04_DEPENDENCIES = libtime.la
+EXTRA_example_05_DEPENDENCIES = libtime.la
+POSIX_epoch_SOURCES = tests/POSIX_epoch.c
+print_DTAI_SOURCES = tests/print_DTAI.c
+test_add_SOURCES = tests/test_add.c
+test_ep_SOURCES = tests/test_add.c
+test_ep_SOURCES = tests/test_ep.c
+test_local_SOURCES = tests/test_local.c
+test_struct_time_SOURCES = tests/test_struct_time.py
+powers_of_two_SOURCES = tests/powers_of_two.c
+sleep_until_midnight_SOURCES = tests/sleep_until_midnight.c
+test_diff_SOURCES = tests/test_diff.c
+test_JDN_SOURCES = tests/test_JDN.c
+test_python_interface_SOURCES = tests/test_python_interface.py
+test_time_SOURCES = tests/test_time.c
 test_time_LDADD = libtime.la
 test_JDN_LDADD = libtime.la
 test_diff_LDADD = libtime.la
@@ -94,7 +116,7 @@ EXTRA_DIST = libtime.spec
 # for files extracted from the PDF.
 EXTRA_DIST += fix_files.sh
 
-include_HEADERS = time_subroutines.h
+include_HEADERS = src/time_subroutines.h
 
 dtai_table.tab: read_extraordinary_days_table.py extraordinary_days.dat
 	python3 $(srcdir)/read_extraordinary_days_table.py \
@@ -110,14 +132,15 @@ pdf-local: avoid_time_t.pdf
 
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	dtai_table.tab \
-	example_02.c example_03.c example_06.py \
+	examples/example_02.c examples/example_03.c examples/example_06.py \
 	example_03_output.txt libtime.pc time_subroutines.py \
 	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 
-avoid_time_t.bbl : avoid_time_t.tex references.bib example_02.c example_03.c \
+avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
+	examples/example_03.c examples/example_06.py \
 	dtai_table.h dtai_table.tab example_03_output.txt time_subroutines.py \
 	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex

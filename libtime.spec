@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2019.11.06
+Version:        2019.11.09
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -17,11 +17,6 @@ ExcludeArch:    i386
 
 %description
 Manipulate time values stored in a POSIX tm structure.
-
-# The following must match the values in configure.ac.
-%global libtool_version_current 3
-%global libtool_version_revision 0
-%global libtool_version_age 14
 
 %prep
 %autosetup -S git
@@ -48,8 +43,7 @@ POSIX time_t, which does not support leap seconds.
 %{_exec_prefix}/lib/python3.*/site-packages/__pycache__/time_subroutines.cpython-3*.pyc
 %{_exec_prefix}/lib/python3.*/site-packages/time_subroutines.py
 %{_libdir}/libtime.la
-%{_libdir}/libtime.so.%{libtool_version_current}
-%{_libdir}/libtime.so.%{libtool_version_current}.%{libtool_version_revision}.%{libtool_version_age}
+%{_libdir}/libtime.so.*
 %exclude /usr/share/doc/%{name}/AUTHORS
 %exclude /usr/share/doc/%{name}/COPYING
 %exclude /usr/share/doc/%{name}/ChangeLog
@@ -65,13 +59,17 @@ POSIX time_t, which does not support leap seconds.
 %{_libdir}/libtime.a
 %{_libdir}/libtime.so
 %{_libdir}/pkgconfig/libtime.pc
-%{_mandir}/man3/libtime.%{libtool_version_current}.gz
+%{_mandir}/man3/libtime.3.gz
 %doc AUTHORS COPYING ChangeLog NEWS README
 %doc avoid_time_t.pdf
 %license LICENSE
 
 %changelog
+* Thu Nov  7 2019 John Sauter <John_Sauter@sytemeyescomputerstore.com>
+- 2019.11.07-1 remove dependency on version-info using wildcards
+
 * Wed Nov  6 2019 John Sauter <John_Sauter@sytemeyescomputerstore.com>
 - 2019.11.06-1 divide into libtime and libtime-devel
+
 * Tue Nov  5 2019 John Sauter <John_Sauter@sytemeyescomputerstore.com>
 - 2019.11.05-1 initial version of the spec file

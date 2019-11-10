@@ -1,8 +1,6 @@
 /*
- * File: test_JDN.c, author: John Sauter, date: November 2, 2019.
- * Test the JDN conversion.
+ * File: powers_of_two.c, author: John Sauter, date: November 7, 2019.
  */
-
 /*
  * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
@@ -33,24 +31,28 @@
 #include <getopt.h>		/* getopt_long() */
 #include <string.h>
 #include <errno.h>
-#include <unistd.h>
-#include <stddef.h>
 #include <time.h>
-#include <sys/time.h>
-#include <sys/timex.h>
 
-#include "time_subroutines.h"
+#include "src/time_subroutines.h"
 
 static int debug_level = 0;
 
-static void
-display_JDN (int year_no, int month_no, int mday_no)
+/* Powers_of_two sample program  */
+void
+powers_of_two ()
 {
-  int the_JDN;
+  char buffer1 [64];
+  __int128 value;
+  int power;
+
+  value = 1;
+  for (power=0;power<128;power++)
+    {
+      int128_to_string (&value, &buffer1 [0], sizeof (buffer1));
+      printf ("2**%d = %s.\n", power, buffer1);
+      value = value * 2;
+    }
   
-  the_JDN = time_Julian_day_number (year_no, month_no, mday_no);
-  printf ("Year %i Month %i Day %i is JDN %i.5.\n",
-	  year_no, month_no, mday_no, the_JDN);
   return;
 }
 
@@ -61,39 +63,29 @@ usage (FILE * fp, int argc, char **argv)
   if (argc >= 1)
     {
       fprintf (fp,
-	       "Usage: %s [options]\n\n"
-	       "Display a Julian Day Number.\n"
-	       " Version 1.0 2019-06-16\n"
+	       "Usage: %s [options] \n\n"
+	       "powers_of_two\n"
+	       " Version 1.2 2019-11-07\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
-	       "-y | --year          Year\n"
-	       "-m | --month         Month\n"
-	       "-d | --day           Day of the month\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"
 	       "", argv[0]);
     }
 }
 
 /* Options */
-static const char short_options[] = "ho:r:d:D:";
+static const char short_options[] = "hD:";
 
 static const struct option long_options[] = {
   {"help", no_argument, NULL, 'h'},
-  {"year", required_argument, NULL, 'y'},
-  {"month", required_argument, NULL, 'm'},
-  {"day", required_argument, NULL, 'd'},
   {"debug-level", required_argument, NULL, 'D'},
   {0, 0, 0, 0}
 };
 
-/* main program: parse options, print result and exit. */
+/* main program: parse options, perform test and exit. */
 int
 main (int argc, char **argv)
 {
-
-  int year_no = 1972;
-  int month_no = 6;
-  int mday_no = 30;
   
   for (;;)
     {
@@ -114,18 +106,6 @@ main (int argc, char **argv)
 	  usage (stdout, argc, argv);
 	  exit (EXIT_SUCCESS);
 
-	case 'y':
-	  year_no = atoi (optarg);
-	  break;
-	  
-	case 'm':
-	  month_no = atoi (optarg);
-	  break;
-	  
-	case 'd':
-	  mday_no = atoi (optarg);
-	  break;
-	  
 	case 'D':
 	  debug_level = atoi (optarg);
 	  break;
@@ -135,8 +115,8 @@ main (int argc, char **argv)
 	  exit (EXIT_FAILURE);
 	}
     }
-
-  display_JDN (year_no, month_no, mday_no);
+ 
+  powers_of_two ();
   exit (EXIT_SUCCESS);
 
   return 0;
