@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: November 9, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: November 16, 2019.
 
 
 
@@ -94,14 +94,22 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 
+# Conditionally include the subroutines which require 128-bit integers.
+@USE_int128_TRUE@am__append_1 = src/time_tm_nano_to_integer.c \
+@USE_int128_TRUE@	src/int128_to_string.c 
+
+
 # Conditionally build the PDF.
-@ENABLE_PDF_TRUE@am__append_1 = avoid_time_t.pdf
+@ENABLE_PDF_TRUE@am__append_2 = avoid_time_t.pdf
 noinst_PROGRAMS = example_02$(EXEEXT) example_03$(EXEEXT) \
 	example_04$(EXEEXT) example_05$(EXEEXT) test_time$(EXEEXT) \
 	test_diff$(EXEEXT) test_JDN$(EXEEXT) test_add$(EXEEXT) \
 	test_ep$(EXEEXT) test_local$(EXEEXT) print_DTAI$(EXEEXT) \
 	sleep_until_midnight$(EXEEXT) POSIX_epoch$(EXEEXT) \
-	powers_of_two$(EXEEXT) check_time$(EXEEXT)
+	check_time$(EXEEXT) $(am__EXEEXT_1)
+
+# The powers of 2 program requires 128-bit integers
+@USE_int128_TRUE@am__append_3 = powers_of_two
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
@@ -118,8 +126,9 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = libtime.pc
+CONFIG_CLEAN_FILES = libtime.pc time_subroutines.h time_subroutines.py
 CONFIG_CLEAN_VPATH_FILES =
+@USE_int128_TRUE@am__EXEEXT_1 = powers_of_two$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
@@ -153,19 +162,27 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pythondir)" \
 	"$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libtime_la_LIBADD =
+am__libtime_la_SOURCES_DIST = src/time_copy.c src/time_current_tm.c \
+	src/time_current_tm_nano.c src/time_diff.c src/time_length.c \
+	src/time_local_add.c src/time_local_normalize.c \
+	src/time_local_to_utc.c src/time_sleep_until.c \
+	src/time_tm_nano_to_string.c src/time_tm_to_integer.c \
+	src/time_tm_to_string.c src/time_utc_add.c \
+	src/time_utc_normalize.c src/time_utc_to_local.c \
+	time_subroutines.h src/time_tm_nano_to_integer.c \
+	src/int128_to_string.c
 am__dirstamp = $(am__leading_dot)dirstamp
+@USE_int128_TRUE@am__objects_1 = src/time_tm_nano_to_integer.lo \
+@USE_int128_TRUE@	src/int128_to_string.lo
 am_libtime_la_OBJECTS = src/time_copy.lo src/time_current_tm.lo \
 	src/time_current_tm_nano.lo src/time_diff.lo \
 	src/time_length.lo src/time_local_add.lo \
 	src/time_local_normalize.lo src/time_local_to_utc.lo \
-	src/time_sleep_until.lo src/time_tm_nano_to_integer.lo \
-	src/time_tm_nano_to_string.lo src/time_tm_to_integer.lo \
-	src/time_tm_to_string.lo src/time_utc_add.lo \
-	src/time_utc_normalize.lo src/time_utc_to_local.lo \
-	src/int128_to_string.lo
-nodist_libtime_la_OBJECTS =
-libtime_la_OBJECTS = $(am_libtime_la_OBJECTS) \
-	$(nodist_libtime_la_OBJECTS)
+	src/time_sleep_until.lo src/time_tm_nano_to_string.lo \
+	src/time_tm_to_integer.lo src/time_tm_to_string.lo \
+	src/time_utc_add.lo src/time_utc_normalize.lo \
+	src/time_utc_to_local.lo $(am__objects_1)
+libtime_la_OBJECTS = $(am_libtime_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -215,7 +232,7 @@ test_ep_OBJECTS = $(am_test_ep_OBJECTS)
 test_ep_DEPENDENCIES = libtime.la
 am_test_local_OBJECTS = tests/test_local.$(OBJEXT)
 test_local_OBJECTS = $(am_test_local_OBJECTS)
-test_local_DEPENDENCIES = libtime.la
+test_local_LDADD = $(LDADD)
 am_test_time_OBJECTS = tests/test_time.$(OBJEXT)
 test_time_OBJECTS = $(am_test_time_OBJECTS)
 test_time_DEPENDENCIES = libtime.la
@@ -279,14 +296,14 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libtime_la_SOURCES) $(nodist_libtime_la_SOURCES) \
-	$(POSIX_epoch_SOURCES) check_time.c $(example_02_SOURCES) \
-	$(example_03_SOURCES) $(example_04_SOURCES) \
-	$(example_05_SOURCES) $(powers_of_two_SOURCES) \
-	$(print_DTAI_SOURCES) $(sleep_until_midnight_SOURCES) \
-	$(test_JDN_SOURCES) $(test_add_SOURCES) $(test_diff_SOURCES) \
-	$(test_ep_SOURCES) $(test_local_SOURCES) $(test_time_SOURCES)
-DIST_SOURCES = $(libtime_la_SOURCES) $(POSIX_epoch_SOURCES) \
+SOURCES = $(libtime_la_SOURCES) $(POSIX_epoch_SOURCES) check_time.c \
+	$(example_02_SOURCES) $(example_03_SOURCES) \
+	$(example_04_SOURCES) $(example_05_SOURCES) \
+	$(powers_of_two_SOURCES) $(print_DTAI_SOURCES) \
+	$(sleep_until_midnight_SOURCES) $(test_JDN_SOURCES) \
+	$(test_add_SOURCES) $(test_diff_SOURCES) $(test_ep_SOURCES) \
+	$(test_local_SOURCES) $(test_time_SOURCES)
+DIST_SOURCES = $(am__libtime_la_SOURCES_DIST) $(POSIX_epoch_SOURCES) \
 	check_time.c $(example_02_SOURCES) $(example_03_SOURCES) \
 	$(example_04_SOURCES) $(example_05_SOURCES) \
 	$(powers_of_two_SOURCES) $(print_DTAI_SOURCES) \
@@ -508,9 +525,11 @@ TEST_LOG_DRIVER = $(SHELL) $(top_srcdir)/test-driver
 TEST_LOG_COMPILE = $(TEST_LOG_COMPILER) $(AM_TEST_LOG_FLAGS) \
 	$(TEST_LOG_FLAGS)
 am__DIST_COMMON = $(dist_man_MANS) $(srcdir)/Makefile.in \
-	$(srcdir)/config.h.in $(srcdir)/libtime.pc.in AUTHORS COPYING \
-	ChangeLog INSTALL NEWS README compile config.guess config.sub \
-	depcomp install-sh ltmain.sh missing py-compile test-driver
+	$(srcdir)/config.h.in $(srcdir)/libtime.pc.in \
+	$(srcdir)/time_subroutines.h.in \
+	$(srcdir)/time_subroutines.py.in AUTHORS COPYING ChangeLog \
+	INSTALL NEWS README compile config.guess config.sub depcomp \
+	install-sh ltmain.sh missing py-compile test-driver
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -600,6 +619,8 @@ SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
+USE_int128_C = @USE_int128_C@
+USE_int128_Python = @USE_int128_Python@
 VERSION = @VERSION@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
@@ -661,46 +682,55 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AUTOMAKE_OPTIONS = subdir-objects
-lib_LTLIBRARIES = libtime.la
-libtime_la_SOURCES = src/time_copy.c \
-	src/time_current_tm.c \
-	src/time_current_tm_nano.c \
-	src/time_diff.c \
-	src/time_length.c \
-	src/time_local_add.c \
-	src/time_local_normalize.c \
-	src/time_local_to_utc.c \
-	src/time_sleep_until.c \
-	src/time_tm_nano_to_integer.c \
-	src/time_tm_nano_to_string.c \
-	src/time_tm_to_integer.c \
-	src/time_tm_to_string.c \
-	src/time_utc_add.c \
-	src/time_utc_normalize.c \
-	src/time_utc_to_local.c \
-	src/time_subroutines.h \
-	src/int128_to_string.c \
-	read_extraordinary_days_table.py \
-	tests/demo_python.py \
-	tests/test_python_interface.py \
-	examples/example_06.py \
-	extraordinary_days.dat \
-	avoid_time_t.tex \
-	references.bib \
-	legalcode.txt
 
-nodist_libtime_la_SOURCES = dtai_table.h dtai_table.tab
+# Place object files in the same subdirectory as their source files.
+AUTOMAKE_OPTIONS = subdir-objects
+
+# We are building libtime.
+lib_LTLIBRARIES = libtime.la
+
+# These are the sources from which we will build the library.
+libtime_la_SOURCES = src/time_copy.c src/time_current_tm.c \
+	src/time_current_tm_nano.c src/time_diff.c src/time_length.c \
+	src/time_local_add.c src/time_local_normalize.c \
+	src/time_local_to_utc.c src/time_sleep_until.c \
+	src/time_tm_nano_to_string.c src/time_tm_to_integer.c \
+	src/time_tm_to_string.c src/time_utc_add.c \
+	src/time_utc_normalize.c src/time_utc_to_local.c \
+	time_subroutines.h $(am__append_1)
+
+# In addition to the files named above, also include these files
+# in the distribution.
+
+# The spec file is used to build twp RPMs for the Fedora and
+# OpenSUSE distributions of GNU/Linux: libtime and libtime-devel.
+
+# fix_files.sh is used to restore directories and permissions when needed
+# for files extracted from the PDF.
+EXTRA_DIST = read_extraordinary_days_table.py tests/demo_python.py \
+	tests/test_python_interface.py examples/example_06.py \
+	extraordinary_days.dat avoid_time_t.tex references.bib \
+	legalcode.txt libtime.spec fix_files.sh
+
+# Also distribute the text for the man command.
 dist_man_MANS = libtime.3
-BUILT_SOURCES = dtai_table.h dtai_table.tab 
+
+# When removing files, also remove these.
 CLEANFILES = dtai_table.h dtai_table.tab example_03_output.txt \
 avoid_time_t.out avoid_time_t.brf avoid_time_t.log avoid_time_t.aux \
 avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf check_time_output.txt \
 verify_files.sh
 
+
+# Place support files in the m4 directory.
 ACLOCAL_AMFLAGS = -I m4
+
+# Include the following documentation files in the distribution.
 dist_doc_DATA = README COPYING LICENSE AUTHORS ChangeLog INSTALL NEWS \
-	$(am__append_1)
+	$(am__append_2)
+
+# Here is the location of the source file, the dependency information
+# and the linking process for the above programs.
 example_02_SOURCES = examples/example_02.c
 example_03_SOURCES = examples/example_03.c
 example_04_SOURCES = examples/example_04.c
@@ -709,10 +739,6 @@ example_05_LDADD = libtime.la
 example_04_LDADD = libtime.la
 example_03_LDADD = libtime.la
 example_02_LDADD = libtime.la
-EXTRA_example_02_DEPENDENCIES = libtime.la
-EXTRA_example_03_DEPENDENCIES = libtime.la
-EXTRA_example_04_DEPENDENCIES = libtime.la
-EXTRA_example_05_DEPENDENCIES = libtime.la
 POSIX_epoch_SOURCES = tests/POSIX_epoch.c
 print_DTAI_SOURCES = tests/print_DTAI.c
 test_add_SOURCES = tests/test_add.c
@@ -730,24 +756,20 @@ test_JDN_LDADD = libtime.la
 test_diff_LDADD = libtime.la
 test_add_LDADD = libtime.la
 test_ep_LDADD = libtime.la
-test_local_LDADD = libtime.la
 print_DTAI_LDADD = libtime.la
 sleep_until_midnight_LDADD = libtime.la
 POSIX_epoch_LDADD = libtime.la
 powers_of_two_LDADD = libtime.la
 check_time_LDADD = libtime.la
+
+# Distribute the python interface code.
 python_PYTHON = time_subroutines.py
 
 # The Libtool version-info integers are defined in configure.ac.
 libtime_la_LDFLAGS = -version-info @libtool_version_current@:@libtool_version_revision@:@libtool_version_age@
 
-# The spec file is used to build twp RPMs
-# for Fedora and OpenSUSE distributions.
-
-# fix_files.sh is used to restore directories and permissions when needed
-# for files extracted from the PDF.
-EXTRA_DIST = libtime.spec fix_files.sh
-include_HEADERS = src/time_subroutines.h
+# Distribute the C interface definitions.
+include_HEADERS = time_subroutines.h
 
 # Support pgk-config
 pkgconfigdir = $(libdir)/pkgconfig
@@ -756,8 +778,12 @@ pkgconfig_DATA = libtime.pc
 # Support make check and make distcheck
 dist_check_DATA = check_time_output.txt check_time_expected_output.txt
 dist_check_SCRIPTS = verify_files_template.sh
+@USE_int128_FALSE@AM_DISTCHECK_CONFIGURE_FLAGS = --disable-int128
+
+# Pass along the dependence on 128-bit integers in the C compiler.
+@USE_int128_TRUE@AM_DISTCHECK_CONFIGURE_FLAGS = --enable-int128
 TESTS = verify_files.sh
-all: $(BUILT_SOURCES) config.h
+all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
@@ -811,6 +837,10 @@ $(srcdir)/config.h.in: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 distclean-hdr:
 	-rm -f config.h stamp-h1
 libtime.pc: $(top_builddir)/config.status $(srcdir)/libtime.pc.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+time_subroutines.h: $(top_builddir)/config.status $(srcdir)/time_subroutines.h.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+time_subroutines.py: $(top_builddir)/config.status $(srcdir)/time_subroutines.py.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 clean-noinstPROGRAMS:
@@ -877,8 +907,6 @@ src/time_local_to_utc.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 src/time_sleep_until.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
-src/time_tm_nano_to_integer.lo: src/$(am__dirstamp) \
-	src/$(DEPDIR)/$(am__dirstamp)
 src/time_tm_nano_to_string.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 src/time_tm_to_integer.lo: src/$(am__dirstamp) \
@@ -889,6 +917,8 @@ src/time_utc_add.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/time_utc_normalize.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 src/time_utc_to_local.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/time_tm_nano_to_integer.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 src/int128_to_string.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
@@ -1625,16 +1655,14 @@ check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) $(dist_check_SCRIPTS) \
 	  $(dist_check_DATA)
 	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
-check: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) check-am
+check: check-am
 all-am: Makefile $(PROGRAMS) $(LTLIBRARIES) $(MANS) $(DATA) $(HEADERS) \
 		config.h
 installdirs:
 	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pythondir)" "$(DESTDIR)$(man3dir)" "$(DESTDIR)$(docdir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(includedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) install-am
+install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -1674,7 +1702,6 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool clean-local \
@@ -1816,7 +1843,7 @@ uninstall-am: uninstall-dist_docDATA uninstall-includeHEADERS \
 
 uninstall-man: uninstall-man3
 
-.MAKE: all check check-am install install-am install-strip
+.MAKE: all check-am install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am am--depfiles am--refresh check \
 	check-TESTS check-am clean clean-cscope clean-generic \
@@ -1844,12 +1871,21 @@ uninstall-man: uninstall-man3
 .PRECIOUS: Makefile
 
 
+# The files dtai_table.h and dtai_table.tab are build from
+# file extraordinary_days.dat.  They are used by time_diff.
+#BUILT_SOURCES = dtai_table.h dtai_table.tab 
+src/time_diff.${OBJEXT}: dtai_table.h dtai_table.tab
+src/time_diff.lo: dtai_table.h dtai_table.tab
+
 clean-local:
 	rm -rf _minted-avoid_time_t/
 	rm -rf __pycache__
 	rm -rf autom4te.cache
 	rm -rf *~
+tests/test_local.lo: dtai_table.h dtai_table.tab
+tests/test_local.${OBJEXT}: dtai_table.h dtai_table.tab
 
+# Here is how to build dtai_table.tab and dtai_table.h.
 dtai_table.tab: read_extraordinary_days_table.py extraordinary_days.dat
 	python3 $(srcdir)/read_extraordinary_days_table.py \
 $(srcdir)/extraordinary_days.dat --c-output-tab=$(builddir)/dtai_table.tab
@@ -1862,6 +1898,11 @@ $(srcdir)/extraordinary_days.dat --c-output-h=$(builddir)/dtai_table.h
 pdf-local: avoid_time_t.pdf
 .PHONEY: pdf-local
 
+# Building the PDF depends on the bbl file, which is built below.
+# When the bbl file is available, run LaTeX three times to be sure
+# the forward references are resolved.  There is a slight chance that
+# this process will be unstable, with the size of a reference changing
+# the pagination, thus changing the size of a reference to that page.
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	dtai_table.tab \
 	examples/example_02.c examples/example_03.c examples/example_06.py \
@@ -1871,6 +1912,7 @@ avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 
+# Build the bbl file by running LaTeX without it, then running bibtex.
 avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
 	examples/example_03.c examples/example_06.py \
 	dtai_table.h dtai_table.tab example_03_output.txt time_subroutines.py \
@@ -1878,6 +1920,7 @@ avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export BIBINPUTS="$(srcdir):" && kpsewhich -var-value BIBINPUTS && bibtex $(builddir)/avoid_time_t.aux
 
+# The output of example 3 is presented in the document.
 example_03_output.txt : example_03
 	$(builddir)/example_03 >$(builddir)/example_03_output.txt
 verify_files.sh : verify_files_template.sh check_time_output.txt

@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([libtime], [2019.11.09],
+AC_INIT([libtime], [2019.11.16],
 [John_Sauter@systemeyescomputerstore.com],
 [libtime], ["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
@@ -78,7 +78,7 @@ LT_INIT()
 # in the libtime.spec file must also be changed.
 #
 AC_SUBST(libtool_version_current,"3")
-AC_SUBST(libtool_version_revision, "14")
+AC_SUBST(libtool_version_revision, "15")
 AC_SUBST(libtool_version_age, "0")
 
 # Checks for programs.
@@ -92,16 +92,45 @@ AM_PATH_PYTHON ([/usr/bin/python3])
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([stdlib.h string.h sys/time.h unistd.h])
+AC_CHECK_HEADERS([stdlib.h string.h sys/time.h sys/timex.h unistd.h stdio.h \
+   limits.h getopt.h stdarg.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_STRUCT_TIMEZONE
 
 # Checks for library functions.
 AC_FUNC_MKTIME
-AC_CHECK_FUNCS([clock_gettime localtime_r memset strerror])
+AC_CHECK_FUNCS([clock_gettime localtime_r memset strerror adjtimex])
 
-AC_CONFIG_FILES([Makefile libtime.pc])
+# Check for support of 128-bit integers.
+# Without such support, two subroutines are omitted from the library.
+# The user can say to omit the 128-bit subroutines, but they are included
+# by default if the C compiler supports the data type.
+AC_ARG_ENABLE([int128],
+	[AS_HELP_STRING([--enable-int128], [use 128-bit integers])],
+	[case "${enableval}" in
+	yes) try_int128=TRUE ;;
+	no) try_int128=FALSE ;;
+	*) AC_MSG_ERROR([bad value ${enableval} for --enable-int128]) ;;
+	esac],[try_int128=default])
+AS_IF([test "x$try_int128" = xdefault],
+	    [AC_CHECK_TYPE([__int128],
+		[try_int128=TRUE], [try_int128=FALSE])])
+AC_DEFINE_UNQUOTED([USE_INT128], [$try_int128],
+				 [Define as TRUE to use 128-bit integers])
+AM_CONDITIONAL([USE_int128], [test $try_int128 = TRUE])
+
+# In time_subroutines.h, comment out the definitions that depend on
+# 128-bit integers if the type is not supported or not wanted.
+AS_IF([test $try_int128 = TRUE],
+	    [AC_SUBST(USE_int128_C,[])],
+	    [AC_SUBST(USE_int128_C,[//])])
+# Do the same for time_subroutines.py.
+AS_IF([test $try_int128 = TRUE],
+	    [AC_SUBST(USE_int128_Python,[])],
+	    [AC_SUBST(USE_int128_Python,[#])])
+	    
+AC_CONFIG_FILES([Makefile libtime.pc time_subroutines.h time_subroutines.py])
 AC_OUTPUT
 
 # End of file configure.ac

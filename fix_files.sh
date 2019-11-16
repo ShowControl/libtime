@@ -16,7 +16,6 @@ mv time_local_add.c src/
 mv time_local_normalize.c src/
 mv time_local_to_utc.c src/
 mv time_sleep_until.c src/
-mv time_subroutines.h src/
 mv time_tm_nano_to_integer.c src/
 mv time_tm_nano_to_string.c src/
 mv time_tm_to_integer.c src/

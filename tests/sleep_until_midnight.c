@@ -1,5 +1,5 @@
 /*
- * File: sleep_until_midnight.c, author: John Sauter, date: November 7, 2019.
+ * File: sleep_until_midnight.c, author: John Sauter, date: November 16, 2019.
  * Sleep until just before midnight, UTC.
  */
 
@@ -35,7 +35,7 @@
 #include <errno.h>
 #include <time.h>
 
-#include "src/time_subroutines.h"
+#include "time_subroutines.h"
 
 static int debug_level = 0;
 
@@ -82,7 +82,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "sleep_until_midnight\n"
-	       " Version 1.2 2019-11-07\n"
+	       " Version 1.3 2019-11-16\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"

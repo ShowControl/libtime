@@ -1,5 +1,5 @@
 /*
- * File: time_subroutines.h, author: John Sauter, date: June 17, 2019.
+ * File: time_subroutines.h, author: John Sauter, date: November 16, 2019.
  * Header file for subroutines to deal with UTC time.
  */
 
@@ -35,10 +35,10 @@
 #include <stdarg.h>
 #include <limits.h>
 
-/* Convert a 128-bit integer to a string.  */
-int
-int128_to_string (__int128 *value,
-		  char *result, int result_size);
+@USE_int128_C@/* Convert a 128-bit integer to a string.  */
+@USE_int128_C@int
+@USE_int128_C@int128_to_string (__int128 *value,
+@USE_int128_C@		  char *result, int result_size);
 
 /* Copy a tm structure.  */
 int
@@ -179,12 +179,12 @@ int
 time_sleep_until (struct tm *time_tm, int nanoseconds,
 		  int variable_length_seconds_before_year);
 
-/* Convert the time and nanoseconds to a 128-bit integer.  
- */
-int
-time_tm_nano_to_integer (struct tm *input_tm,
-			 int input_nanoseconds,
-			 __int128 *result);
+@USE_int128_C@/* Convert the time and nanoseconds to a 128-bit integer.  
+@USE_int128_C@ */
+@USE_int128_C@int
+@USE_int128_C@time_tm_nano_to_integer (struct tm *input_tm,
+@USE_int128_C@			 int input_nanoseconds,
+@USE_int128_C@			 __int128 *result);
 
 /* Convert the time and nanoseconds to a string.  */
 int

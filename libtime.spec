@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2019.11.09
+Version:        2019.11.16
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -11,9 +11,6 @@ BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  python3 >= 3.5, python3-jdcal
 BuildRequires:  git
-
-ExcludeArch:    i386
-# Needs 128-bit integer support in gcc
 
 %description
 Manipulate time values stored in a POSIX tm structure.
@@ -65,11 +62,11 @@ POSIX time_t, which does not support leap seconds.
 %license LICENSE
 
 %changelog
-* Thu Nov  7 2019 John Sauter <John_Sauter@sytemeyescomputerstore.com>
-- 2019.11.07-1 remove dependency on version-info using wildcards
-
-* Wed Nov  6 2019 John Sauter <John_Sauter@sytemeyescomputerstore.com>
+* Sat Nov 16 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2019.11.16-1 Make a subset work on 32-bit platforms without 128-bit integers
+* Sat Nov  9 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2019.11.09-1 remove dependency on version-info using wildcards
+* Wed Nov  6 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2019.11.06-1 divide into libtime and libtime-devel
-
 * Tue Nov  5 2019 John Sauter <John_Sauter@sytemeyescomputerstore.com>
 - 2019.11.05-1 initial version of the spec file

@@ -1,7 +1,7 @@
 #!python3
 # -*- coding: utf-8
 
-# Python interface to libtime, June 17, 2019.
+# Python interface to libtime, November 16, 2019
 
 # Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
@@ -50,29 +50,30 @@ class tm (ctypes.Structure):
         time_tm_to_string (self, string_p, ctypes.sizeof(string_p))
         return (string_p.value.decode("utf-8"))
 
-# A 128-bit integer.
-class int128 (ctypes.Structure):
-    _fields_ = [
-        ("low_bits", ctypes.c_ulonglong),
-        ("high_bits", ctypes.c_longlong)
-    ]
-    def __str__(self):
-        string_p = ctypes.create_string_buffer (256)
-        int128_to_string (self, string_p, ctypes.sizeof (string_p))
-        return (string_p.value.decode("utf-8"))
+@USE_int128_Python@# A 128-bit integer.
+@USE_int128_Python@class int128 (ctypes.Structure):
+@USE_int128_Python@    _fields_ = [
+@USE_int128_Python@        ("low_bits", ctypes.c_ulonglong),
+@USE_int128_Python@        ("high_bits", ctypes.c_longlong)
+@USE_int128_Python@    ]
+@USE_int128_Python@    def __str__(self):
+@USE_int128_Python@        string_p = ctypes.create_string_buffer (256)
+@USE_int128_Python@        int128_to_string (self, string_p, ctypes.sizeof (string_p))
+@USE_int128_Python@        return (string_p.value.decode("utf-8"))
 
 # Note that if you install libtime in /usr/local/lib, which is the
-# default location, you will need to set LD_LIBRARY_PATH to include it.    
+# default location if you install from the tarball, you will need
+# to set LD_LIBRARY_PATH to include it.    
 library_name = ctypes.util.find_library("time")
 sub = ctypes.CDLL(library_name)
 
 # Translation into ctypes of time_subroutines.h:
 
-sub.int128_to_string.argtypes = [ctypes.POINTER(int128),
-                                 ctypes.c_char_p, ctypes.c_int]
-"""Convert a 128-bit integer to a string."""
-def int128_to_string (value, result_p, result_size):
-    return (sub.int128_to_string (value, result_p, result_size))
+@USE_int128_Python@sub.int128_to_string.argtypes = [ctypes.POINTER(int128),
+@USE_int128_Python@                                 ctypes.c_char_p, ctypes.c_int]
+@USE_int128_Python@"""Convert a 128-bit integer to a string."""
+@USE_int128_Python@def int128_to_string (value, result_p, result_size):
+@USE_int128_Python@    return (sub.int128_to_string (value, result_p, result_size))
             
 sub.time_copy_tm.argtypes = [ctypes.POINTER(tm),
                              ctypes.POINTER(tm)]
@@ -243,14 +244,14 @@ def time_sleep_until (tm, nanoseconds, variable_length_seconds_before_year):
     return (sub.time_sleep_until (tm, nanoseconds,
                                   variable_length_seconds_before_year))
 
-sub.time_tm_nano_to_integer.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
-                                        ctypes.POINTER(int128)]
-"""Convert time and nanoseconds to a 128-bit integer."""
-def time_tm_nano_to_integer (tm, input_nanoseconds):
-    result_p = ctypes.create_string_buffer (ctypes.sizeof(int128))
-    result_p = ctypes.cast (result_p, ctypes.POINTER(int128))
-    return_value = sub.time_tm_nano_to_integer (tm, input_nanoseconds, result_p)
-    return (return_value, result_p.contents)
+@USE_int128_Python@sub.time_tm_nano_to_integer.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+@USE_int128_Python@                                        ctypes.POINTER(int128)]
+@USE_int128_Python@"""Convert time and nanoseconds to a 128-bit integer."""
+@USE_int128_Python@def time_tm_nano_to_integer (tm, input_nanoseconds):
+@USE_int128_Python@    result_p = ctypes.create_string_buffer (ctypes.sizeof(int128))
+@USE_int128_Python@    result_p = ctypes.cast (result_p, ctypes.POINTER(int128))
+@USE_int128_Python@    return_value = sub.time_tm_nano_to_integer (tm, input_nanoseconds, result_p)
+@USE_int128_Python@    return (return_value, result_p.contents)
 
 sub.time_tm_nano_to_string.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
                                        ctypes.c_char_p, ctypes.c_int]

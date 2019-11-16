@@ -1,5 +1,5 @@
 /*
- * File: example_04.c, author: John Sauter, date: November 9, 2019.
+ * File: example_04.c, author: John Sauter, date: November 16, 2019.
  */
 /*
  * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
@@ -34,7 +34,7 @@
 #include <errno.h>
 #include <time.h>
 
-#include "../src/time_subroutines.h"
+#include "../time_subroutines.h"
 
 static int debug_level = 0;
 
@@ -75,7 +75,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "example_4\n"
-	       " Version 1.3 2019-11-07\n"
+	       " Version 1.4 2019-11-16\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"

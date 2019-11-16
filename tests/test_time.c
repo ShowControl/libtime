@@ -1,5 +1,5 @@
 /*
- * File: test_time.c, author: John Sauter, date: November 7, 2019.
+ * File: test_time.c, author: John Sauter, date: November 16, 2019.
  * Test the time subroutines.
  */
 
@@ -28,6 +28,10 @@
  *    e-mail: John_Sauter@systemeyescomputerstore.com
  */
 
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>		/* getopt_long() */
@@ -39,7 +43,7 @@
 #include <sys/time.h>
 #include <sys/timex.h>
 
-#include "src/time_subroutines.h"
+#include "time_subroutines.h"
 
 static char *output_file = NULL;
 static double running_time = 0.0;
@@ -70,7 +74,6 @@ do_logging (char *log_file_name)
   struct timespec delay_timespec;
   int nanoseconds;
   struct tm now_tm;
-  __int128 current_time_int128;
   long long int current_time_long_long_int;
   struct tm local_time_tm;
   struct tm utc_time_tm;
@@ -83,6 +86,10 @@ do_logging (char *log_file_name)
   struct tm target_time_tm;
   long long int add_nanoseconds;
 
+#if HAVE_int128
+  __int128 current_time_int128;
+#endif
+    
   printf ("Size of TM struture is: %ld bytes or %ld ints.\n",
 	  sizeof (base_time_tm), sizeof (base_time_tm) / sizeof (int));
   printf ("Offset of tm_sec is: %ld.\n", offsetof (struct tm, tm_sec));
@@ -133,10 +140,14 @@ do_logging (char *log_file_name)
       time_current_tm_nano (&now_tm, &nanoseconds);
       time_tm_nano_to_string (&now_tm, nanoseconds,
 			      text_buffer_1, sizeof(text_buffer_1));
+#if HAVE_int128
       time_tm_nano_to_integer (&now_tm, nanoseconds,
 			       &current_time_int128);
       int128_to_string (&current_time_int128,
 			text_buffer_2, sizeof(text_buffer_2));
+#else
+      memset (text_buffer_2, 0, sizeof(text_buffer_2));
+#endif
       time_tm_to_integer (&now_tm, &current_time_long_long_int);
       time_UTC_to_local (&now_tm, &local_time_tm, INT_MIN);
       time_tm_nano_to_string (&local_time_tm, nanoseconds,
@@ -180,7 +191,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options]\n\n"
 	       "log the progress of time.\n"
-	       " Version 1.2 2019-04-04\n"
+	       " Version 1.3 2019-11-16\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-o | --output-file   Where to put the log file\n"

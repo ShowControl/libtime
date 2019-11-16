@@ -1,5 +1,5 @@
 /*
- * File: test_ep.c, author: John Sauter, date: November 7, 2019.
+ * File: test_ep.c, author: John Sauter, date: November 16, 2019.
  * Call all of the entry points.
  */
 /*
@@ -27,6 +27,10 @@
  *    e-mail: John_Sauter@systemeyescomputerstore.com
  */
 
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>		/* getopt_long() */
@@ -34,7 +38,7 @@
 #include <errno.h>
 #include <time.h>
 
-#include "src/time_subroutines.h"
+#include "time_subroutines.h"
 
 static int debug_level = 0;
 
@@ -60,12 +64,16 @@ do_test ()
   long long int long_nanoseconds;
   long long int seconds1, seconds2, seconds3;
   long long int the_time;
-  __int128 big_number;
   double time_val;
 
+#if HAVE_int128
+  __int128 big_number;
+#endif
+  
   printf ("Program start.\n");
   time_current_tm_nano (&program_start_tm, &program_start_nanoseconds);
 
+#if HAVE_int128
   printf ("Big number -10.\n");
   big_number = -10;
   int128_to_string (&big_number, &buffer1 [0], sizeof (buffer1));
@@ -110,6 +118,7 @@ do_test ()
 	      buffer1);
       return 1;
     }
+#endif
   
   time_current_tm_nano (&time_tm, &nanoseconds);
   time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
@@ -138,9 +147,15 @@ do_test ()
   time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
   time_tm_nano_to_string (&local_time_tm, nanoseconds,
 			  &buffer1 [0], sizeof(buffer1));
+#if HAVE_int128
   time_tm_nano_to_integer (&time_tm, nanoseconds, &big_number);
+#endif
   time_tm_to_integer (&time_tm, &the_time);
+#if HAVE_int128
   int128_to_string (&big_number, &buffer2 [0], sizeof (buffer2));
+#else
+  memset (buffer2, 0, sizeof(buffer2));
+#endif
   printf ("now: %s\n     as integers:  %s, %lld.\n",
 	  buffer1, buffer2, the_time);
       
@@ -985,7 +1000,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "test_local\n"
-	       " Version 1.2 2019-11-07\n"
+	       " Version 1.3 2019-11-16\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"

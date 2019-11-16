@@ -1,5 +1,5 @@
 /*
- * File: test_diff.c, author: John Sauter, date: November 7, 2019.
+ * File: test_diff.c, author: John Sauter, date: November 16, 2019.
  * Test the diff_time subroutine.
  */
 /*
@@ -35,7 +35,7 @@
 #include <errno.h>
 #include <time.h>
 
-#include "src/time_subroutines.h"
+#include "time_subroutines.h"
 
 static int debug_level = 0;
 
@@ -96,7 +96,7 @@ usage (FILE * fp, int argc, char **argv)
 	       "Usage: %s [options] A_time B_time\n\n"
 	       "print the number of seconds between two times.\n"
 	       "The two times are formatted as %%Y-%%m-%%dT%%H:%%M:%%S.\n"
-	       "Version 3.1 2019-11-07\n"
+	       "Version 3.2 2019-11-16\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"

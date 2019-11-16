@@ -1,8 +1,12 @@
-# File: Makefile.am for libtime, author: John Sauter, date: November 9, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: November 16, 2019.
 
+# Place object files in the same subdirectory as their source files.
 AUTOMAKE_OPTIONS = subdir-objects
 
+# We are building libtime.
 lib_LTLIBRARIES = libtime.la
+
+# These are the sources from which we will build the library.
 libtime_la_SOURCES = src/time_copy.c \
 	src/time_current_tm.c \
 	src/time_current_tm_nano.c \
@@ -12,16 +16,23 @@ libtime_la_SOURCES = src/time_copy.c \
 	src/time_local_normalize.c \
 	src/time_local_to_utc.c \
 	src/time_sleep_until.c \
-	src/time_tm_nano_to_integer.c \
 	src/time_tm_nano_to_string.c \
 	src/time_tm_to_integer.c \
 	src/time_tm_to_string.c \
 	src/time_utc_add.c \
 	src/time_utc_normalize.c \
 	src/time_utc_to_local.c \
-	src/time_subroutines.h \
-	src/int128_to_string.c \
-	read_extraordinary_days_table.py \
+	time_subroutines.h
+
+# Conditionally include the subroutines which require 128-bit integers.
+if USE_int128
+libtime_la_SOURCES += src/time_tm_nano_to_integer.c \
+	src/int128_to_string.c 
+endif
+
+# In addition to the files named above, also include these files
+# in the distribution.
+EXTRA_DIST = read_extraordinary_days_table.py \
 	tests/demo_python.py \
 	tests/test_python_interface.py \
 	examples/example_06.py \
@@ -30,10 +41,16 @@ libtime_la_SOURCES = src/time_copy.c \
 	references.bib \
 	legalcode.txt
 
-nodist_libtime_la_SOURCES = dtai_table.h dtai_table.tab
+# Also distribute the text for the man command.
 dist_man_MANS = libtime.3
-BUILT_SOURCES = dtai_table.h dtai_table.tab 
 
+# The files dtai_table.h and dtai_table.tab are build from
+# file extraordinary_days.dat.  They are used by time_diff.
+#BUILT_SOURCES = dtai_table.h dtai_table.tab 
+src/time_diff.${OBJEXT}: dtai_table.h dtai_table.tab
+src/time_diff.lo: dtai_table.h dtai_table.tab
+
+# When removing files, also remove these.
 CLEANFILES = dtai_table.h dtai_table.tab example_03_output.txt \
 avoid_time_t.out avoid_time_t.brf avoid_time_t.log avoid_time_t.aux \
 avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf check_time_output.txt \
@@ -45,8 +62,10 @@ clean-local:
 	rm -rf autom4te.cache
 	rm -rf *~
 
+# Place support files in the m4 directory.
 ACLOCAL_AMFLAGS = -I m4
 
+# Include the following documentation files in the distribution.
 dist_doc_DATA = \
 	README \
 	COPYING \
@@ -61,11 +80,19 @@ if ENABLE_PDF
   dist_doc_DATA += avoid_time_t.pdf
 endif
 
+# Build but do not distribute the following programs:
 noinst_PROGRAMS = example_02 example_03 example_04 example_05 \
 test_time test_diff test_JDN \
 test_add test_ep test_local print_DTAI sleep_until_midnight POSIX_epoch \
-powers_of_two check_time
+check_time
 
+# The powers of 2 program requires 128-bit integers
+if USE_int128
+noinst_PROGRAMS += powers_of_two
+endif
+
+# Here is the location of the source file, the dependency information
+# and the linking process for the above programs.
 example_02_SOURCES = examples/example_02.c
 example_03_SOURCES = examples/example_03.c
 example_04_SOURCES = examples/example_04.c
@@ -74,16 +101,14 @@ example_05_LDADD = libtime.la
 example_04_LDADD = libtime.la
 example_03_LDADD = libtime.la
 example_02_LDADD = libtime.la
-EXTRA_example_02_DEPENDENCIES = libtime.la
-EXTRA_example_03_DEPENDENCIES = libtime.la
-EXTRA_example_04_DEPENDENCIES = libtime.la
-EXTRA_example_05_DEPENDENCIES = libtime.la
 POSIX_epoch_SOURCES = tests/POSIX_epoch.c
 print_DTAI_SOURCES = tests/print_DTAI.c
 test_add_SOURCES = tests/test_add.c
 test_ep_SOURCES = tests/test_add.c
 test_ep_SOURCES = tests/test_ep.c
 test_local_SOURCES = tests/test_local.c
+tests/test_local.lo: dtai_table.h dtai_table.tab
+tests/test_local.${OBJEXT}: dtai_table.h dtai_table.tab
 test_struct_time_SOURCES = tests/test_struct_time.py
 powers_of_two_SOURCES = tests/powers_of_two.c
 sleep_until_midnight_SOURCES = tests/sleep_until_midnight.c
@@ -96,28 +121,30 @@ test_JDN_LDADD = libtime.la
 test_diff_LDADD = libtime.la
 test_add_LDADD = libtime.la
 test_ep_LDADD = libtime.la
-test_local_LDADD = libtime.la
 print_DTAI_LDADD = libtime.la
 sleep_until_midnight_LDADD = libtime.la
 POSIX_epoch_LDADD = libtime.la
 powers_of_two_LDADD = libtime.la
 check_time_LDADD = libtime.la
 
+# Distribute the python interface code.
 python_PYTHON = time_subroutines.py
 
 # The Libtool version-info integers are defined in configure.ac.
 libtime_la_LDFLAGS = -version-info @libtool_version_current@:@libtool_version_revision@:@libtool_version_age@
 
-# The spec file is used to build twp RPMs
-# for Fedora and OpenSUSE distributions.
-EXTRA_DIST = libtime.spec
+# The spec file is used to build twp RPMs for the Fedora and
+# OpenSUSE distributions of GNU/Linux: libtime and libtime-devel.
+EXTRA_DIST += libtime.spec
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.
 EXTRA_DIST += fix_files.sh
 
-include_HEADERS = src/time_subroutines.h
+# Distribute the C interface definitions.
+include_HEADERS = time_subroutines.h
 
+# Here is how to build dtai_table.tab and dtai_table.h.
 dtai_table.tab: read_extraordinary_days_table.py extraordinary_days.dat
 	python3 $(srcdir)/read_extraordinary_days_table.py \
 $(srcdir)/extraordinary_days.dat --c-output-tab=$(builddir)/dtai_table.tab
@@ -130,6 +157,11 @@ $(srcdir)/extraordinary_days.dat --c-output-h=$(builddir)/dtai_table.h
 pdf-local: avoid_time_t.pdf
 .PHONEY: pdf-local
 
+# Building the PDF depends on the bbl file, which is built below.
+# When the bbl file is available, run LaTeX three times to be sure
+# the forward references are resolved.  There is a slight chance that
+# this process will be unstable, with the size of a reference changing
+# the pagination, thus changing the size of a reference to that page.
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	dtai_table.tab \
 	examples/example_02.c examples/example_03.c examples/example_06.py \
@@ -139,6 +171,7 @@ avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 
+# Build the bbl file by running LaTeX without it, then running bibtex.
 avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
 	examples/example_03.c examples/example_06.py \
 	dtai_table.h dtai_table.tab example_03_output.txt time_subroutines.py \
@@ -146,6 +179,7 @@ avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export BIBINPUTS="$(srcdir):" && kpsewhich -var-value BIBINPUTS && bibtex $(builddir)/avoid_time_t.aux
 
+# The output of example 3 is presented in the document.
 example_03_output.txt : example_03
 	$(builddir)/example_03 >$(builddir)/example_03_output.txt
 
@@ -156,6 +190,14 @@ pkgconfig_DATA = libtime.pc
 # Support make check and make distcheck
 dist_check_DATA = check_time_output.txt check_time_expected_output.txt
 dist_check_SCRIPTS = verify_files_template.sh
+
+# Pass along the dependence on 128-bit integers in the C compiler.
+if USE_int128
+AM_DISTCHECK_CONFIGURE_FLAGS = --enable-int128
+else
+AM_DISTCHECK_CONFIGURE_FLAGS = --disable-int128
+endif
+
 TESTS = verify_files.sh
 verify_files.sh : verify_files_template.sh check_time_output.txt
 	cp $(srcdir)/verify_files_template.sh verify_files.sh

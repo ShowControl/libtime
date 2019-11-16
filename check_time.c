@@ -1,5 +1,5 @@
 /*
- * File: check_time.c, author: John Sauter, date: November 7, 2019.
+ * File: check_time.c, author: John Sauter, date: November 16, 2019.
  * Used by "make check" to be sure the subroutines work.
  */
 /*
@@ -27,6 +27,10 @@
  *    e-mail: John_Sauter@systemeyescomputerstore.com
  */
 
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>		/* getopt_long() */
@@ -34,7 +38,7 @@
 #include <errno.h>
 #include <time.h>
 
-#include "src/time_subroutines.h"
+#include "time_subroutines.h"
 
 static int debug_level = 0;
 
@@ -60,12 +64,16 @@ do_test ()
   long long int long_nanoseconds;
   long long int seconds1, seconds2, seconds3;
   long long int the_time;
-  __int128 big_number;
 
+#if HAVE_int128
+  __int128 big_number;
+#endif
+  
   printf ("Program start.\n");
   time_current_tm_nano (&program_start_tm, &program_start_nanoseconds);
 
   printf ("Big number -10.\n");
+#if HAVE_int128
   big_number = -10;
   int128_to_string (&big_number, &buffer1 [0], sizeof (buffer1));
   if ((buffer1 [0] != '-') || (buffer1 [1] != '1') ||
@@ -75,8 +83,10 @@ do_test ()
 	      buffer1);
       return 1;
     }
-
+#endif
+  
   printf ("Big number 0.\n");
+#if HAVE_int128
   big_number = 0;
   int128_to_string (&big_number, &buffer1 [0], sizeof (buffer1));
   if ((buffer1 [0] != '0') || (buffer1 [1] != 0))
@@ -86,8 +96,10 @@ do_test ()
 	      buffer1);
       return 1;
     }
-
+#endif
+  
   printf ("Big number -2**127.\n");
+#if HAVE_int128
   big_number = 1;
   for (i=0;i<127;i++)
     {
@@ -109,7 +121,8 @@ do_test ()
 	      buffer1);
       return 1;
     }
-  
+#endif
+    
   time_current_tm_nano (&time_tm, &nanoseconds);
   time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
   time_tm_nano_to_string (&time_tm, nanoseconds, &buffer1 [0],
@@ -148,9 +161,15 @@ do_test ()
   time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
   time_tm_nano_to_string (&local_time_tm, nanoseconds,
 			  &buffer1 [0], sizeof(buffer1));
+#if HAVE_int128
   time_tm_nano_to_integer (&time_tm, nanoseconds, &big_number);
+#endif
   time_tm_to_integer (&time_tm, &the_time);
+#if HAVE_int128
   int128_to_string (&big_number, &buffer2 [0], sizeof (buffer2));
+#else
+  memset (buffer2, 0, sizeof(buffer2));
+#endif
       
   time_copy_tm (&time_tm, &start_time_tm);
   start_time_tm.tm_year = 1800 - 1900;

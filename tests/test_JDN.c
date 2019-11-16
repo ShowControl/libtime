@@ -1,5 +1,5 @@
 /*
- * File: test_JDN.c, author: John Sauter, date: November 7, 2019.
+ * File: test_JDN.c, author: John Sauter, date: November 16, 2019.
  * Test the JDN conversion.
  */
 
@@ -39,7 +39,7 @@
 #include <sys/time.h>
 #include <sys/timex.h>
 
-#include "src/time_subroutines.h"
+#include "time_subroutines.h"
 
 static int debug_level = 0;
 
@@ -63,7 +63,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options]\n\n"
 	       "Display a Julian Day Number.\n"
-	       " Version 1.1 2019-11-07\n"
+	       " Version 1.2 2019-11-16\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-y | --year          Year\n"
