@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2019.11.16
+Version:        2019.11.23
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -24,6 +24,9 @@ Manipulate time values stored in a POSIX tm structure.
 
 %install
 %make_install
+
+%check
+make check VERBOSE=1
 
 %package devel
 Summary: Manipulate time values stored in a POSIX tm structure
@@ -62,6 +65,10 @@ POSIX time_t, which does not support leap seconds.
 %license LICENSE
 
 %changelog
+* Sat Nov 23 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2019.11.23-1 Delay the June 2027 leap second by six months to December 2027
+* Mon Nov 18 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2019.11.18-1 Add make check.
 * Sat Nov 16 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2019.11.16-1 Make a subset work on 32-bit platforms without 128-bit integers
 * Sat Nov  9 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>

@@ -1,5 +1,5 @@
 /*
- * File: check_time.c, author: John Sauter, date: November 16, 2019.
+ * File: check_time.c, author: John Sauter, date: November 18, 2019.
  * Used by "make check" to be sure the subroutines work.
  */
 /*
@@ -122,8 +122,10 @@ do_test ()
       return 1;
     }
 #endif
-    
+
+  printf ("Fetching current time.\n");
   time_current_tm_nano (&time_tm, &nanoseconds);
+  printf ("Fetched current time.\n");
   time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
   time_tm_nano_to_string (&time_tm, nanoseconds, &buffer1 [0],
 			  sizeof (buffer1));
@@ -132,6 +134,12 @@ do_test ()
   time_tm_nano_to_string (&program_start_tm, program_start_nanoseconds,
 			  &buffer3 [0], sizeof (buffer3));
   time_tm_to_string (&local_time_tm, &buffer4 [0], sizeof(buffer4));
+  if (debug_level > 0)
+    {
+      printf ("Current time: %s, %s, \n     %s, %s.\n",
+	      buffer1, buffer2, buffer3, buffer4);
+    }
+  
   seconds1 = time_diff (&program_start_tm, &time_tm, INT_MIN);
   if (seconds1 < 0)
     {
@@ -141,14 +149,23 @@ do_test ()
       printf ("Current: %s is \n     %s and %d nanoseconds\n",
 	      buffer1, buffer2, nanoseconds);
     }
+  else
+    printf ("Time flow is OK.\n");
   
   long_nanoseconds = nanoseconds;
   for (i=0;i<100;i++)
     {
       time_UTC_add_seconds_ns (&time_tm, &long_nanoseconds,
 			       0, 1e7, INT_MIN);
+      if (debug_level > 0)
+	{
+	  time_tm_to_string (&time_tm, buffer1, sizeof(buffer1));
+	  printf ("Sleep until %s.\n", buffer1);
+	}	  
       time_sleep_until (&time_tm, long_nanoseconds, INT_MIN);
     }
+  printf ("Finished first sleep loop.\n");
+  
   for (i=0;i<1000;i++)
     {
       time_current_tm_nano (&time_tm, &nanoseconds);
@@ -157,6 +174,8 @@ do_test ()
 			       0, -1e6, INT_MIN);
       time_sleep_until (&time_tm, long_nanoseconds, INT_MIN);
     }
+  printf ("Finished second sleep loop.\n");
+  
   time_current_tm_nano (&time_tm, &nanoseconds);
   time_UTC_to_local (&time_tm, &local_time_tm, INT_MIN);
   time_tm_nano_to_string (&local_time_tm, nanoseconds,
@@ -328,7 +347,7 @@ do_test ()
 		    }
 		  else
 		    {
-		      if ((debug_level > 0) || (trigger != 0))
+		      if ((debug_level > 1) || (trigger != 0))
 			{
 			  time_tm_to_string (&time_tm, &buffer3 [0],
 					     sizeof (buffer3));
@@ -1011,7 +1030,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "test_local\n"
-	       " Version 1.1 2018-11-11\n"
+	       " Version 2.0 2019-11-18\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"

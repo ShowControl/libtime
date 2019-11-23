@@ -1,9 +1,9 @@
 /*
- * File: time_current_tm.c, author: John Sauter, date: December 2, 2016.
+ * File: time_current_tm.c, author: John Sauter, date: November 18, 2019.
  */
 
 /*
- * Copyright © 2016 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ int
 time_current_tm (struct tm *current_tm)
 {
   struct timex current_timex;
+  struct timeval current_timeval;
   int adjtimex_result;
 
   /* Fetch time information from the kernel.  */
@@ -45,6 +46,17 @@ time_current_tm (struct tm *current_tm)
   current_timex.modes = 0;
   adjtimex_result = adjtimex (&current_timex);
 
+  if (adjtimex_result == -1)
+    {
+      /* Some 32-bit docker environments break the adjtimex function,
+       * even when, as here, it is just fetching information.  Fall back
+       * to using gettimeofday.  This is a poor fallback, since it does
+       * not tell us that we are in a leap second, but it is better than
+       * failing. */
+      gettimeofday (&current_timeval, NULL);
+      gmtime_r (&current_timeval.tv_sec, current_tm);
+      return (0);
+    }
   /* Format that information into a tm structure.  */
   gmtime_r (&current_timex.time.tv_sec, current_tm);
 

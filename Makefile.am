@@ -1,4 +1,4 @@
-# File: Makefile.am for libtime, author: John Sauter, date: November 16, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: November 22, 2019.
 
 # Place object files in the same subdirectory as their source files.
 AUTOMAKE_OPTIONS = subdir-objects
@@ -205,7 +205,9 @@ verify_files.sh : verify_files_template.sh check_time_output.txt
 	chmod +x verify_files.sh
 
 check_time_output.txt : check_time
-	./check_time > check_time_output.txt
+	TZ='America/New_York' ./check_time | tee check_time_output.txt
+	TZ='Australia/Eucla' ./check_time | tee -a check_time_output.txt
+
 clean-local: clean-local-check
 .PHONEY: clean-local-check
 clean-local-check:

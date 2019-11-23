@@ -1,3 +1,6 @@
+2019-11-23 3:16:0
+  Delay the June 2027 leap second by six months to December 2027.
+  
 2019-11-16 3:15:0
   Make a subset of the subroutines work on platforms without a C compiler
   that supports 128-bit integers.  Delay the June 2032 leap second by six
