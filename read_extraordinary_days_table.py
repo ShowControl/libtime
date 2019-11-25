@@ -32,7 +32,8 @@ import sys
 import re
 import hashlib
 import datetime
-from jdcal import gcal2jd, jd2gcal
+import math
+#from jdcal import gcal2jd, jd2gcal
 import pprint
 import argparse
 
@@ -50,7 +51,7 @@ parser = argparse.ArgumentParser (
 parser.add_argument ('input_file',
                      help='the table of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_extraordinary_days_table 2.4 2019-11-02',
+                     version='read_extraordinary_days_table 3.0 2019-11-24',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -103,6 +104,64 @@ verbosity_level = 1
 error_counter = 0
 
 # Subroutine to convert a Julian Day Number to its equivalent Gregorian date.
+# from jdcal.py
+
+MJD_0 = 2400000.5
+MJD_JD2000 = 51544.5
+
+def ipart(x):
+  return math.modf(x)[1]
+
+def is_leap(year):
+  x = math.fmod(year, 4)
+  y = math.fmod(year, 100)
+  x = math.fmod(year, 400)
+  return not x and (y or not z)
+
+def gcal2jd(year, month, day):
+  year = int(year)
+  month=int(month)
+  day = int(day)
+
+  a = ipart((month - 14) / 12.0)
+  jd = ipart((1461 * (year + 4800 + a)) / 4.0)
+  jd += ipart((367 * (month - 2 - 12 * a)) / 12.0)
+  x = ipart((year + 4900 + a) / 100.0)
+  x = ipart((3 * x) / 4.0)
+  jd -= ipart((3 * x) / 4.0)
+  jd += day - 2432975.5
+  jd -= 0.5
+  return MJD_0, jd
+
+def jd2gcal(jd1, jd2):
+  jd1_f, jd1_i = math.modf(jd1)
+  jd2_f, jd2_i = math.modf(jd2)
+
+  jd_i = jd1_i + jd2_i
+  f = jd1_f + jd2_f
+  
+  if -0.5 < f < 0.5:
+    f += 0.5
+  elif f >= 0.5:
+    jd_i += 1
+    f -= 0.5
+  elif f <= -0.5:
+    jd_i -= 1
+    f += 1.5
+
+  l = jd_i + 68569
+  n = ipart((4 * l) / 146097.0)
+  l -= ipart(((146097 * n) + 3) / 4.0)
+  i = ipart((4000 * (l + 1)) / 1461001)
+  l -= ipart((1461 * i) / 4.0) - 31
+  j = ipart((80 * l) / 2447.0)
+  day = l - ipart((2447 * j) / 80.0)
+  l = ipart(j / 11.0)
+  month = j + 2 - (12 * l)
+  year = 100 * (n - 49) + i + l
+
+  return int(year), int(month), int(day), f
+  
 month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
                "Aug", "Sep", "Oct", "Nov", "Dec"] 
 def greg (jdn, separator):

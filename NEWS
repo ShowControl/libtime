@@ -1,3 +1,6 @@
+2019-11-24 3:16:0
+  Remove dependency on jdcal, so we can build on more platforms.
+  
 2019-11-23 3:16:0
   Delay the June 2027 leap second by six months to December 2027.
   

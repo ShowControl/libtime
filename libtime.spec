@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2019.11.23
+Version:        2019.11.24
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -9,7 +9,7 @@ Source0:        https://github.com/ShowControl/libtime/blob/master/libtime-%{ver
 
 BuildRequires:  gcc
 BuildRequires:  make
-BuildRequires:  python3 >= 3.5, python3-jdcal
+BuildRequires:  python3 >= 3.5
 BuildRequires:  git
 
 %description
@@ -65,6 +65,8 @@ POSIX time_t, which does not support leap seconds.
 %license LICENSE
 
 %changelog
+* Sun Nov 24 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2019.11.24-1 Remove the dependence on jdcal
 * Sat Nov 23 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2019.11.23-1 Delay the June 2027 leap second by six months to December 2027
 * Mon Nov 18 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>

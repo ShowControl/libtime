@@ -43,5 +43,6 @@ magela-cauldron-x86_64: no: no python3-jdcal
 opensuse-leap-15.0-x86_64: no: timezone not installed
 opensuse-leap-15.1-x86_64: no: timezone not installed
 opensuse-tumbleweed-i586: no: timezone not installed
+opensuse-tumbleweed-ppc64le yes: with 128-bit integers
 opemsuse-tumbleweed-x86_64: yes: with 128-bit integers
 

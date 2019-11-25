@@ -4,18 +4,8 @@ avoiding the use of POSIX time_t for telling time.
 
 Notes to those who write software that calls libtime subroutines:
 
-If you wish to install libtime from the tarball you will need GNU make,
-python version 3 and its jdcal module.  Install GNU Make from
-the operating system repository.  Install the jdcal module either from
-the operating sytstem repository or with pip.  To install using pip,
-first install pip if it isn't installed by default.  The package name
-on both Ubuntu and Fedora is python3-pip.
-
-Then use pip to install jdcal:
-
-    sudo pip3 install jdcal
-    
-Now you can install the libtime library the usual way:
+If you wish to install libtime from the tarball you will need GNU make
+and python version 3.  Install the libtime library the usual way:
     ./configure
     make
     sudo make install
@@ -66,7 +56,7 @@ URL:
 https://commons.wikimedia.org/wiki/File:Avoid_Using_POSIX_time_t_for_Telling_Time.pdf
 
 The version number of libtime is the distribution date, since the
-unpredictability of leap seconds means the library will never be complete.
+unpredictability of leap seconds means the library will never be finished.
 When updating the version number in configure.ac, don't forget to update
 the sharable image version triplet, which is in configure.ac, NEWS and
 the revision history section of avoid_time_t.tex.
@@ -80,7 +70,8 @@ Universal Time to Dates Before 1972", at this URL:
 https://commons.wikimedia.org/wiki/File:Extending_Coordinated_Universal_Time_to_Dates_Before_1972.pdf
 
 That document is the source for the leap seconds table, which is built
-from file extraordinary_days.dat.
+from file extraordinary_days.dat.  The sources for that document are embedded
+in the PDF.
 
 There are several test program in the distribution kit, which are built
 automatically.  I use test_ep to be sure all of the entry points are
@@ -88,9 +79,8 @@ working.  To verify that the distribution kit is valid, I use
 make distcheck and I also extract all of the embedded files from the PDF
 into a clean directory and make sure the result builds.
 
-The restriction to 64-bit platforms is due to using 128-bit integers,
-which are not supported by gcc on 32-bit platforms.  Some platforms
-to not have python3-jdcal available, which is needed at build time.
+On platforms without a C compiler that implements 128-bit integers, a subset
+library is provided, missing int128_to_string and time_tm_nano_to_integer.
 
 I have not tried to port libtime to the Ubuntu distribution of GNU/Linux,
 but Alien seems to create reasonable .deb files from the libtime and
