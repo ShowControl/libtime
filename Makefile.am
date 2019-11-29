@@ -1,4 +1,4 @@
-# File: Makefile.am for libtime, author: John Sauter, date: November 22, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: November 29, 2019.
 
 # Place object files in the same subdirectory as their source files.
 AUTOMAKE_OPTIONS = subdir-objects
@@ -21,8 +21,7 @@ libtime_la_SOURCES = src/time_copy.c \
 	src/time_tm_to_string.c \
 	src/time_utc_add.c \
 	src/time_utc_normalize.c \
-	src/time_utc_to_local.c \
-	time_subroutines.h
+	src/time_utc_to_local.c 
 
 # Conditionally include the subroutines which require 128-bit integers.
 if USE_int128
@@ -50,7 +49,7 @@ dist_man_MANS = libtime.3
 src/time_diff.${OBJEXT}: dtai_table.h dtai_table.tab
 src/time_diff.lo: dtai_table.h dtai_table.tab
 
-# When removing files, also remove these.
+# When removing files, also remove the following:
 CLEANFILES = dtai_table.h dtai_table.tab example_03_output.txt \
 avoid_time_t.out avoid_time_t.brf avoid_time_t.log avoid_time_t.aux \
 avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf check_time_output.txt \
@@ -83,6 +82,7 @@ endif
 # Build but do not distribute the following programs:
 noinst_PROGRAMS = example_02 example_03 example_04 example_05 \
 test_time test_diff test_JDN \
+test_for_disabled_adjtimex \
 test_add test_ep test_local print_DTAI sleep_until_midnight POSIX_epoch \
 check_time
 
@@ -114,6 +114,7 @@ powers_of_two_SOURCES = tests/powers_of_two.c
 sleep_until_midnight_SOURCES = tests/sleep_until_midnight.c
 test_diff_SOURCES = tests/test_diff.c
 test_JDN_SOURCES = tests/test_JDN.c
+test_for_disabled_adjtimex_SOURCES = tests/test_for_disabled_adjtimex.c
 test_python_interface_SOURCES = tests/test_python_interface.py
 test_time_SOURCES = tests/test_time.c
 test_time_LDADD = libtime.la
@@ -133,8 +134,9 @@ python_PYTHON = time_subroutines.py
 # The Libtool version-info integers are defined in configure.ac.
 libtime_la_LDFLAGS = -version-info @libtool_version_current@:@libtool_version_revision@:@libtool_version_age@
 
-# The spec file is used to build twp RPMs for the Fedora and
-# OpenSUSE distributions of GNU/Linux: libtime and libtime-devel.
+# The spec file is used to build RPMs for the Centos, epel, Fedora and
+# OpenSUSE-tumbleweed distributions of GNU/Linux: libtime, libtime-devel,
+# libtime-doc and two debug RPMs.
 EXTRA_DIST += libtime.spec
 
 # fix_files.sh is used to restore directories and permissions when needed
@@ -163,9 +165,9 @@ pdf-local: avoid_time_t.pdf
 # this process will be unstable, with the size of a reference changing
 # the pagination, thus changing the size of a reference to that page.
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
-	dtai_table.tab \
+	dtai_table.tab time_subroutines.h time_subroutines.py \
 	examples/example_02.c examples/example_03.c examples/example_06.py \
-	example_03_output.txt libtime.pc time_subroutines.py \
+	example_03_output.txt libtime.pc \
 	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
@@ -174,7 +176,8 @@ avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 # Build the bbl file by running LaTeX without it, then running bibtex.
 avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
 	examples/example_03.c examples/example_06.py \
-	dtai_table.h dtai_table.tab example_03_output.txt time_subroutines.py \
+	dtai_table.h dtai_table.tab time_subroutines.h time_subroutines.py \
+	example_03_output.txt libtime.pc \
 	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export BIBINPUTS="$(srcdir):" && kpsewhich -var-value BIBINPUTS && bibtex $(builddir)/avoid_time_t.aux
@@ -199,10 +202,12 @@ AM_DISTCHECK_CONFIGURE_FLAGS = --disable-int128
 endif
 
 TESTS = verify_files.sh
-verify_files.sh : verify_files_template.sh check_time_output.txt
+verify_files.sh : verify_files_template.sh check_time_output.txt \
+test_for_disabled_adjtimex${EXEEXT}
 	cp $(srcdir)/verify_files_template.sh verify_files.sh
 	if [ ! -r "check_time_expected_output.txt" ] ; then cp $(srcdir)/check_time_expected_output.txt check_time_expected_output.txt ; touch copied_from_srcdir ; fi
 	chmod +x verify_files.sh
+	./test_for_disabled_adjtimex${EXEEXT}
 
 check_time_output.txt : check_time
 	TZ='America/New_York' ./check_time | tee check_time_output.txt

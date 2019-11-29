@@ -1,5 +1,5 @@
 /*
- * File: time_current_tm_nano.c, author: John Sauter, date: November 18, 2019.
+ * File: time_current_tm_nano.c, author: John Sauter, date: November 29, 2019.
  */
 
 /*
@@ -48,7 +48,7 @@ time_current_tm_nano (struct tm *current_tm, int *nanoseconds)
 
   if (adjtimex_result == -1)
     {
-      /* Some 32-bit docker environments break the adjtimex function,
+      /* Some high security environments disable the adjtimex function,
        * even when, as here, it is just fetching information.  Fall back
        * to using gettimeofday.  This is a poor fallback, since it does
        * not tell us that we are in a leap second, but it is better than

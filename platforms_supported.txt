@@ -1,20 +1,20 @@
-As of November 23, 2019, this is the platform support matrix for libtime
+As of November 25, 2019, this is the platform support matrix for libtime
 using the copr build system:
 
-centos-stream-aarch64: no: no python3-jdcal
-centos-stream-ppc64le: no: no python3-jdcal
-centos-stream-x86_64: no: no python3-jdcal
+centos-stream-aarch64: yes: with 128-bit integers
+centos-stream-ppc64le: yes: with 128-bit integers
+centos-stream-x86_64: yes: with 128-bit integers
 custom-1-i386: no: no useradd
 custom-1-ppc64le: no: no useradd
 custom-1-x86_64: no: no useradd
-epel-6-i386: no: no python3 >= 3.5, no python3-jdcal
-epel-6-x86_64: no: no python3 >= 3.5, no python3-jdcal
-epel-7-aarch64: no: no python3-jdcal
-epel-7-ppc64le: no: no python3-jdcal
-epel-7-x86_64: no: no python3-jdcal
-epel-8-aarch64: no: no python3-jdcal
-epel-8-ppc64le: no: no python3-jdcal
-epel-8-X86_64: no: no python3-jdcal
+epel-6-i386: no: no python3 >= 3.5
+epel-6-x86_64: no: no python3 >= 3.5
+epel-7-aarch64: yes: with 128-bit integers
+epel-7-ppc64le: yes: with 128-bit integers
+epel-7-x86_64: yes: with 128-bit integers
+epel-8-aarch64: yes: with 128-bit integers
+epel-8-ppc64le: yes: with 128-bit integers
+epel-8-X86_64: yes: with 128-bit integers
 fedora-29-aarch64: yes: with 128-bit integers
 fedora-29-i386: yes: without 128-bit integers
 fedora-29-ppc64le: yes: with 128-bit integers
@@ -31,15 +31,15 @@ fedora-rawhide-aarch64: yes: with 128-bit integers
 fedora-rawhide-i386: no: tar cannot utime: Operation not permitted
 fedora-rawhide-ppc64le: yes: with 128-bit integers
 fedora-rawhide-x86_64: yes: with 128-bit integers
-magela-6-i586: no: no python3-jdcal
-magela-6-x86_64: no: no python3-jdcal
-magela-7-aarch64: no: no python3-jdcal
-magela-7-i586: no: no python3-jdcal
-magela-7-x86_64: no: no python3-jdcal
-magela-8-aarch64: no: no python3-jdcal
-magela-cauldron-aarch64: no: no python3-jdcal
-magela-cauldron-i586: no: no python3-jdcal
-magela-cauldron-x86_64: no: no python3-jdcal
+magela-6-i586: no: ./depcomp: no such file or directory
+magela-6-x86_64: no: ./depcomp: no such file or directory
+magela-7-aarch64: no: ./depcomp: no such file or directory
+magela-7-i586: no: ./depcomp: no such file or directory
+magela-7-x86_64: no: ./depcomp: no such file or directory
+magela-8-aarch64: no: ./depcomp: no such file or directory
+magela-cauldron-aarch64: no: ./depcomp: no such file or directory
+magela-cauldron-i586: no: ./depcomp: no such file or directory
+magela-cauldron-x86_64: no: ./depcomp: no such file or directory
 opensuse-leap-15.0-x86_64: no: timezone not installed
 opensuse-leap-15.1-x86_64: no: timezone not installed
 opensuse-tumbleweed-i586: no: timezone not installed

@@ -33,6 +33,7 @@ mkdir tests
 mv test_add.c tests/
 mv test_diff.c tests/
 mv test_ep.c tests/
+mv test_for_disabled_adjtimex.c tests/
 mv test_JDN.c tests/
 mv test_local.c tests/
 mv test_python_interface.py tests/

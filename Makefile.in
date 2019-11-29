@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: November 22, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: November 29, 2019.
 
 
 
@@ -103,7 +103,8 @@ host_triplet = @host@
 @ENABLE_PDF_TRUE@am__append_2 = avoid_time_t.pdf
 noinst_PROGRAMS = example_02$(EXEEXT) example_03$(EXEEXT) \
 	example_04$(EXEEXT) example_05$(EXEEXT) test_time$(EXEEXT) \
-	test_diff$(EXEEXT) test_JDN$(EXEEXT) test_add$(EXEEXT) \
+	test_diff$(EXEEXT) test_JDN$(EXEEXT) \
+	test_for_disabled_adjtimex$(EXEEXT) test_add$(EXEEXT) \
 	test_ep$(EXEEXT) test_local$(EXEEXT) print_DTAI$(EXEEXT) \
 	sleep_until_midnight$(EXEEXT) POSIX_epoch$(EXEEXT) \
 	check_time$(EXEEXT) $(am__EXEEXT_1)
@@ -169,8 +170,7 @@ am__libtime_la_SOURCES_DIST = src/time_copy.c src/time_current_tm.c \
 	src/time_tm_nano_to_string.c src/time_tm_to_integer.c \
 	src/time_tm_to_string.c src/time_utc_add.c \
 	src/time_utc_normalize.c src/time_utc_to_local.c \
-	time_subroutines.h src/time_tm_nano_to_integer.c \
-	src/int128_to_string.c
+	src/time_tm_nano_to_integer.c src/int128_to_string.c
 am__dirstamp = $(am__leading_dot)dirstamp
 @USE_int128_TRUE@am__objects_1 = src/time_tm_nano_to_integer.lo \
 @USE_int128_TRUE@	src/int128_to_string.lo
@@ -230,6 +230,11 @@ test_diff_DEPENDENCIES = libtime.la
 am_test_ep_OBJECTS = tests/test_ep.$(OBJEXT)
 test_ep_OBJECTS = $(am_test_ep_OBJECTS)
 test_ep_DEPENDENCIES = libtime.la
+am_test_for_disabled_adjtimex_OBJECTS =  \
+	tests/test_for_disabled_adjtimex.$(OBJEXT)
+test_for_disabled_adjtimex_OBJECTS =  \
+	$(am_test_for_disabled_adjtimex_OBJECTS)
+test_for_disabled_adjtimex_LDADD = $(LDADD)
 am_test_local_OBJECTS = tests/test_local.$(OBJEXT)
 test_local_OBJECTS = $(am_test_local_OBJECTS)
 test_local_LDADD = $(LDADD)
@@ -276,6 +281,7 @@ am__depfiles_remade = ./$(DEPDIR)/check_time.Po \
 	tests/$(DEPDIR)/sleep_until_midnight.Po \
 	tests/$(DEPDIR)/test_JDN.Po tests/$(DEPDIR)/test_add.Po \
 	tests/$(DEPDIR)/test_diff.Po tests/$(DEPDIR)/test_ep.Po \
+	tests/$(DEPDIR)/test_for_disabled_adjtimex.Po \
 	tests/$(DEPDIR)/test_local.Po tests/$(DEPDIR)/test_time.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -302,14 +308,16 @@ SOURCES = $(libtime_la_SOURCES) $(POSIX_epoch_SOURCES) check_time.c \
 	$(powers_of_two_SOURCES) $(print_DTAI_SOURCES) \
 	$(sleep_until_midnight_SOURCES) $(test_JDN_SOURCES) \
 	$(test_add_SOURCES) $(test_diff_SOURCES) $(test_ep_SOURCES) \
-	$(test_local_SOURCES) $(test_time_SOURCES)
+	$(test_for_disabled_adjtimex_SOURCES) $(test_local_SOURCES) \
+	$(test_time_SOURCES)
 DIST_SOURCES = $(am__libtime_la_SOURCES_DIST) $(POSIX_epoch_SOURCES) \
 	check_time.c $(example_02_SOURCES) $(example_03_SOURCES) \
 	$(example_04_SOURCES) $(example_05_SOURCES) \
 	$(powers_of_two_SOURCES) $(print_DTAI_SOURCES) \
 	$(sleep_until_midnight_SOURCES) $(test_JDN_SOURCES) \
 	$(test_add_SOURCES) $(test_diff_SOURCES) $(test_ep_SOURCES) \
-	$(test_local_SOURCES) $(test_time_SOURCES)
+	$(test_for_disabled_adjtimex_SOURCES) $(test_local_SOURCES) \
+	$(test_time_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -697,13 +705,14 @@ libtime_la_SOURCES = src/time_copy.c src/time_current_tm.c \
 	src/time_tm_nano_to_string.c src/time_tm_to_integer.c \
 	src/time_tm_to_string.c src/time_utc_add.c \
 	src/time_utc_normalize.c src/time_utc_to_local.c \
-	time_subroutines.h $(am__append_1)
+	$(am__append_1)
 
 # In addition to the files named above, also include these files
 # in the distribution.
 
-# The spec file is used to build twp RPMs for the Fedora and
-# OpenSUSE distributions of GNU/Linux: libtime and libtime-devel.
+# The spec file is used to build RPMs for the Centos, epel, Fedora and
+# OpenSUSE-tumbleweed distributions of GNU/Linux: libtime, libtime-devel,
+# libtime-doc and two debug RPMs.
 
 # fix_files.sh is used to restore directories and permissions when needed
 # for files extracted from the PDF.
@@ -715,7 +724,7 @@ EXTRA_DIST = read_extraordinary_days_table.py tests/demo_python.py \
 # Also distribute the text for the man command.
 dist_man_MANS = libtime.3
 
-# When removing files, also remove these.
+# When removing files, also remove the following:
 CLEANFILES = dtai_table.h dtai_table.tab example_03_output.txt \
 avoid_time_t.out avoid_time_t.brf avoid_time_t.log avoid_time_t.aux \
 avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf check_time_output.txt \
@@ -749,6 +758,7 @@ powers_of_two_SOURCES = tests/powers_of_two.c
 sleep_until_midnight_SOURCES = tests/sleep_until_midnight.c
 test_diff_SOURCES = tests/test_diff.c
 test_JDN_SOURCES = tests/test_JDN.c
+test_for_disabled_adjtimex_SOURCES = tests/test_for_disabled_adjtimex.c
 test_python_interface_SOURCES = tests/test_python_interface.py
 test_time_SOURCES = tests/test_time.c
 test_time_LDADD = libtime.la
@@ -1013,6 +1023,12 @@ tests/test_ep.$(OBJEXT): tests/$(am__dirstamp) \
 test_ep$(EXEEXT): $(test_ep_OBJECTS) $(test_ep_DEPENDENCIES) $(EXTRA_test_ep_DEPENDENCIES) 
 	@rm -f test_ep$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(test_ep_OBJECTS) $(test_ep_LDADD) $(LIBS)
+tests/test_for_disabled_adjtimex.$(OBJEXT): tests/$(am__dirstamp) \
+	tests/$(DEPDIR)/$(am__dirstamp)
+
+test_for_disabled_adjtimex$(EXEEXT): $(test_for_disabled_adjtimex_OBJECTS) $(test_for_disabled_adjtimex_DEPENDENCIES) $(EXTRA_test_for_disabled_adjtimex_DEPENDENCIES) 
+	@rm -f test_for_disabled_adjtimex$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(test_for_disabled_adjtimex_OBJECTS) $(test_for_disabled_adjtimex_LDADD) $(LIBS)
 tests/test_local.$(OBJEXT): tests/$(am__dirstamp) \
 	tests/$(DEPDIR)/$(am__dirstamp)
 
@@ -1066,6 +1082,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/test_add.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/test_diff.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/test_ep.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/test_for_disabled_adjtimex.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/test_local.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/test_time.Po@am__quote@ # am--include-marker
 
@@ -1739,6 +1756,7 @@ distclean: distclean-am
 	-rm -f tests/$(DEPDIR)/test_add.Po
 	-rm -f tests/$(DEPDIR)/test_diff.Po
 	-rm -f tests/$(DEPDIR)/test_ep.Po
+	-rm -f tests/$(DEPDIR)/test_for_disabled_adjtimex.Po
 	-rm -f tests/$(DEPDIR)/test_local.Po
 	-rm -f tests/$(DEPDIR)/test_time.Po
 	-rm -f Makefile
@@ -1819,6 +1837,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f tests/$(DEPDIR)/test_add.Po
 	-rm -f tests/$(DEPDIR)/test_diff.Po
 	-rm -f tests/$(DEPDIR)/test_ep.Po
+	-rm -f tests/$(DEPDIR)/test_for_disabled_adjtimex.Po
 	-rm -f tests/$(DEPDIR)/test_local.Po
 	-rm -f tests/$(DEPDIR)/test_time.Po
 	-rm -f Makefile
@@ -1904,9 +1923,9 @@ pdf-local: avoid_time_t.pdf
 # this process will be unstable, with the size of a reference changing
 # the pagination, thus changing the size of a reference to that page.
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
-	dtai_table.tab \
+	dtai_table.tab time_subroutines.h time_subroutines.py \
 	examples/example_02.c examples/example_03.c examples/example_06.py \
-	example_03_output.txt libtime.pc time_subroutines.py \
+	example_03_output.txt libtime.pc \
 	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
@@ -1915,7 +1934,8 @@ avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 # Build the bbl file by running LaTeX without it, then running bibtex.
 avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
 	examples/example_03.c examples/example_06.py \
-	dtai_table.h dtai_table.tab example_03_output.txt time_subroutines.py \
+	dtai_table.h dtai_table.tab time_subroutines.h time_subroutines.py \
+	example_03_output.txt libtime.pc \
 	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export BIBINPUTS="$(srcdir):" && kpsewhich -var-value BIBINPUTS && bibtex $(builddir)/avoid_time_t.aux
@@ -1923,10 +1943,12 @@ avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
 # The output of example 3 is presented in the document.
 example_03_output.txt : example_03
 	$(builddir)/example_03 >$(builddir)/example_03_output.txt
-verify_files.sh : verify_files_template.sh check_time_output.txt
+verify_files.sh : verify_files_template.sh check_time_output.txt \
+test_for_disabled_adjtimex${EXEEXT}
 	cp $(srcdir)/verify_files_template.sh verify_files.sh
 	if [ ! -r "check_time_expected_output.txt" ] ; then cp $(srcdir)/check_time_expected_output.txt check_time_expected_output.txt ; touch copied_from_srcdir ; fi
 	chmod +x verify_files.sh
+	./test_for_disabled_adjtimex${EXEEXT}
 
 check_time_output.txt : check_time
 	TZ='America/New_York' ./check_time | tee check_time_output.txt

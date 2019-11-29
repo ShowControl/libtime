@@ -1,3 +1,6 @@
+2019-11-29 3:17:0
+  Add a test for adjtimex not working.  Mock bug reported in bugzilla 1778298.
+  
 2019-11-24 3:16:0
   Remove dependency on jdcal, so we can build on more platforms.
   
