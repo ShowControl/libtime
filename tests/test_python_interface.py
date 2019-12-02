@@ -1,8 +1,31 @@
 #!python3
 #  -*- coding: utf-8
-   
+
+# Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#   The author's contact information is as follows:
+#     John Sauter
+#     System Eyes Computer Store
+#     20A Northwest Blvd.  Ste 345
+#     Nashua, NH  03063-4066
+#     telephone: (603) 424-1188
+#     e-mail: John_Sauter@systemeyescomputerstore.com
+  
 # Test the Python interface to libtime.
-# John Sauter, April 28, 2019
+# John Sauter, November 30, 2019.
 
 import ctypes
 import time_subroutines
@@ -109,7 +132,7 @@ print ("The previous minute, computed from the UTC representation, is " +
 
 # Calculate a Julian Day Number.
 JDN = time_subroutines.time_Julian_day_number (2016, 12, 31)
-print ("December 31, 2016, is Julian day number " + str(JDN) + ".")
+print ("December 31, 2016, is Julian day number " + str(JDN) + ".5.")
 
 # Now compute DTAI for that day and for the next.
 print ("DTAI for that day is " +

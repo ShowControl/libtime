@@ -19,23 +19,24 @@ in /usr/local/lib, do this:
 
     gcc -L/usr/local/lib/ -Wl,-rpath=/usr/local/lib prog.c -ltime -o prog
 
-If you install libtime from an RPM (that is, through your Linux distribution's
-repository, or the equivalent) the library is installed in /usr/lib, so
-you need specify only -ltime to compile and link with it.  There are
-two RPMs: libtime-devel for you and libtime for your users, which
-lacks the documentation and include files.
+For installation from a repository, libtime is divided into three RPMs:
+libtime for those who run programs that call libtime, libtime-devel for
+those who write programs that call libtime, and libtime-doc, which contains
+the comprehensive documentation for libtime.  If you install libtime-devel
+from a RPM repository the library is installed in /usr/lib, so you need
+specify only -ltime to compile and link with it.
 
 In your Python source code, define the entry points with:
 
    import time_subroutines
    
 Comprehensive documentation for the time subroutines is in avoid_time_t.pdf.
-If you are installing from an RPM this will be in /usr/share/doc/libtime/.
-If you are installing from the tarball you can create the PDF by adding
---enable-pdf to the ./configure line before running make, or doing
-a second run of make with make pdf.  You will need LaTeX and many of its
-packages to compile the PDF.  Sudo make install will then install the file
-in /usr/local/share/doc/libtime/.
+If you install libtime-doc from an RPM repository this will be in
+/usr/share/doc/libtime-doc/.  If you are installing from the tarball
+you can create the PDF by adding --enable-pdf to the ./configure line
+before running make, or doing a second run of make with make pdf.
+You will need LaTeX and many of its packages to compile the PDF.
+Sudo make install will then install the file in /usr/local/share/doc/libtime/.
 
 If it is not convenient to compile the documentation, it is also available
 at this URL:
@@ -83,8 +84,8 @@ On platforms without a C compiler that implements 128-bit integers, a subset
 library is provided, missing int128_to_string and time_tm_nano_to_integer.
 
 I have not tried to port libtime to the Ubuntu distribution of GNU/Linux,
-but Alien seems to create reasonable .deb files from the libtime and
-libtime-devel RPMs.
+but Alien seems to create reasonable .deb files from the libtime, libtime-devel
+and libtime-doc RPMs.
 
 Here is the checklist I use to be sure I am distributing working software:
 
@@ -105,20 +106,90 @@ Here is the checklist I use to be sure I am distributing working software:
 
 7. cd ~/rpmbuild/SRPMS
 
-8. Make sure the spec file is able to deal with OpenSUSE:
+8. Run rpmlint on the source RPM.
+
+9. Make sure the spec file is able to deal with OpenSUSE:
    mock -r opensuse-tumbleweed-x86_64 <name of the SRPM file>
 
-9. Now use Fedora COPR to build all of the configurations:
-   copr-cli build libtime <name of the SRPM>
+9. Use Fedora COPR to build all of the configurations in a test project:
+   copr-cli build test <name of the SRPM>
 
-9. When the build is finished, use an internet browser to connect to
+10. in ~/rpmbuild/RPMS/x86_64/, run rpmlint on the RPMs.
+
+11. When the build is finished, use an internet browser to connect to
    the Fedora Copr web site, log in, and examine the results of the
-   build.  I can also adjust which platforms are built, in which case
-   I re-run the previous step to do the build again.  Refresh the
-   repositories if all is well.
+   build.  If the build has failed, adjust the code, the spec file or
+   the platforms to make it succeed, and keep re-running it until
+   it does succeed.
    
-10. Create an empty subdirectory.  Copy the PDF file to it.
+12. Make sure the built RPMs work:
+    dnf copr disable johnsauter/libtime
+    dnf copr enable johnsauter/test
+    dnf install libtime-devel
+    compile one of the test programs and run it.
+    dnf remove libtime-devel
+    dnf install libtime
+    Make sure the test program still runs but does not compile.
+    dnf install libtime-doc
+    Use evince to check the PDF at /usr/share/doc/libtime-doc/avoid_time_t.pdf
+
+13. When everything works, build it again for public use:
+    copr-cli build libtime <name of the srpm>
+    
+14. Make sure the tarball will build from the PDF:
+    Create an empty subdirectory.
+    Copy the PDF file to it.
     Use Okular to extract all of its embedded files.
     bash fix_files.sh.  ./configure.  Make.  Make check.
     Make PDF.  Make dist.  Make distcheck.
 
+As of November 29, 2019, this is the platform support matrix for libtime
+using the copr build system with test_for_disabled_adjtimex disabled.
+The bugzilla entry for the problem with adjtimex is 1778298.
+
+centos-stream-aarch64: yes: with 128-bit integers
+centos-stream-ppc64le: yes: with 128-bit integers
+centos-stream-x86_64: yes: with 128-bit integers
+custom-1-i386: no: no useradd
+custom-1-ppc64le: no: no useradd
+custom-1-x86_64: no: no useradd
+epel-6-i386: no: no python3 >= 3.5
+epel-6-x86_64: no: no python3 >= 3.5
+epel-7-aarch64: yes: with 128-bit integers
+epel-7-ppc64le: yes: with 128-bit integers
+epel-7-x86_64: yes: with 128-bit integers
+epel-8-aarch64: yes: with 128-bit integers
+epel-8-ppc64le: yes: with 128-bit integers
+epel-8-X86_64: yes: with 128-bit integers
+fedora-29-aarch64: yes: with 128-bit integers
+fedora-29-i386: yes: without 128-bit integers
+fedora-29-ppc64le: yes: with 128-bit integers
+fedora-29-x86_64: yes: with 128-bit integers
+fedora-30-aarch64: yes: with 128-bit integers
+fedora-30-i386: yes: without 128-bit integers
+fedora-30-ppc64le: yes: with 128-bit integers
+fedora-30-x86_64: yes: with 128-bit integers
+fedora-31-aarch64: yes: with 128-bit integers
+fedora-31-armhfp: yes: without 128-bit integers 
+fedora-31-i386: yes: without 128-bit integers
+fedora-31-ppc64le: yes: with 128-bit integers
+fedora-31-x86_64: yes: with 128-bit integers
+fedora-rawhide-aarch64: yes: with 128-bit integers
+fedora-rawhide-armhfp: yes: without 128-bit integers
+fedora-rawhide-i386: no: tar cannot utime: Operation not permitted
+fedora-rawhide-ppc64le: yes: with 128-bit integers
+fedora-rawhide-x86_64: yes: with 128-bit integers
+magela-6-i586: no: ./depcomp: no such file or directory
+magela-6-x86_64: no: ./depcomp: no such file or directory
+magela-7-aarch64: no: ./depcomp: no such file or directory
+magela-7-i586: no: ./depcomp: no such file or directory
+magela-7-x86_64: no: ./depcomp: no such file or directory
+magela-8-aarch64: no: ./depcomp: no such file or directory
+magela-cauldron-aarch64: no: ./depcomp: no such file or directory
+magela-cauldron-i586: no: ./depcomp: no such file or directory
+magela-cauldron-x86_64: no: ./depcomp: no such file or directory
+opensuse-leap-15.0-x86_64: no: timezone not installed
+opensuse-leap-15.1-x86_64: no: timezone not installed
+opensuse-tumbleweed-i586: no: timezone not installed
+opensuse-tumbleweed-ppc64le yes: with 128-bit integers
+opemsuse-tumbleweed-x86_64: yes: with 128-bit integers

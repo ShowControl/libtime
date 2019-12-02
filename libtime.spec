@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2019.11.29
+Version:        2019.12.02
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -50,7 +50,8 @@ in the form of a PDF file which describes the motivation for having
 the package, then goes through each entry point, explaining what it
 does and exhibiting the source code.  This is followed by some examples
 of its use.  Included in the PDF file using embedding are all of the
-files and instructions needed to create the source tarball.
+files and instructions needed to create the source tarball, which
+includes the RPM spec file.
 
 %files
 %defattr(-,root,root)
@@ -86,7 +87,10 @@ files and instructions needed to create the source tarball.
 %license COPYING
 
 %changelog
+* Mon Dec 02 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2019.12.02-1 Put the source RPM on github.
 * Fri Nov 29 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2019.11.29-2 Fix file attributes.
 - 2019.11.29-1 Add a test for adjtimex not working.
 - 2019.11.24-2 Add -doc subpackage
 * Sun Nov 24 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
