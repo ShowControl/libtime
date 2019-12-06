@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2019.12.02
+Version:        2019.12.06
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -87,6 +87,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Fri Dec 06 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2019.12.06-1 Delay the June 2022 leap second by six months to December 2022.
 * Mon Dec 02 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2019.12.02-1 Put the source RPM on github.
 * Fri Nov 29 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
