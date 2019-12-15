@@ -88,7 +88,7 @@ includes the RPM spec file.
 
 %changelog
 * Sat Dec 14 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
-- 2019-12-14-1 Add time_test_for_disabled_adjtimex.
+- 2019.12.14-1 Add time_test_for_disabled_adjtimex.
 * Fri Dec 13 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2019.12.13-1 Delay the December 2027 and 2032 leap seconds by six months
 * Fri Dec 06 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
