@@ -25,7 +25,7 @@
 #     e-mail: John_Sauter@systemeyescomputerstore.com
   
 # Test the Python interface to libtime.
-# John Sauter, November 30, 2019.
+# John Sauter, December 14, 2019.
 
 import ctypes
 import time_subroutines
@@ -50,6 +50,12 @@ print("long long length = " + str(ctypes.sizeof(ctypes.c_longlong)))
 # and INT_MAX used by the C compiler.
 print ("int_min = " + str(time_subroutines.int_min))
 print ("int_max = " + str(time_subroutines.int_max))
+
+# Make sure the adjtimex function has not been disabled.
+if (time_subroutines.time_test_for_disabled_adjtimex() != 0):
+    print ('The current time will not be correct during a leap second')
+    print ('because the Linux adjtimex function is not working.')
+    raise SystemExit
 
 # Define a 128-bit integer.
 i128 = time_subroutines.int128()

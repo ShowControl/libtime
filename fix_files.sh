@@ -1,5 +1,5 @@
 #!/bin/bash
-# File: fix_files.sh, author: John Sauter, date: November 9, 2019
+# File: fix_files.sh, author: John Sauter, date: December 14, 2019
 #
 # Imbedding files in a PDF loses their subdirectory and permissions.
 # Restore them.
@@ -16,6 +16,7 @@ mv time_local_add.c src/
 mv time_local_normalize.c src/
 mv time_local_to_utc.c src/
 mv time_sleep_until.c src/
+mv time_test_for_disabled_adjtimex.c src/
 mv time_tm_nano_to_integer.c src/
 mv time_tm_nano_to_string.c src/
 mv time_tm_to_integer.c src/

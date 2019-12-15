@@ -28,6 +28,12 @@
 import ctypes
 import time_subroutines
 
+# Make sure the adjtimex function has not been disabled.
+if (time_subroutines.time_test_for_disabled_adjtimex() != 0):
+    print ('The current time will not be correct during a leap second')
+    print ('because the Linux adjtimex function is not working.')
+    raise SystemExit
+    
 # Define two variables of type tm.
 tm_1 = time_subroutines.tm()
 tm_2 = time_subroutines.tm()

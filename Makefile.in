@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: December 2, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: December 14, 2019.
 
 
 
@@ -166,11 +166,12 @@ libtime_la_LIBADD =
 am__libtime_la_SOURCES_DIST = src/time_copy.c src/time_current_tm.c \
 	src/time_current_tm_nano.c src/time_diff.c src/time_length.c \
 	src/time_local_add.c src/time_local_normalize.c \
-	src/time_local_to_utc.c src/time_sleep_until.c \
-	src/time_tm_nano_to_string.c src/time_tm_to_integer.c \
-	src/time_tm_to_string.c src/time_utc_add.c \
-	src/time_utc_normalize.c src/time_utc_to_local.c \
-	src/time_tm_nano_to_integer.c src/int128_to_string.c
+	src/time_local_to_utc.c src/time_test_for_disabled_adjtimex.c \
+	src/time_sleep_until.c src/time_tm_nano_to_string.c \
+	src/time_tm_to_integer.c src/time_tm_to_string.c \
+	src/time_utc_add.c src/time_utc_normalize.c \
+	src/time_utc_to_local.c src/time_tm_nano_to_integer.c \
+	src/int128_to_string.c
 am__dirstamp = $(am__leading_dot)dirstamp
 @USE_int128_TRUE@am__objects_1 = src/time_tm_nano_to_integer.lo \
 @USE_int128_TRUE@	src/int128_to_string.lo
@@ -178,10 +179,11 @@ am_libtime_la_OBJECTS = src/time_copy.lo src/time_current_tm.lo \
 	src/time_current_tm_nano.lo src/time_diff.lo \
 	src/time_length.lo src/time_local_add.lo \
 	src/time_local_normalize.lo src/time_local_to_utc.lo \
-	src/time_sleep_until.lo src/time_tm_nano_to_string.lo \
-	src/time_tm_to_integer.lo src/time_tm_to_string.lo \
-	src/time_utc_add.lo src/time_utc_normalize.lo \
-	src/time_utc_to_local.lo $(am__objects_1)
+	src/time_test_for_disabled_adjtimex.lo src/time_sleep_until.lo \
+	src/time_tm_nano_to_string.lo src/time_tm_to_integer.lo \
+	src/time_tm_to_string.lo src/time_utc_add.lo \
+	src/time_utc_normalize.lo src/time_utc_to_local.lo \
+	$(am__objects_1)
 libtime_la_OBJECTS = $(am_libtime_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -234,7 +236,7 @@ am_test_for_disabled_adjtimex_OBJECTS =  \
 	tests/test_for_disabled_adjtimex.$(OBJEXT)
 test_for_disabled_adjtimex_OBJECTS =  \
 	$(am_test_for_disabled_adjtimex_OBJECTS)
-test_for_disabled_adjtimex_LDADD = $(LDADD)
+test_for_disabled_adjtimex_DEPENDENCIES = libtime.la
 am_test_local_OBJECTS = tests/test_local.$(OBJEXT)
 test_local_OBJECTS = $(am_test_local_OBJECTS)
 test_local_LDADD = $(LDADD)
@@ -269,6 +271,7 @@ am__depfiles_remade = ./$(DEPDIR)/check_time.Po \
 	src/$(DEPDIR)/time_local_normalize.Plo \
 	src/$(DEPDIR)/time_local_to_utc.Plo \
 	src/$(DEPDIR)/time_sleep_until.Plo \
+	src/$(DEPDIR)/time_test_for_disabled_adjtimex.Plo \
 	src/$(DEPDIR)/time_tm_nano_to_integer.Plo \
 	src/$(DEPDIR)/time_tm_nano_to_string.Plo \
 	src/$(DEPDIR)/time_tm_to_integer.Plo \
@@ -701,11 +704,11 @@ lib_LTLIBRARIES = libtime.la
 libtime_la_SOURCES = src/time_copy.c src/time_current_tm.c \
 	src/time_current_tm_nano.c src/time_diff.c src/time_length.c \
 	src/time_local_add.c src/time_local_normalize.c \
-	src/time_local_to_utc.c src/time_sleep_until.c \
-	src/time_tm_nano_to_string.c src/time_tm_to_integer.c \
-	src/time_tm_to_string.c src/time_utc_add.c \
-	src/time_utc_normalize.c src/time_utc_to_local.c \
-	$(am__append_1)
+	src/time_local_to_utc.c src/time_test_for_disabled_adjtimex.c \
+	src/time_sleep_until.c src/time_tm_nano_to_string.c \
+	src/time_tm_to_integer.c src/time_tm_to_string.c \
+	src/time_utc_add.c src/time_utc_normalize.c \
+	src/time_utc_to_local.c $(am__append_1)
 
 # In addition to the files named above, also include these files
 # in the distribution.
@@ -761,6 +764,7 @@ sleep_until_midnight_SOURCES = tests/sleep_until_midnight.c
 test_diff_SOURCES = tests/test_diff.c
 test_JDN_SOURCES = tests/test_JDN.c
 test_for_disabled_adjtimex_SOURCES = tests/test_for_disabled_adjtimex.c
+test_for_disabled_adjtimex_LDADD = libtime.la
 test_python_interface_SOURCES = tests/test_python_interface.py
 test_time_SOURCES = tests/test_time.c
 test_time_LDADD = libtime.la
@@ -917,6 +921,8 @@ src/time_local_normalize.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 src/time_local_to_utc.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
+src/time_test_for_disabled_adjtimex.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
 src/time_sleep_until.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 src/time_tm_nano_to_string.lo: src/$(am__dirstamp) \
@@ -1069,6 +1075,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_local_normalize.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_local_to_utc.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_sleep_until.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_test_for_disabled_adjtimex.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_tm_nano_to_integer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_tm_nano_to_string.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/time_tm_to_integer.Plo@am__quote@ # am--include-marker
@@ -1743,6 +1750,7 @@ distclean: distclean-am
 	-rm -f src/$(DEPDIR)/time_local_normalize.Plo
 	-rm -f src/$(DEPDIR)/time_local_to_utc.Plo
 	-rm -f src/$(DEPDIR)/time_sleep_until.Plo
+	-rm -f src/$(DEPDIR)/time_test_for_disabled_adjtimex.Plo
 	-rm -f src/$(DEPDIR)/time_tm_nano_to_integer.Plo
 	-rm -f src/$(DEPDIR)/time_tm_nano_to_string.Plo
 	-rm -f src/$(DEPDIR)/time_tm_to_integer.Plo
@@ -1824,6 +1832,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f src/$(DEPDIR)/time_local_normalize.Plo
 	-rm -f src/$(DEPDIR)/time_local_to_utc.Plo
 	-rm -f src/$(DEPDIR)/time_sleep_until.Plo
+	-rm -f src/$(DEPDIR)/time_test_for_disabled_adjtimex.Plo
 	-rm -f src/$(DEPDIR)/time_tm_nano_to_integer.Plo
 	-rm -f src/$(DEPDIR)/time_tm_nano_to_string.Plo
 	-rm -f src/$(DEPDIR)/time_tm_to_integer.Plo

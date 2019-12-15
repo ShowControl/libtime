@@ -1,5 +1,5 @@
 /*
- * File: test_ep.c, author: John Sauter, date: November 16, 2019.
+ * File: test_ep.c, author: John Sauter, date: December 14, 2019.
  * Call all of the entry points.
  */
 /*
@@ -65,6 +65,7 @@ do_test ()
   long long int seconds1, seconds2, seconds3;
   long long int the_time;
   double time_val;
+  int adjtimex_is_disabled;
 
 #if HAVE_int128
   __int128 big_number;
@@ -72,7 +73,8 @@ do_test ()
   
   printf ("Program start.\n");
   time_current_tm_nano (&program_start_tm, &program_start_nanoseconds);
-
+  adjtimex_is_disabled = time_test_for_disabled_adjtimex();
+    
 #if HAVE_int128
   printf ("Big number -10.\n");
   big_number = -10;

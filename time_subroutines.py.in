@@ -1,7 +1,7 @@
 #!python3
 # -*- coding: utf-8
 
-# Python interface to libtime, November 16, 2019
+# Python interface to libtime, December 14, 2019.
 
 # Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
@@ -243,6 +243,11 @@ sub.time_sleep_until.argtypes = [ctypes.POINTER(tm), ctypes.c_int, ctypes.c_int]
 def time_sleep_until (tm, nanoseconds, variable_length_seconds_before_year):
     return (sub.time_sleep_until (tm, nanoseconds,
                                   variable_length_seconds_before_year))
+
+sub.time_test_for_disabled_adjtimex.argtypes = list();
+"""Test the adjtimex function to see if it has been disabled."""
+def time_test_for_disabled_adjtimex ():
+    return (sub.time_test_for_disabled_adjtimex ())
 
 @USE_int128_Python@sub.time_tm_nano_to_integer.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
 @USE_int128_Python@                                        ctypes.POINTER(int128)]

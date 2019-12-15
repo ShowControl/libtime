@@ -1,6 +1,6 @@
 /*
  * File: test_for_disabled_adjtimex.c, author: John Sauter, 
- * date: November 29, 2019.
+ * date: December 14, 2019
  * Make sure the Linux adjtimex function works.
  */
 
@@ -29,31 +29,29 @@
  *    e-mail: John_Sauter@systemeyescomputerstore.com
  */
 
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>		/* getopt_long() */
 #include <string.h>
 #include <errno.h>
-#include <unistd.h>
-#include <stddef.h>
 #include <time.h>
-#include <sys/time.h>
-#include <sys/timex.h>
+
+#include "time_subroutines.h"
 
 static int debug_level = 0;
 
 static int
 test_for_disabled_adjtimex ()
 {
-  struct timex current_timex;
-  int adjtimex_result;
+  int adjtimex_is_disabled;
 
-  /* Fetch time information from the kernel.  */
-  current_timex.status = 0;
-  current_timex.modes = 0;
-  adjtimex_result = adjtimex (&current_timex);
+  adjtimex_is_disabled = time_test_for_disabled_adjtimex();
 
-  if (adjtimex_result == -1)
+  if (adjtimex_is_disabled != 0)
     {
       /* Some high security environments disable the adjtimex function,
        * even when, as here, it is just fetching information.  
@@ -77,7 +75,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options]\n\n"
 	       "Test for disabled adjtimex.\n"
-	       " Version 1.0 2019-11-29\n"
+	       " Version 2.0 2019-12-14\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"

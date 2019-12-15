@@ -1,4 +1,4 @@
-# File: Makefile.am for libtime, author: John Sauter, date: December 2, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: December 14, 2019.
 
 # Place object files in the same subdirectory as their source files.
 AUTOMAKE_OPTIONS = subdir-objects
@@ -15,6 +15,7 @@ libtime_la_SOURCES = src/time_copy.c \
 	src/time_local_add.c \
 	src/time_local_normalize.c \
 	src/time_local_to_utc.c \
+	src/time_test_for_disabled_adjtimex.c \
 	src/time_sleep_until.c \
 	src/time_tm_nano_to_string.c \
 	src/time_tm_to_integer.c \
@@ -115,6 +116,7 @@ sleep_until_midnight_SOURCES = tests/sleep_until_midnight.c
 test_diff_SOURCES = tests/test_diff.c
 test_JDN_SOURCES = tests/test_JDN.c
 test_for_disabled_adjtimex_SOURCES = tests/test_for_disabled_adjtimex.c
+test_for_disabled_adjtimex_LDADD = libtime.la
 test_python_interface_SOURCES = tests/test_python_interface.py
 test_time_SOURCES = tests/test_time.c
 test_time_LDADD = libtime.la

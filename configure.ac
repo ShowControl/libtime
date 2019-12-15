@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([libtime], [2019.12.13],
+AC_INIT([libtime], [2019.12.14],
 [John_Sauter@systemeyescomputerstore.com],
 [libtime], ["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
@@ -77,9 +77,9 @@ LT_INIT()
 # of the version-info.  When these values are changed, the parallel values
 # in the libtime.spec file must also be changed.
 #
-AC_SUBST(libtool_version_current,"3")
-AC_SUBST(libtool_version_revision, "20")
-AC_SUBST(libtool_version_age, "0")
+AC_SUBST(libtool_version_current,"4")
+AC_SUBST(libtool_version_revision, "0")
+AC_SUBST(libtool_version_age, "1")
 
 # Checks for programs.
 AC_PROG_CC

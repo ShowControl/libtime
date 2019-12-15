@@ -1,3 +1,6 @@
+2019-12-14 4:0:1
+  Add time_test_for_disabled_adjtimex.
+  
 2019-12-13 3:20:0
   Delay the December 2027 leap second by six months to June 2028 and
   the December 2032 leap second by six months to June 2023.

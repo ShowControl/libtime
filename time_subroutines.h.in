@@ -1,5 +1,5 @@
 /*
- * File: time_subroutines.h, author: John Sauter, date: November 16, 2019.
+ * File: time_subroutines.h, author: John Sauter, date: December 15, 2019.
  * Header file for subroutines to deal with UTC time.
  */
 
@@ -178,6 +178,10 @@ time_local_to_UTC (struct tm *local_time,
 int
 time_sleep_until (struct tm *time_tm, int nanoseconds,
 		  int variable_length_seconds_before_year);
+
+/* Test the adjtimex function to see if it has been disabled.  */
+int
+time_test_for_disabled_adjtimex ();
 
 @USE_int128_C@/* Convert the time and nanoseconds to a 128-bit integer.  
 @USE_int128_C@ */
