@@ -74,7 +74,11 @@ do_test ()
   printf ("Program start.\n");
   time_current_tm_nano (&program_start_tm, &program_start_nanoseconds);
   adjtimex_is_disabled = time_test_for_disabled_adjtimex();
-    
+  if (adjtimex_is_disabled != 0)
+    {
+      printf ("Adjtimex is disabled!\n");
+    }
+      
 #if HAVE_int128
   printf ("Big number -10.\n");
   big_number = -10;
