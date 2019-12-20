@@ -1,3 +1,7 @@
+2019-12-20 4:1:1
+  Delay the December 2032 and December 2037 leap seconds by six months
+  to June of the following year.
+  
 2019-12-14 4:0:1
   Add time_test_for_disabled_adjtimex.
   

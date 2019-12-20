@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2019.12.14
+Version:        2019.12.20
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -55,7 +55,11 @@ includes the RPM spec file.
 
 %files
 %defattr(-,root,root)
-%{_libdir}/libtime.so.*
+# The library soname changes frequently, up to once a week, but there is
+# no need to recompile dependencies if the first number does not change,
+# since the changes are usually just an update to the prediction of future
+# leap seconds.
+%{_libdir}/libtime.so.3*
 %exclude %{_libdir}/libtime.a
 %exclude %{_libdir}/libtime.la
 %exclude /usr/share/doc/%{name}/AUTHORS
@@ -87,6 +91,11 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Fri Dec 20 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2019.12.20-1 Delay the December 2032 and December 2037 leap seconds
+- by six months to June of the following year.
+* Thu Dec 19 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2019.12.14-2 Fix soname in %%files.
 * Sat Dec 14 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2019.12.14-1 Add time_test_for_disabled_adjtimex.
 * Fri Dec 13 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>

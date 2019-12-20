@@ -1,4 +1,8 @@
 # File: Makefile.am for libtime, author: John Sauter, date: December 14, 2019.
+#
+# Copyright © 2019 by John Sauter.
+# Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
+# license.  See https://creativecommons.org/license/by-sa/4.0/.
 
 # Place object files in the same subdirectory as their source files.
 AUTOMAKE_OPTIONS = subdir-objects

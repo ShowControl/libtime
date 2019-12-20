@@ -1,3 +1,9 @@
+% Main LaTeX source file for avoid_time_t.pdf
+
+% Copyright © 2019 by John Sauter.
+% Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
+% license.  See https://creativecommons.org/license/by-sa/4.0/.
+
 \documentclass[letterpaper,twoside]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -72,11 +78,11 @@
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2019 by John Sauter},
-  pdfdate={2019-12-14},
+  pdfdate={2019-12-20},
   pdflicenseurl={http://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}  
 }
-\date{2019-12-14}
+\date{2019-12-20}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -925,7 +931,9 @@ programs, but some kernel changes would result in better UTC support.
 \section{Update History}
 
 \begin{description}
-  \item[2019-12-14 4:0:1]Add {\ttfamily time\_test\_for\_disabled\_adjtimex}.
+\item[2019-12-20 4:1:1]Delay the December 2032 and December 2037 leap
+  seconds by six months to June of the following year.
+\item[2019-12-14 4:0:1]Add {\ttfamily time\_test\_for\_disabled\_adjtimex}.
 \item[2019-12-13 3:20:0]Delay the December 2027 leap second by six months
   to June 2028 and the December 2032 leap second by six months to June 2023.
 \item[2019-12-06 3:19:0]Delay the June 2022 leap second by six months
