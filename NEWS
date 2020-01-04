@@ -1,13 +1,18 @@
-2019-12-20 4:1:1
-  Delay the December 2032 and December 2037 leap seconds by six months
-  to June of the following year.
+2020-01-03 4:2:1
+  Delay the December 2022 leap second by six months to June 2023.
   
+2019-12-25 4:1:1
+  Add time_test_for_disabled_adjtimex() to the man file.
+  
+2019-12-20 4:1:1
+  Delay the December 2032 leap seconds by six months to June 2033.
+    
 2019-12-14 4:0:1
   Add time_test_for_disabled_adjtimex.
   
 2019-12-13 3:20:0
   Delay the December 2027 leap second by six months to June 2028 and
-  the December 2032 leap second by six months to June 2023.
+  the December 2032 leap second by six months to June 2033.
   
 2019-12-06 3:19:0
   Delay the June 2022 leap second by six months to December 2022.

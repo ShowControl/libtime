@@ -1,4 +1,4 @@
-.TH LIBTIME 3 "2019-11-04" "John Sauter"
+.TH LIBTIME 3 "2019-12-25" "John Sauter"
 .SH NAME
 libtime \- manipulate representations of time
 .SH SYMOPSIS
@@ -255,13 +255,23 @@ are ignored.
 int time_sleep_until (struct tm *time_tm, int nanoseconds, int variable_length_seconds_before_year);
 Sleep until a specified Coordinated Universal Time.
 Time_tm is the target of the sleep, to the second.  Nanoseconds specifies
-the number of nanoseconds after time_tm is the targer.  If the specified time
+the number of nanoseconds after time_tm is the target.  If the specified time
 is in the past this function returns immediately; otherwise it sleeps until
 at least the specified time, and then returns.
 If variable_length_seconds_before_year is greater than INT_MIN,
 leap seconds before January 1 of the specified year
 are ignored when computing the amount of time to sleep.
 .sp
+.TP
+int time_test_for_disabled_adjtimex();
+Some environments disable the Linux adjtimex function because it can be used
+to modify system state.  The disable applies to all calls to adjtimex, even
+those which only fetch information.  Because adjtimex is the only function
+that will reveal that a leap second is in progress, it is needed for
+correct handling of time.  This function returns 0 if and only if
+the adjtimex function can be used to fetch information.  Programs that
+wish to operate correctly in the presence of a leap second should
+exit with an error message if this function returns a non-zero value.
 .TP
 int time_tm_nano_to_integer (struct tm *input_tm, int input_nanoseconds, __int128 *result);
 Convert the time and nanoseconds to a 128-bit integer.

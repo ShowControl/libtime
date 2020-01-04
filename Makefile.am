@@ -1,4 +1,4 @@
-# File: Makefile.am for libtime, author: John Sauter, date: December 14, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: December 25, 2019.
 #
 # Copyright © 2019 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -19,8 +19,8 @@ libtime_la_SOURCES = src/time_copy.c \
 	src/time_local_add.c \
 	src/time_local_normalize.c \
 	src/time_local_to_utc.c \
-	src/time_test_for_disabled_adjtimex.c \
 	src/time_sleep_until.c \
+	src/time_test_for_disabled_adjtimex.c \
 	src/time_tm_nano_to_string.c \
 	src/time_tm_to_integer.c \
 	src/time_tm_to_string.c \
@@ -154,6 +154,11 @@ include_HEADERS = time_subroutines.h
 
 # Distribute the shell script which builds the RPMs.
 EXTRA_DIST += build_RPMs.sh
+
+# Run it if the developer types "make RPMs".
+.phoney: RPMs
+RPMs:
+	bash build_RPMs.sh
 
 # Here is how to build dtai_table.tab and dtai_table.h.
 dtai_table.tab: read_extraordinary_days_table.py extraordinary_days.dat

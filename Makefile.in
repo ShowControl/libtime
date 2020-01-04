@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: December 14, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: December 25, 2019.
 #
 # Copyright © 2019 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -170,12 +170,12 @@ libtime_la_LIBADD =
 am__libtime_la_SOURCES_DIST = src/time_copy.c src/time_current_tm.c \
 	src/time_current_tm_nano.c src/time_diff.c src/time_length.c \
 	src/time_local_add.c src/time_local_normalize.c \
-	src/time_local_to_utc.c src/time_test_for_disabled_adjtimex.c \
-	src/time_sleep_until.c src/time_tm_nano_to_string.c \
-	src/time_tm_to_integer.c src/time_tm_to_string.c \
-	src/time_utc_add.c src/time_utc_normalize.c \
-	src/time_utc_to_local.c src/time_tm_nano_to_integer.c \
-	src/int128_to_string.c
+	src/time_local_to_utc.c src/time_sleep_until.c \
+	src/time_test_for_disabled_adjtimex.c \
+	src/time_tm_nano_to_string.c src/time_tm_to_integer.c \
+	src/time_tm_to_string.c src/time_utc_add.c \
+	src/time_utc_normalize.c src/time_utc_to_local.c \
+	src/time_tm_nano_to_integer.c src/int128_to_string.c
 am__dirstamp = $(am__leading_dot)dirstamp
 @USE_int128_TRUE@am__objects_1 = src/time_tm_nano_to_integer.lo \
 @USE_int128_TRUE@	src/int128_to_string.lo
@@ -183,7 +183,7 @@ am_libtime_la_OBJECTS = src/time_copy.lo src/time_current_tm.lo \
 	src/time_current_tm_nano.lo src/time_diff.lo \
 	src/time_length.lo src/time_local_add.lo \
 	src/time_local_normalize.lo src/time_local_to_utc.lo \
-	src/time_test_for_disabled_adjtimex.lo src/time_sleep_until.lo \
+	src/time_sleep_until.lo src/time_test_for_disabled_adjtimex.lo \
 	src/time_tm_nano_to_string.lo src/time_tm_to_integer.lo \
 	src/time_tm_to_string.lo src/time_utc_add.lo \
 	src/time_utc_normalize.lo src/time_utc_to_local.lo \
@@ -708,11 +708,12 @@ lib_LTLIBRARIES = libtime.la
 libtime_la_SOURCES = src/time_copy.c src/time_current_tm.c \
 	src/time_current_tm_nano.c src/time_diff.c src/time_length.c \
 	src/time_local_add.c src/time_local_normalize.c \
-	src/time_local_to_utc.c src/time_test_for_disabled_adjtimex.c \
-	src/time_sleep_until.c src/time_tm_nano_to_string.c \
-	src/time_tm_to_integer.c src/time_tm_to_string.c \
-	src/time_utc_add.c src/time_utc_normalize.c \
-	src/time_utc_to_local.c $(am__append_1)
+	src/time_local_to_utc.c src/time_sleep_until.c \
+	src/time_test_for_disabled_adjtimex.c \
+	src/time_tm_nano_to_string.c src/time_tm_to_integer.c \
+	src/time_tm_to_string.c src/time_utc_add.c \
+	src/time_utc_normalize.c src/time_utc_to_local.c \
+	$(am__append_1)
 
 # In addition to the files named above, also include these files
 # in the distribution.
@@ -925,9 +926,9 @@ src/time_local_normalize.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 src/time_local_to_utc.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
-src/time_test_for_disabled_adjtimex.lo: src/$(am__dirstamp) \
-	src/$(DEPDIR)/$(am__dirstamp)
 src/time_sleep_until.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/time_test_for_disabled_adjtimex.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 src/time_tm_nano_to_string.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
@@ -1918,6 +1919,11 @@ clean-local:
 	rm -rf *~
 tests/test_local.lo: dtai_table.h dtai_table.tab
 tests/test_local.${OBJEXT}: dtai_table.h dtai_table.tab
+
+# Run it if the developer types "make RPMs".
+.phoney: RPMs
+RPMs:
+	bash build_RPMs.sh
 
 # Here is how to build dtai_table.tab and dtai_table.h.
 dtai_table.tab: read_extraordinary_days_table.py extraordinary_days.dat
