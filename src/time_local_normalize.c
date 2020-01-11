@@ -1,5 +1,5 @@
 /*
- * File: time_local_normalize.c, author: John Sauter, date: November 11, 20187.
+ * File: time_local_normalize.c, author: John Sauter, date: November 11, 2018.
  */
 
 /*

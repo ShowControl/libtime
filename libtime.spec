@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2020.01.02
+Version:        2020.01.11
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -92,6 +92,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Sat Jan 11 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2020.01.11-1 Update to IERS Bulletin C 59, issued January 7, 2020.
 * Fri Jan 03 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2020.01.02-1 Delay the December 2022 leap second by six months.
 * Fri Dec 20 2019 John Sauter <John_Sauter@systemeyescomputerstore.com>

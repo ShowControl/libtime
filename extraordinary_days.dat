@@ -1,5 +1,5 @@
 #
-# Table of Extraordinary Days, last modified January 3, 2020.
+# Table of Extraordinary Days, last modified January 11, 2020.
 #
 # Copyright © 2020 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -28,11 +28,12 @@
 # prefer to use Modified Julian Days (MJD) subtract 2400000.
 #
 # DTAI is the difference between International Atomic
-# Time (TAI) and Coordinated Universal Time (UTC).  That value is 0
+# Time (TAI) and Coordinated Universal Time (UTC).  That difference is 0
 # on January 1, 1958.  Every extraordinary day changes the value of DTAI
-# at its end by +1 for days with 86,401 seconds, or -1 for days with 86,399
-# seconds.  Since the data lines must be ordered, each will have a DTAI that
-# differs from the preceeding and succeeding line by plus or minus 1.
+# at its end by +1 second for days with 86,401 seconds, or -1 second for
+# days with 86,399 seconds.  Since the data lines must be ordered,
+# each will have a DTAI that differs from the preceeding and succeeding line
+# by plus or minus 1.
 #
 # The symbols used in this file are as follows:
 #
@@ -49,8 +50,7 @@
 # EXPIRATION_DATE is the Julian Day Number after which this file should have
 # been updated.  If you find yourself using this file after its EXPIRATION_DATE,
 # look for an updated version of the file.  If necessary you can update it
-# yourself, using IERS Bulletin C.  This file is current as of IERS Bulletin
-# C 58, dated July 4, 2019.  Extraordinary days after the expiration date
+# yourself, using IERS Bulletin C.  Extraordinary days after the expiration date
 # are projections, and are subject to change in later revisions of this file.
 #
 # CHECKSUM is 64 hex digits of the SHA256 hash of this file, excluding the
@@ -60,8 +60,8 @@
 #
 START_DATE=990574       # 1 Jan -2000
 END_DATE=2634166        # 1 Jan 2500
-EXPIRATION_DATE=2459028 # 28 Jun 2020
-CHECKSUM=d06b0e95c4b397a1431209815700dda5e862dc550dee32bdff0dda3644546ec9
+EXPIRATION_DATE=2459211 # 28 Dec 2020
+CHECKSUM=51e93671e3c02574adb10b220855b7cbb31f8085a52d43b32e885e953c2c5629
 #
 # The data extends from -2000 through 2499.
 #
