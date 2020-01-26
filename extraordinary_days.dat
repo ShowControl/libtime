@@ -1,5 +1,5 @@
 #
-# Table of Extraordinary Days, last modified January 11, 2020.
+# Table of Extraordinary Days, last modified January 25, 2020.
 #
 # Copyright © 2020 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -61,7 +61,7 @@
 START_DATE=990574       # 1 Jan -2000
 END_DATE=2634166        # 1 Jan 2500
 EXPIRATION_DATE=2459211 # 28 Dec 2020
-CHECKSUM=51e93671e3c02574adb10b220855b7cbb31f8085a52d43b32e885e953c2c5629
+CHECKSUM=8310d3f8039e0df94cb5da89035c50f7a030fb226d0b62cd85a9354f3fcaf17a
 #
 # The data extends from -2000 through 2499.
 #
@@ -46967,8 +46967,8 @@ CHECKSUM=51e93671e3c02574adb10b220855b7cbb31f8085a52d43b32e885e953c2c5629
 2456108	86401	35	# 30 Jun 2012
 2457203	86401	36	# 30 Jun 2015
 2457753	86401	37	# 31 Dec 2016
-2460125	86401	38	# 30 Jun 2023
-2461952	86401	39	# 30 Jun 2028
+2460309	86401	38	# 31 Dec 2023
+2462136	86401	39	# 31 Dec 2028
 2463778	86401	40	# 30 Jun 2033
 2465604	86401	41	# 30 Jun 2038
 2467249	86401	42	# 31 Dec 2042

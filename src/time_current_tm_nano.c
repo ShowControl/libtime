@@ -1,9 +1,9 @@
 /*
- * File: time_current_tm_nano.c, author: John Sauter, date: November 29, 2019.
+ * File: time_current_tm_nano.c, author: John Sauter, date: January 25, 2020.
  */
 
 /*
- * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2020 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -58,7 +58,8 @@ time_current_tm_nano (struct tm *current_tm, int *nanoseconds)
       *nanoseconds = current_timeval.tv_usec * 1e3;
       return (0);  
     }
-  /* Format that information into a tm structure.  */
+  
+  /* Format the information returned by adjtimex into a tm structure.  */
   gmtime_r (&current_timex.time.tv_sec, current_tm);
 
   /* If the kernel told us we are in a leap second, increment
