@@ -1,5 +1,5 @@
 #!/bin/bash
-# File: build_RPMs.sh, author: John Sauter, date: December 2, 2019
+# File: build_RPMs.sh, author: John Sauter, date: March 20, 2020.
 # Build the RPMs for libtime
 
 pushd ~/rpmbuild
@@ -11,21 +11,23 @@ rm -f SRPMS/*
 rm -f RPMS/x86_64/*
 # Copy in the new tarball.
 popd
-cp libtime-*.tar.gz ~/rpmbuild/SOURCES/
+cp -v libtime-*.tar.gz ~/rpmbuild/SOURCES/
 pushd ~/rpmbuild/SOURCES
 chmod 0644 libtime-*.tar.gz
 # Build and test the source RPM.
 rpmbuild -ta libtime-*.tar.gz
 # Copy back the source RPM so it can be copied from github.
 popd
-cp ~/rpmbuild/SRPMS/libtime-*.src.rpm .
-# Make sure libtime will build from the source RPM.
-pushd ~/rpmbuild/SRPMS
-mock -r opensuse-tumbleweed-x86_64 libtime-*.src.rpm
-copr-cli build test libtime-*.src.rpm
+cp -v ~/rpmbuild/SRPMS/libtime-*.src.rpm .
 # Perform validity checking on the RPMs.
+pushd ~/rpmbuild/SRPMS
 rpmlint libtime-*.src.rpm
-cd ../RPMS/x86_64/
+pushd ../RPMS/x86_64/
 rpmlint libtime-*.rpm
+# Make sure libtime will build from the source RPM.
+popd
+mock -r opensuse-tumbleweed-x86_64 libtime-*.src.rpm
+# now that all local tests have passed, see if it builds on copr
+copr-cli build test libtime-*.src.rpm
 
 # End of file build_RPMs.sh
