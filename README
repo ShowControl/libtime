@@ -174,11 +174,11 @@ fedora-31-armhfp: yes: without 128-bit integers
 fedora-31-i386: yes: without 128-bit integers
 fedora-31-ppc64le: yes: with 128-bit integers
 fedora-31-x86_64: yes: with 128-bit integers
-fedora-rawhide-aarch64: no: GPG key incorrect
-fedora-rawhide-armhfp: no: GPG key incorrect
+fedora-32 no: COPR build system appears broken
+fedora-rawhide-aarch64: yes: with 128-bit integers
+fedora-rawhide-armhfp: yes: without 128-bit integers
 fedora-rawhide-i386: yes: without 128-bit integers
-fedora-rawhide-ppc64le: no: GPG key incorrect
-fedora-rawhide-x86_64: no: GPG key incorrect
+fedora-rawhide-x86_64: yes: with 128-bit integers
 magela-6-i586: no: ./depcomp: no such file or directory
 magela-6-x86_64: no: ./depcomp: no such file or directory
 magela-7-aarch64: no: ./depcomp: no such file or directory
