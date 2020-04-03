@@ -1,6 +1,15 @@
 #!/bin/bash
-# File: build_RPMs.sh, author: John Sauter, date: March 20, 2020.
+# File: build_RPMs.sh, author: John Sauter, date: April 2, 2020.
 # Build the RPMs for libtime
+
+# Requires fedora-packager, rpmdevtools, copr-cli.
+# Don't forget to tell copr-cli about your copr API token.
+# See https://developer.fedoraproject.org/deployment/copr/copr-cli.html.
+
+mkdir -p ~/rpmbuild
+mkdir -p ~/rpmbuild/SOURCES
+mkdir -p ~/rpmbuild/SRPMS
+mkdir -p ~/rpmbuild/RPMS/X84_64
 
 pushd ~/rpmbuild
 # Set the umask so files created will not have strange permissions.

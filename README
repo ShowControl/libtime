@@ -96,33 +96,15 @@ Here is the checklist I use to be sure I am distributing working software:
 
 3. Build and test the libtime tarball.
 
-4. Copy the tarball to ~/rpmbuild/SOURCES/
+4. do Make build_RPMs to create and test the SRPM.
 
-5. cd ~/rpmbuild/SOURCES
-
-6. Use the following command to create the SRPM in ~/rpmbuild/SRPMS/ and
-   verify that the RPM can be built on my computer.
-   rpmbuild -ta <name of the tarball>.
-
-7. cd ~/rpmbuild/SRPMS
-
-8. Run rpmlint on the source RPM.
-
-9. Make sure the spec file is able to deal with OpenSUSE:
-   mock -r opensuse-tumbleweed-x86_64 <name of the SRPM file>
-
-9. Use Fedora COPR to build all of the configurations in a test project:
-   copr-cli build test <name of the SRPM>
-
-10. in ~/rpmbuild/RPMS/x86_64/, run rpmlint on the RPMs.
-
-11. When the build is finished, use an internet browser to connect to
+5. When the build is finished, use an internet browser to connect to
    the Fedora Copr web site, log in, and examine the results of the
    build.  If the build has failed, adjust the code, the spec file or
    the platforms to make it succeed, and keep re-running it until
    it does succeed.
    
-12. Make sure the built RPMs work:
+6.  Make sure the built RPMs work:
     dnf copr disable johnsauter/libtime
     dnf copr enable johnsauter/test
     dnf install libtime-devel
@@ -133,63 +115,58 @@ Here is the checklist I use to be sure I am distributing working software:
     dnf install libtime-doc
     Use evince to check the PDF at /usr/share/doc/libtime-doc/avoid_time_t.pdf
 
-13. When everything works, build it again for public use:
+7.  When everything works, build it again for public use:
     copr-cli build libtime <name of the srpm>
     
-14. Make sure the tarball will build from the PDF:
+8.  Make sure the tarball will build from the PDF:
     Create an empty subdirectory.
     Copy the PDF file to it.
     Use Okular to extract all of its embedded files.
     bash fix_files.sh.  ./configure.  Make.  Make check.
     Make PDF.  Make dist.  Make distcheck.
 
-As of February 15, 2020, this is the platform support matrix for libtime
+As of April 3, 2020, this is the platform support matrix for libtime
 using the copr build system with test_for_disabled_adjtimex disabled.
 The bugzilla entry for the problem with adjtimex is 1778298.
 
 centos-stream-aarch64: yes: with 128-bit integers
-centos-stream-ppc64le: yes: with 128-bit integers
 centos-stream-x86_64: yes: with 128-bit integers
 custom-1-i386: no: no useradd
-custom-1-ppc64le: no: no useradd
 custom-1-x86_64: no: no useradd
 epel-6-i386: no: no python3 >= 3.5
 epel-6-x86_64: no: no python3 >= 3.5
 epel-7-aarch64: yes: with 128-bit integers
-epel-7-ppc64le: yes: with 128-bit integers
 epel-7-x86_64: yes: with 128-bit integers
 epel-8-aarch64: yes: with 128-bit integers
-epel-8-ppc64le: yes: with 128-bit integers
 epel-8-X86_64: yes: with 128-bit integers
-fedora-29-aarch64: yes: with 128-bit integers
-fedora-29-i386: yes: without 128-bit integers
-fedora-29-ppc64le: yes: with 128-bit integers
-fedora-29-x86_64: yes: with 128-bit integers
 fedora-30-aarch64: yes: with 128-bit integers
 fedora-30-i386: yes: without 128-bit integers
-fedora-30-ppc64le: yes: with 128-bit integers
 fedora-30-x86_64: yes: with 128-bit integers
 fedora-31-aarch64: yes: with 128-bit integers
 fedora-31-armhfp: yes: without 128-bit integers 
 fedora-31-i386: yes: without 128-bit integers
-fedora-31-ppc64le: yes: with 128-bit integers
 fedora-31-x86_64: yes: with 128-bit integers
-fedora-32 no: COPR build system appears broken
+fedora-32-aarch64: yes: with 128-bit integers
+fedora-32-armhfp: yes: without 128-bit integers 
+fedora-32-i386: yes: without 128-bit integers
+fedora-32-x86_64: yes: with 128-bit integers
 fedora-rawhide-aarch64: yes: with 128-bit integers
 fedora-rawhide-armhfp: yes: without 128-bit integers
 fedora-rawhide-i386: yes: without 128-bit integers
 fedora-rawhide-x86_64: yes: with 128-bit integers
-magela-6-i586: no: ./depcomp: no such file or directory
-magela-6-x86_64: no: ./depcomp: no such file or directory
 magela-7-aarch64: no: ./depcomp: no such file or directory
 magela-7-i586: no: ./depcomp: no such file or directory
 magela-7-x86_64: no: ./depcomp: no such file or directory
-magela-8-aarch64: no: man file not found in libtime-devel
-magela-cauldron-aarch64: no: man file not found in libtime-devel
-magela-cauldron-i586: no: man file not found in libtime-devel
-magela-cauldron-x86_64: no: man file not found in libtime-devel
-opensuse-leap-15.0-x86_64: no: TZ= on commandline doesn't work
+magela-cauldron-aarch64: no: man file not found in libtime
+magela-cauldron-i586: no: man file not found in libtime
+magela-cauldron-x86_64: no: man file not found in libtime
+opensuse-leap-15.1-aarch64: no: unable to download repo updates-oss
 opensuse-leap-15.1-x86_64: no: TZ= on command line doesn't work
+opensuse-tumbleweed-aarch64: yes: with 128-bit integers
 opensuse-tumbleweed-i586: no: TZ= on command line doesn't work
-opensuse-tumbleweed-ppc64le yes: with 128-bit integers
 opemsuse-tumbleweed-x86_64: yes: with 128-bit integers
+
+Note the lack of ppc64le platforms.  In the past, when those platforms
+were in the COPR build, the builds were successful when the corresponding
+X86_64 builds were successful, and they supported 128-bit integers.
+In addition, the build was successful with Fedora 29.
