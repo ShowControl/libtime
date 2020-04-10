@@ -125,7 +125,7 @@ Here is the checklist I use to be sure I am distributing working software:
     bash fix_files.sh.  ./configure.  Make.  Make check.
     Make PDF.  Make dist.  Make distcheck.
 
-As of April 3, 2020, this is the platform support matrix for libtime
+As of April 10, 2020, this is the platform support matrix for libtime
 using the copr build system with test_for_disabled_adjtimex disabled.
 The bugzilla entry for the problem with adjtimex is 1778298.
 
@@ -162,6 +162,8 @@ magela-cauldron-i586: no: man file not found in libtime
 magela-cauldron-x86_64: no: man file not found in libtime
 opensuse-leap-15.1-aarch64: no: unable to download repo updates-oss
 opensuse-leap-15.1-x86_64: no: TZ= on command line doesn't work
+opensuse-leap-15.2-aarch64: no: TZ= on command line doesn't work
+opensuse-leap-15.2-x86_64: no: TZ= on command line doesn't work
 opensuse-tumbleweed-aarch64: yes: with 128-bit integers
 opensuse-tumbleweed-i586: no: TZ= on command line doesn't work
 opemsuse-tumbleweed-x86_64: yes: with 128-bit integers

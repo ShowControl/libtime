@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2020.04.03
+Version:        2020.04.10
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -92,6 +92,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Fri Apr 10 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2020.04.10-1 Delay the next five leap seconds.
 * Fri Apr 03 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2020.04.03-1 Update the README file to include Fedora 32.
 * Fri Mar 20 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
