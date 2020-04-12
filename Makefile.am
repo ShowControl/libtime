@@ -43,7 +43,8 @@ EXTRA_DIST = read_extraordinary_days_table.py \
 	extraordinary_days.dat \
 	avoid_time_t.tex \
 	references.bib \
-	legalcode.txt
+	legalcode.txt \
+	autogen.sh 
 
 # Also distribute the text for the man command.
 dist_man_MANS = libtime.3

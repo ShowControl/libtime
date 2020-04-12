@@ -35,7 +35,7 @@ pushd ../RPMS/x86_64/
 rpmlint libtime-*.rpm
 # Make sure libtime will build from the source RPM.
 popd
-mock -r opensuse-tumbleweed-x86_64 libtime-*.src.rpm
+mock -r fedora-31-x86_64 libtime-*.src.rpm
 # now that all local tests have passed, see if it builds on copr
 copr-cli build test libtime-*.src.rpm
 

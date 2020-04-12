@@ -729,7 +729,8 @@ libtime_la_SOURCES = src/time_copy.c src/time_current_tm.c \
 EXTRA_DIST = read_extraordinary_days_table.py tests/demo_python.py \
 	tests/test_python_interface.py examples/example_06.py \
 	extraordinary_days.dat avoid_time_t.tex references.bib \
-	legalcode.txt libtime.spec fix_files.sh build_RPMs.sh
+	legalcode.txt autogen.sh build_RPMs.sh libtime.spec \
+	fix_files.sh build_RPMs.sh
 
 # Also distribute the text for the man command.
 dist_man_MANS = libtime.3
