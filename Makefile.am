@@ -1,6 +1,6 @@
-# File: Makefile.am for libtime, author: John Sauter, date: December 25, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: April 14, 2020.
 #
-# Copyright © 2019 by John Sauter.
+# Copyright © 2020 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
@@ -171,7 +171,7 @@ dtai_table.h: read_extraordinary_days_table.py extraordinary_days.dat
 $(srcdir)/extraordinary_days.dat --c-output-h=$(builddir)/dtai_table.h
 
 # Build the PDF on demand, if requested.
-pdf-local: avoid_time_t.pdf
+pdf-local: avoid_time_t.pdf fix_files.sh
 .PHONEY: pdf-local
 
 # Building the PDF depends on the bbl file, which is built below.

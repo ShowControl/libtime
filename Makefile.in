@@ -14,9 +14,9 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: December 25, 2019.
+# File: Makefile.am for libtime, author: John Sauter, date: April 14, 2020.
 #
-# Copyright © 2019 by John Sauter.
+# Copyright © 2020 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
@@ -729,8 +729,8 @@ libtime_la_SOURCES = src/time_copy.c src/time_current_tm.c \
 EXTRA_DIST = read_extraordinary_days_table.py tests/demo_python.py \
 	tests/test_python_interface.py examples/example_06.py \
 	extraordinary_days.dat avoid_time_t.tex references.bib \
-	legalcode.txt autogen.sh build_RPMs.sh libtime.spec \
-	fix_files.sh build_RPMs.sh
+	legalcode.txt autogen.sh libtime.spec fix_files.sh \
+	build_RPMs.sh
 
 # Also distribute the text for the man command.
 dist_man_MANS = libtime.3
@@ -1936,7 +1936,7 @@ dtai_table.h: read_extraordinary_days_table.py extraordinary_days.dat
 $(srcdir)/extraordinary_days.dat --c-output-h=$(builddir)/dtai_table.h
 
 # Build the PDF on demand, if requested.
-pdf-local: avoid_time_t.pdf
+pdf-local: avoid_time_t.pdf fix_files.sh
 .PHONEY: pdf-local
 
 # Building the PDF depends on the bbl file, which is built below.

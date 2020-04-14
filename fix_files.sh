@@ -1,10 +1,11 @@
 #!/bin/bash
-# File: fix_files.sh, author: John Sauter, date: December 14, 2019
+# File: fix_files.sh, author: John Sauter, date: April 14, 2020.
 #
 # Imbedding files in a PDF loses their subdirectory and permissions.
 # Restore them.
 
 chmod +x configure
+chmod +x autogen.sh
 mkdir src
 mv int128_to_string.c src/
 mv time_copy.c src/
