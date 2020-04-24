@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: April 14, 2020.
+# File: Makefile.am for libtime, author: John Sauter, date: April 22, 2020.
 #
 # Copyright © 2020 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -115,6 +115,10 @@ noinst_PROGRAMS = example_02$(EXEEXT) example_03$(EXEEXT) \
 
 # The powers of 2 program requires 128-bit integers
 @USE_int128_TRUE@am__append_3 = powers_of_two
+
+# Pass along the dependence on 128-bit integers in the C compiler.
+@USE_int128_TRUE@am__append_4 = --enable-int128
+@USE_int128_FALSE@am__append_5 = --disable-int128
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
@@ -662,6 +666,7 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
+extraordinary_days_location = @extraordinary_days_location@
 host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -715,8 +720,9 @@ libtime_la_SOURCES = src/time_copy.c src/time_current_tm.c \
 	src/time_utc_normalize.c src/time_utc_to_local.c \
 	$(am__append_1)
 
-# In addition to the files named above, also include these files
-# in the distribution.
+# In addition to the files named above, also include the following files
+# in the distribution.  Note that we include extraordinary_days.dat
+# even though it won't be used, to document the source of our data.
 
 # The spec file is used to build RPMs for the Centos, epel, Fedora and
 # OpenSUSE-tumbleweed distributions of GNU/Linux: libtime, libtime-devel,
@@ -739,7 +745,7 @@ dist_man_MANS = libtime.3
 CLEANFILES = dtai_table.h dtai_table.tab example_03_output.txt \
 avoid_time_t.out avoid_time_t.brf avoid_time_t.log avoid_time_t.aux \
 avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf check_time_output.txt \
-verify_files.sh
+verify_files.sh extraordinary_days.dat
 
 
 # Place support files in the m4 directory.
@@ -800,10 +806,11 @@ pkgconfig_DATA = libtime.pc
 # Support make check and make distcheck
 dist_check_DATA = check_time_output.txt check_time_expected_output.txt
 dist_check_SCRIPTS = verify_files_template.sh
-@USE_int128_FALSE@AM_DISTCHECK_CONFIGURE_FLAGS = --disable-int128
 
-# Pass along the dependence on 128-bit integers in the C compiler.
-@USE_int128_TRUE@AM_DISTCHECK_CONFIGURE_FLAGS = --enable-int128
+# Pass along the location of the extraordinary_days.dat file.
+AM_DISTCHECK_CONFIGURE_FLAGS =  \
+	--with-extraordinary_days=${extraordinary_days_location} \
+	$(am__append_4) $(am__append_5)
 TESTS = verify_files.sh
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -1907,8 +1914,11 @@ uninstall-man: uninstall-man3
 .PRECIOUS: Makefile
 
 
-# The files dtai_table.h and dtai_table.tab are build from
+# The files dtai_table.h and dtai_table.tab are built from
 # file extraordinary_days.dat.  They are used by time_diff.
+# The following line is commented out because the two lines
+# following it are sufficient to build the dtai_table files
+# before they are needed.
 #BUILT_SOURCES = dtai_table.h dtai_table.tab 
 src/time_diff.${OBJEXT}: dtai_table.h dtai_table.tab
 src/time_diff.lo: dtai_table.h dtai_table.tab
@@ -1917,7 +1927,7 @@ clean-local:
 	rm -rf _minted-avoid_time_t/
 	rm -rf __pycache__
 	rm -rf autom4te.cache
-	rm -rf *~
+	rm -f *~
 tests/test_local.lo: dtai_table.h dtai_table.tab
 tests/test_local.${OBJEXT}: dtai_table.h dtai_table.tab
 
@@ -1927,16 +1937,27 @@ RPMs:
 	bash build_RPMs.sh
 
 # Here is how to build dtai_table.tab and dtai_table.h.
-dtai_table.tab: read_extraordinary_days_table.py extraordinary_days.dat
-	python3 $(srcdir)/read_extraordinary_days_table.py \
-$(srcdir)/extraordinary_days.dat --c-output-tab=$(builddir)/dtai_table.tab
+# Note that the file extraordinary_days.dat is provided by package
+# proleptic_utc_with_leap_seconds.
+${builddir}/extraordinary_days.dat : \
+${extraordinary_days_location}/extraordinary_days.dat
+	cp ${extraordinary_days_location}/extraordinary_days.dat \
+${builddir}/extraordinary_days.dat
 
-dtai_table.h: read_extraordinary_days_table.py extraordinary_days.dat
+dtai_table.tab: read_extraordinary_days_table.py \
+${extraordinary_days_location}/extraordinary_days.dat
 	python3 $(srcdir)/read_extraordinary_days_table.py \
-$(srcdir)/extraordinary_days.dat --c-output-h=$(builddir)/dtai_table.h
+$(extraordinary_days_location)/extraordinary_days.dat \
+--c-output-tab=$(builddir)/dtai_table.tab
+
+dtai_table.h: read_extraordinary_days_table.py \
+${extraordinary_days_location}/extraordinary_days.dat
+	python3 $(srcdir)/read_extraordinary_days_table.py \
+$(extraordinary_days_location)/extraordinary_days.dat \
+--c-output-h=$(builddir)/dtai_table.h
 
 # Build the PDF on demand, if requested.
-pdf-local: avoid_time_t.pdf fix_files.sh
+pdf-local: avoid_time_t.pdf fix_files.sh 
 .PHONEY: pdf-local
 
 # Building the PDF depends on the bbl file, which is built below.
@@ -1947,7 +1968,7 @@ pdf-local: avoid_time_t.pdf fix_files.sh
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	dtai_table.tab time_subroutines.h time_subroutines.py \
 	examples/example_02.c examples/example_03.c examples/example_06.py \
-	example_03_output.txt libtime.pc \
+	example_03_output.txt libtime.pc extraordinary_days.dat \
 	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
@@ -1957,7 +1978,7 @@ avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
 	examples/example_03.c examples/example_06.py \
 	dtai_table.h dtai_table.tab time_subroutines.h time_subroutines.py \
-	example_03_output.txt libtime.pc \
+	example_03_output.txt libtime.pc extraordinary_days.dat \
 	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export BIBINPUTS="$(srcdir):" && kpsewhich -var-value BIBINPUTS && bibtex $(builddir)/avoid_time_t.aux
@@ -1982,7 +2003,7 @@ clean-local-check:
 	if [ -e "copied_from_srcdir" ] ; then rm -f check_time_expected_output.txt ; rm copied_from_srcdir ; fi
 	rm -f *.pyc
 
-# End of file Makefile.AM
+# End of file Makefile.am
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

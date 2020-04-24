@@ -1,4 +1,4 @@
-# File: Makefile.am for libtime, author: John Sauter, date: April 14, 2020.
+# File: Makefile.am for libtime, author: John Sauter, date: April 22, 2020.
 #
 # Copyright © 2020 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -34,8 +34,9 @@ libtime_la_SOURCES += src/time_tm_nano_to_integer.c \
 	src/int128_to_string.c 
 endif
 
-# In addition to the files named above, also include these files
-# in the distribution.
+# In addition to the files named above, also include the following files
+# in the distribution.  Note that we include extraordinary_days.dat
+# even though it won't be used, to document the source of our data.
 EXTRA_DIST = read_extraordinary_days_table.py \
 	tests/demo_python.py \
 	tests/test_python_interface.py \
@@ -49,8 +50,11 @@ EXTRA_DIST = read_extraordinary_days_table.py \
 # Also distribute the text for the man command.
 dist_man_MANS = libtime.3
 
-# The files dtai_table.h and dtai_table.tab are build from
+# The files dtai_table.h and dtai_table.tab are built from
 # file extraordinary_days.dat.  They are used by time_diff.
+# The following line is commented out because the two lines
+# following it are sufficient to build the dtai_table files
+# before they are needed.
 #BUILT_SOURCES = dtai_table.h dtai_table.tab 
 src/time_diff.${OBJEXT}: dtai_table.h dtai_table.tab
 src/time_diff.lo: dtai_table.h dtai_table.tab
@@ -59,13 +63,13 @@ src/time_diff.lo: dtai_table.h dtai_table.tab
 CLEANFILES = dtai_table.h dtai_table.tab example_03_output.txt \
 avoid_time_t.out avoid_time_t.brf avoid_time_t.log avoid_time_t.aux \
 avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf check_time_output.txt \
-verify_files.sh
+verify_files.sh extraordinary_days.dat
 
 clean-local:
 	rm -rf _minted-avoid_time_t/
 	rm -rf __pycache__
 	rm -rf autom4te.cache
-	rm -rf *~
+	rm -f *~
 
 # Place support files in the m4 directory.
 ACLOCAL_AMFLAGS = -I m4
@@ -110,7 +114,6 @@ example_02_LDADD = libtime.la
 POSIX_epoch_SOURCES = tests/POSIX_epoch.c
 print_DTAI_SOURCES = tests/print_DTAI.c
 test_add_SOURCES = tests/test_add.c
-test_ep_SOURCES = tests/test_add.c
 test_ep_SOURCES = tests/test_ep.c
 test_local_SOURCES = tests/test_local.c
 tests/test_local.lo: dtai_table.h dtai_table.tab
@@ -162,16 +165,27 @@ RPMs:
 	bash build_RPMs.sh
 
 # Here is how to build dtai_table.tab and dtai_table.h.
-dtai_table.tab: read_extraordinary_days_table.py extraordinary_days.dat
-	python3 $(srcdir)/read_extraordinary_days_table.py \
-$(srcdir)/extraordinary_days.dat --c-output-tab=$(builddir)/dtai_table.tab
+# Note that the file extraordinary_days.dat is provided by package
+# proleptic_utc_with_leap_seconds.
+${builddir}/extraordinary_days.dat : \
+${extraordinary_days_location}/extraordinary_days.dat
+	cp ${extraordinary_days_location}/extraordinary_days.dat \
+${builddir}/extraordinary_days.dat
 
-dtai_table.h: read_extraordinary_days_table.py extraordinary_days.dat
+dtai_table.tab: read_extraordinary_days_table.py \
+${extraordinary_days_location}/extraordinary_days.dat
 	python3 $(srcdir)/read_extraordinary_days_table.py \
-$(srcdir)/extraordinary_days.dat --c-output-h=$(builddir)/dtai_table.h
+$(extraordinary_days_location)/extraordinary_days.dat \
+--c-output-tab=$(builddir)/dtai_table.tab
+
+dtai_table.h: read_extraordinary_days_table.py \
+${extraordinary_days_location}/extraordinary_days.dat
+	python3 $(srcdir)/read_extraordinary_days_table.py \
+$(extraordinary_days_location)/extraordinary_days.dat \
+--c-output-h=$(builddir)/dtai_table.h
 
 # Build the PDF on demand, if requested.
-pdf-local: avoid_time_t.pdf fix_files.sh
+pdf-local: avoid_time_t.pdf fix_files.sh 
 .PHONEY: pdf-local
 
 # Building the PDF depends on the bbl file, which is built below.
@@ -182,7 +196,7 @@ pdf-local: avoid_time_t.pdf fix_files.sh
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	dtai_table.tab time_subroutines.h time_subroutines.py \
 	examples/example_02.c examples/example_03.c examples/example_06.py \
-	example_03_output.txt libtime.pc \
+	example_03_output.txt libtime.pc extraordinary_days.dat \
 	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
@@ -192,7 +206,7 @@ avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
 	examples/example_03.c examples/example_06.py \
 	dtai_table.h dtai_table.tab time_subroutines.h time_subroutines.py \
-	example_03_output.txt libtime.pc \
+	example_03_output.txt libtime.pc extraordinary_days.dat \
 	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && pdflatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export BIBINPUTS="$(srcdir):" && kpsewhich -var-value BIBINPUTS && bibtex $(builddir)/avoid_time_t.aux
@@ -209,11 +223,15 @@ pkgconfig_DATA = libtime.pc
 dist_check_DATA = check_time_output.txt check_time_expected_output.txt
 dist_check_SCRIPTS = verify_files_template.sh
 
+# Pass along the location of the extraordinary_days.dat file.
+AM_DISTCHECK_CONFIGURE_FLAGS = \
+--with-extraordinary_days=${extraordinary_days_location}
+
 # Pass along the dependence on 128-bit integers in the C compiler.
 if USE_int128
-AM_DISTCHECK_CONFIGURE_FLAGS = --enable-int128
+AM_DISTCHECK_CONFIGURE_FLAGS += --enable-int128
 else
-AM_DISTCHECK_CONFIGURE_FLAGS = --disable-int128
+AM_DISTCHECK_CONFIGURE_FLAGS += --disable-int128
 endif
 
 TESTS = verify_files.sh
@@ -234,4 +252,4 @@ clean-local-check:
 	if [ -e "copied_from_srcdir" ] ; then rm -f check_time_expected_output.txt ; rm copied_from_srcdir ; fi
 	rm -f *.pyc
 
-# End of file Makefile.AM
+# End of file Makefile.am

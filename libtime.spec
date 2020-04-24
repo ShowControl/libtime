@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2020.04.16
+Version:        2020.04.23
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -11,6 +11,7 @@ BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  python3 >= 3.5
 BuildRequires:  git
+BuildRequires:  %{_datadir}/proleptic_utc_with_leap_seconds/data/extraordinary_days.dat
 
 %global _hardened_build 1
 
@@ -92,6 +93,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Thu Apr 23 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2020.04.23-1 Advance three distant future leap seconds by three or six months.
 * Thu Apr 16 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2020.04.16-1 Advance seven distant future leap seconds by three or six months.
 * Wed Apr 15 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>

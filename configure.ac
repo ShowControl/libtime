@@ -6,7 +6,7 @@
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
 AC_PREREQ([2.69])
-AC_INIT([libtime], [2020.04.16],
+AC_INIT([libtime], [2020.04.23],
 [John_Sauter@systemeyescomputerstore.com],
 [libtime], ["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
@@ -33,6 +33,19 @@ AC_ARG_ENABLE([pdf],
   [enable_pdf=no])
 
 AM_CONDITIONAL([ENABLE_PDF], [test "$enable_pdf" = "yes"])
+
+# We get the extraordinary_days.dat file from the
+# proleptic_utc_with_leap_seconds package.  We need to know how
+# that package installed the file.  By default, it used the
+# same prefix as we are using.
+#
+AC_ARG_WITH([extraordinary_days],
+  [AS_HELP_STRING([--with-extraordinary_days=location of file \
+  extraordinary_days.dat])],
+  [extraordinary_days_location=${withval}],
+  [extraordinary_days_location=${datadir}/proleptic_utc_with_leap_seconds/data])
+
+AC_SUBST(extraordinary_days_location, [${extraordinary_days_location}])
 
 # Libtool
 LT_PREREQ([2.2])
@@ -82,7 +95,7 @@ LT_INIT()
 # in the libtime.spec file must also be changed.
 #
 AC_SUBST(libtool_version_current,"4")
-AC_SUBST(libtool_version_revision, "12")
+AC_SUBST(libtool_version_revision, "13")
 AC_SUBST(libtool_version_age, "1")
 
 # Checks for programs.

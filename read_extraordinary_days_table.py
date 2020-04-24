@@ -4,7 +4,7 @@
 # read_extraordinary_days_table is a sample program which illustrates how
 # to read the table of extraordinary days.
 
-#   Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2020 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ import argparse
 parser = argparse.ArgumentParser (
   formatter_class=argparse.RawDescriptionHelpFormatter,
   description='Read the table of extraordinary days.',
-  epilog='Copyright © 2019 by John Sauter' + '\n' +
+  epilog='Copyright © 2020 by John Sauter' + '\n' +
   'License GPL3+: GNU GPL version 3 or later; ' + '\n' +
   'see <http://gnu.org/licenses/gpl.html> for the full text ' +
   'of the license.' + '\n' +
@@ -51,7 +51,7 @@ parser = argparse.ArgumentParser (
 parser.add_argument ('input_file',
                      help='the table of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_extraordinary_days_table 3.0 2019-11-24',
+                     version='read_extraordinary_days_table 3.1 2020-04-21',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
