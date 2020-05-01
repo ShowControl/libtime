@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2020.04.23
+Version:        2020.04.30
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -93,6 +93,9 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Thu Apr 30 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2020.04.30-1 Convert the PDF to Libertine fonts and
+               adjust future leap seconds.
 * Thu Apr 23 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2020.04.23-1 Advance three distant future leap seconds by three or six months.
 * Thu Apr 16 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>

@@ -5,8 +5,7 @@
 % license.  See https://creativecommons.org/license/by-sa/4.0/.
 
 \documentclass[letterpaper,twoside]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\usepackage{fontspec}
 \usepackage{lmodern}
 \usepackage{amsmath}
 \usepackage[english]{babel}
@@ -23,11 +22,27 @@
 \usepackage{siunitx}
 \usepackage{graphics}
 \usepackage{natbib}
-\usepackage{microtype}
 \usepackage{hyperxmp}
+\usepackage[tracking]{microtype}
+\usepackage{hyphenat}
 \usepackage{verbatim}
 \usepackage[kpsewhich=true]{minted}
 %\usepackage[usenames,dvipsnames]{color}
+
+% Font choices: pick one.
+% 1. Latin Modern matches Don Knuth's Computer Modern
+%\setmainfont{Latin Modern Roman}[SmallCapsFont={Latin Modern Roman Caps}]
+%\usepackage{unicode-math}
+
+% 2. Libertine
+\setmainfont[Ligatures={Common},Numbers=Proportional]{Linux Libertine O}
+\setsansfont{Linux Biolinum O}
+\usepackage{unicode-math}
+\setmathfont[Scale=MatchUppercase]{libertinusmath-regular.otf}
+
+% 3. Old Standard
+%\setmainfont{Old Standard}[SmallCapsFont={Latin Modern Roman Caps}]
+
 \usepackage[pdfencoding=unicode,pagebackref]{hyperref}
 \bibliographystyle{plainnat}
 \setcitestyle{numbers,square}
@@ -78,11 +93,11 @@
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2020 by John Sauter},
-  pdfdate={2020-04-23},
+  pdfdate={2020-04-30},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}  
 }
-\date{2020-04-23}
+\date{2020-04-30}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -111,47 +126,52 @@ since the Epoch'' from POSIX:
   {\large * * * * * Beginning of POSIX text * * * * *}
 \end{center}
 
-\subsection*{4.16 Seconds Since the Epoch}
-A value that approximates the number
-of seconds that have elapsed
-since the Epoch. A Coordinated Universal Time name
-(specified in terms of seconds ({\itshape tm\_sec}),
-minutes ({\itshape tm\_min}),
-hours ({\itshape tm\_hour}), days since January 1 of the year
-({\itshape tm\_yday}),
-and calendar year minus 1900 ({\itshape tm\_year})) is related to a time
-represented as seconds since the Epoch, according to the expression below.
+{\setmainfont{Old Standard}[SmallCapsFont={Latin Modern Roman Caps}]
+  \rmfamily
+  
+  \subsection*{4.16 Seconds Since the Epoch}
+  A value that approximates the number
+  of seconds that have elapsed
+  since the Epoch. A Coordinated Universal Time name
+  (specified in terms of seconds ({\itshape tm\_sec}),
+  minutes ({\itshape tm\_min}),
+  hours ({\itshape tm\_hour}), days since January 1 of the year
+  ({\itshape tm\_yday}),
+  and calendar year minus 1900 ({\itshape tm\_year})) is related to a time
+  represented as seconds since the Epoch, according to the expression below.
 
-If the year is $< 1970$ or the value is negative, the relationship is
-undefined.
-If the year is $\geq 1970$ and the value is non-negative, the value is
-related to a Coordinated Universal Time name according to the
-C-language expression, where {\itshape tm\_sec}, {\itshape tm\_min},
-{\itshape tm\_hour},
-{\itshape tm\_yday}, and {\itshape tm\_year} are all integer types:
-\begin{multline*}
-  tm\_sec + tm\_min*60 + tm\_hour*3600 + tm\_yday*86400 \,+ \\
-  (tm\_year-70)*31536000 + ((tm\_year-69)/4)*86400 \,- \\
-  ((tm\_year-1)/100)*86400 + ((tm\_year+299)/400)*86400
-\end{multline*}
-The relationship between the actual time of day and the current value
-for seconds since the Epoch is unspecified.
+  If the year is $< 1970$ or the value is negative, the relationship is
+  undefined.
+  If the year is $\geq 1970$ and the value is non-negative, the value is
+  related to a Coordinated Universal Time name according to the
+  C-language expression, where {\itshape tm\_sec}, {\itshape tm\_min},
+  {\itshape tm\_hour},
+  {\itshape tm\_yday}, and {\itshape tm\_year} are all integer types:
+  \begin{multline*}
+    tm\_sec + tm\_min*60 + tm\_hour*3600 + tm\_yday*86400 \,+ \\
+    (tm\_year-70)*31536000 + ((tm\_year-69)/4)*86400 \,- \\
+    ((tm\_year-1)/100)*86400 + ((tm\_year+299)/400)*86400
+  \end{multline*}
+  The relationship between the actual time of day and the current value
+  for seconds since the Epoch is unspecified.
 
-How any changes to the value of seconds since the Epoch are made
-to align to a desired relationship with the current actual time
-is implementation-defined. As represented in seconds since the Epoch,
-each and every day shall be accounted for by exactly \num{86400} seconds.
+  How any changes to the value of seconds since the Epoch are made
+  to align to a desired relationship with the current actual time
+  is implementation-defined. As represented in seconds since the Epoch,
+  each and every day shall be accounted for by exactly \num{86400} seconds.
+  
+  \begin{description}
+  \item[Note:]
+    The last three terms of the expression add in a day for each year
+    that follows a leap year starting with the first leap year since
+    the Epoch. The first term adds a day every 4 years starting in 1973,
+    the second subtracts a day back out every 100 years starting in 2001,
+    and the third adds a day back in every 400 years starting in 2001.
+    The divisions in the formula are integer divisions; that is, the
+    remainder is discarded leaving only the integer quotient.
+  \end{description}
 
-\begin{description}
-\item[Note:]
-  The last three terms of the expression add in a day for each year
-  that follows a leap year starting with the first leap year since
-  the Epoch. The first term adds a day every 4 years starting in 1973,
-  the second subtracts a day back out every 100 years starting in 2001,
-  and the third adds a day back in every 400 years starting in 2001.
-  The divisions in the formula are integer divisions; that is, the
-  remainder is discarded leaving only the integer quotient.
-\end{description}
+}
 
 \begin{center}
   {\large * * * * * End of POSIX text * * * * *}
@@ -935,6 +955,8 @@ programs, but some kernel changes would result in better UTC support.
 \section{Update History}
 
 \begin{description}
+\item[2020-04-30 4:14:1]Convert to Libertine fonts.  Adjust several distant
+  future leap seconds.
 \item[2020-04-23 4:13:1]Advance three distant future leap seconds
   by three or six months.
 \item[2020-04-16 4:12;1]Advance seven distance future leap seconds
