@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2020.04.30
+Version:        2020.05.07
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -11,6 +11,8 @@ BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  python3 >= 3.5
 BuildRequires:  git
+# The following file is the list of leap seconds.  It is provided by
+# package proleptic_utc_with_leap_seconds.
 BuildRequires:  %{_datadir}/proleptic_utc_with_leap_seconds/data/extraordinary_days.dat
 
 %global _hardened_build 1
@@ -93,6 +95,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Thu May 07 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2020.05.07-1 Adjust five distant future leap seconds.
 * Thu Apr 30 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2020.04.30-1 Convert the PDF to Libertine fonts and
                adjust future leap seconds.
