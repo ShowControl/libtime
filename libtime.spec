@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2020.05.07
+Version:        2020.05.14
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -95,6 +95,9 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Thu May 14 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2020.05.14-1 Add time_utc_to_foreign_local.  Adjust five distant
+               future leap seconds.
 * Thu May 07 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2020.05.07-1 Adjust five distant future leap seconds.
 * Thu Apr 30 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>

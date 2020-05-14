@@ -41,6 +41,7 @@ EXTRA_DIST = read_extraordinary_days_table.py \
 	tests/demo_python.py \
 	tests/test_python_interface.py \
 	examples/example_06.py \
+	examples/example_07.py \
 	extraordinary_days.dat \
 	avoid_time_t.tex \
 	references.bib \
@@ -196,6 +197,7 @@ pdf-local: avoid_time_t.pdf fix_files.sh
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	dtai_table.tab time_subroutines.h time_subroutines.py \
 	examples/example_02.c examples/example_03.c examples/example_06.py \
+	examples/example_07.py \
 	example_03_output.txt libtime.pc extraordinary_days.dat \
 	$(libtime_la_SOURCES)
 	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
@@ -204,7 +206,7 @@ avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 
 # Build the bbl file by running LaTeX without it, then running bibtex.
 avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
-	examples/example_03.c examples/example_06.py \
+	examples/example_03.c examples/example_06.py examples/example_07.py \
 	dtai_table.h dtai_table.tab time_subroutines.h time_subroutines.py \
 	example_03_output.txt libtime.pc extraordinary_days.dat \
 	$(libtime_la_SOURCES)

@@ -1,9 +1,9 @@
 /*
- * File: time_utc_to_local.c, author: John Sauter, date: November 11, 2018.
+ * File: time_utc_to_local.c, author: John Sauter, date: May 13, 2020.
  */
 
 /*
- * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2020 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -30,33 +30,21 @@
 #include "time_subroutines.h"
 
 /* Convert a tm structure containing Coordinated Universal Time
- * to one containing local time.  */
+ * to one containing a foreigh local time.  Foreign_UTC_offset is
+ * the offset in seconds between UTC and the desired local time.
+ */
 int
-time_UTC_to_local (struct tm *coordinated_universal_time,
-		   struct tm *local_time_tm,
-		   int variable_length_seconds_before_year)
+time_UTC_to_foreign_local (struct tm *coordinated_universal_time,
+			   int foreign_UTC_offset,
+			   struct tm *local_time_tm,
+			   int variable_length_seconds_before_year)
 {
   struct tm utc_time_tm;
-  time_t seconds_since_epoch;
   int gmt_offset, hours_offset, minutes_offset, seconds_offset;
   int prev_minute_length;
   
-  /* Compute the number of seconds from the epoch until the 
-   * beginning of the current minute, since the timegm and 
-   * localtime functions will not work correctly during a 
-   * leap second.  */
   time_copy_tm (coordinated_universal_time, &utc_time_tm);
-  utc_time_tm.tm_sec = 0;
-  seconds_since_epoch = timegm (&utc_time_tm);
-
-  /* Convert to local time in a tm structure.  */
-  localtime_r (&seconds_since_epoch, local_time_tm);
-
-  /* Now that we have access to the GMT offset, we do the
-   * conversion again, this time taking leap seconds into 
-   * account.  */
-  time_copy_tm (coordinated_universal_time, &utc_time_tm);
-  gmt_offset = local_time_tm->tm_gmtoff;
+  gmt_offset = foreign_UTC_offset;
 
   /* When converting to local time, handle hours, minutes and
    * seconds separately.  That way leap seconds occur at
@@ -113,6 +101,39 @@ time_UTC_to_local (struct tm *coordinated_universal_time,
   /* Make sure all the fields are in their valid ranges.  */
   time_local_normalize (local_time_tm, local_time_tm->tm_sec,
 			variable_length_seconds_before_year);
-    
+  
   return (0);
+}
+
+/* Convert a tm structure containing Coordinated Universal Time
+ * to one containing local time.  */
+int
+time_UTC_to_local (struct tm *coordinated_universal_time,
+		     struct tm *local_time_tm,
+		     int variable_length_seconds_before_year)
+{
+  struct tm utc_time_tm;
+  struct tm temporary_local_time_tm;
+  time_t seconds_since_epoch;
+  int gmt_offset;
+  
+  /* Compute the number of seconds from the epoch until the 
+   * beginning of the current minute, since the timegm and 
+   * localtime functions will not work correctly during a 
+   * leap second.  */
+  time_copy_tm (coordinated_universal_time, &utc_time_tm);
+  utc_time_tm.tm_sec = 0;
+  seconds_since_epoch = timegm (&utc_time_tm);
+
+  /* Convert to local time in a tm structure.  */
+  localtime_r (&seconds_since_epoch, &temporary_local_time_tm);
+  gmt_offset = temporary_local_time_tm.tm_gmtoff;
+  
+  /* Now that we have access to the GMT offset, we do the
+   * conversion again, this time taking leap seconds into 
+   * account.  */
+  return (time_UTC_to_foreign_local (coordinated_universal_time,
+				     gmt_offset,
+				     local_time_tm,
+				     variable_length_seconds_before_year));
 }

@@ -6,7 +6,7 @@
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
 AC_PREREQ([2.69])
-AC_INIT([libtime], [2020.05.07],
+AC_INIT([libtime], [2020.05.14],
 [John_Sauter@systemeyescomputerstore.com],
 [libtime], ["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
@@ -94,9 +94,9 @@ LT_INIT()
 # of the version-info.  When these values are changed, the parallel values
 # in the libtime.spec file must also be changed.
 #
-AC_SUBST(libtool_version_current,"4")
-AC_SUBST(libtool_version_revision, "15")
-AC_SUBST(libtool_version_age, "1")
+AC_SUBST(libtool_version_current,"5")
+AC_SUBST(libtool_version_revision, "0")
+AC_SUBST(libtool_version_age, "2")
 
 # Checks for programs.
 AC_PROG_CC

@@ -93,11 +93,11 @@
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2020 by John Sauter},
-  pdfdate={2020-05-07},
+  pdfdate={2020-05-14},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}  
 }
-\date{2020-05-07}
+\date{2020-05-14}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -370,6 +370,8 @@ Localtime and localtime\_r convert a {\ttfamily time\_t} into
 a {\ttfamily tm} structure that
 represents local time.  We can replace this with a function that takes
 as input a {\ttfamily tm} structure that represents Coordinated Universal Time.
+If you want the local time in a foreign location you can also specify
+the UTC offset.
 \inputminted[firstline=32]{c}{src/time_utc_to_local.c}
 \embedfile[desc={Convert Coordinated Universal Time to local time},
   mimetype={text/plain}]{src/time_utc_to_local.c}
@@ -566,7 +568,7 @@ The attribute ``const'' means that the function does not examine
 any values except its arguments, and has no effects except
 to return a value.  The attribute ``pure'' means the same except
 that the function can examine (but not change) global variables.
-\inputminted[firstline=37,lastline=269]{c}{time_subroutines.h}
+\inputminted[firstline=37,lastline=283]{c}{time_subroutines.h}
 \embedfile[desc={Source for C header file for time subroutines},
   mimetype={text/plain}]{time_subroutines.h.in}
 
@@ -581,7 +583,7 @@ You can use the POSIX {\ttfamily tm} data structure in place of datetime,
 and use these same C subroutines to manipulate it using
 {\ttfamily ctypes}.
 Write a module to define the interface, as follows:
-\inputminted[firstline=28,lastline=373]{Python}{time_subroutines.py}
+\inputminted[firstline=28,lastline=385]{Python}{time_subroutines.py}
 \embedfile[desc={Source for module for calling time subroutines from Python},
   mimetype={text/plain}]{time_subroutines.py.in}
 This file is provided as {\ttfamily time\_subroutines.py}.
@@ -874,7 +876,34 @@ but we prefer to code in Python.
 \inputminted[firstline=27,lastline=69]{Python}{examples/example_06.py}
 \embedfile[desc={Example Python code for PTP}
   mimetype={text/plain}]{examples/example_06.py}
-  
+
+\subsection{Displaying Local Time in Another Time Zone}
+Howard E. Hinnant has an excellent package of time subroutines
+for C++ at this URL: \url{https://howardhinnant.github.io/date/tz.html}.
+One of his examples is displaying the local time of arrival of a flight
+from New York City to Tehran, leaving on December 31, 1978 at 12:01 PM
+local time and flying for 14 hours and 44 minutes.  Local time in
+New York is 5 hours behind UTC and in Tehran is 3 hours 30 minutes
+ahead of UTC, so you might expect the plane to arrive on
+January 1, 1979, at 11:15, but in fact the local time of arrival
+is 11:14:59 because of the leap second while the plane was in flight.
+
+Here is Python code to compute the Tehran local time of arrival,
+assuming it is run at the departure location.
+
+\inputminted[firstline=27,lastline=84]{Python}{examples/example_07.py}
+\embedfile[desc={Example Python code for PTP}
+  mimetype={text/plain}]{examples/example_07.py}
+
+Note that this code must have the UTC offset and the abbreviation
+of Tehran's time zone as constants, rather than extracting them
+from the time zone data base, as Howard's example does.
+
+Another good resource for time zone information is
+the International Components for Unicode, at
+\url{http://site.icu-project.org}.
+See the Date/Time Services under ICU User Guide.
+
 \section{Limitations}
 \subsection{Unpredictable Rotation of the Earth}
 The rotation rate of the Earth is not predictable far in advance.  It must
@@ -955,6 +984,8 @@ programs, but some kernel changes would result in better UTC support.
 \section{Update History}
 
 \begin{description}
+\item[2020-05-14 5:0:2]Add time\_utc\_to\_foreign\_local.
+  Adjust five distant future leap seconds.
 \item[2020-05-07 4:15:1]Adjust five distant future leap seconds.
 \item[2020-04-30 4:14:1]Convert to Libertine fonts.  Adjust several distant
   future leap seconds.

@@ -1,9 +1,9 @@
 #!python3
 # -*- coding: utf-8
 
-# Python interface to libtime, December 14, 2019.
+# Python interface to libtime, May 14, 2020.
 
-# Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+# Copyright © 2020 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -357,6 +357,18 @@ it is normalized before it is returned."""
 def time_UTC_normalize (tm, seconds, variable_length_seconds_before_year):
     return (sub.time_UTC_normalize (tm, seconds,
                                     variable_length_seconds_before_year))
+
+sub.time_UTC_to_foreign_local.argtypes = [ctypes.POINTER(tm), ctypes.c_int,
+                                          ctypes.POINTER(tm), ctypes.c_int]
+
+"""Convert a tm structure containing Coordinated Universal Time
+to one containing a foreigh local time.  Foreign_UTC_offset is
+the offset in seconds between UTC and the desired local time."""
+def time_UTC_to_foreign_local (coordinated_universal_time, foreign_UTC_offset,
+                               local_time, variable_length_seconds_before_year):
+    return (sub.time_UTC_to_foreign_local (coordinated_universal_time,
+                                           foreign_UTC_offset, local_time,
+                                           variable_length_seconds_before_year))
 
 sub.time_UTC_to_local.argtypes = [ctypes.POINTER(tm), ctypes.POINTER(tm),
                                   ctypes.c_int]

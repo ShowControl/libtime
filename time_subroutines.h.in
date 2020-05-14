@@ -1,10 +1,10 @@
 /*
- * File: time_subroutines.h, author: John Sauter, date: December 15, 2019.
+ * File: time_subroutines.h, author: John Sauter, date: May 13, 2020.
  * Header file for subroutines to deal with UTC time.
  */
 
 /*
- * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2020 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -264,6 +264,16 @@ int
 time_UTC_normalize (struct tm *time_tm,
 		    long long int seconds,
 		    int variable_length_seconds_before_year);
+
+/* Convert a tm structure containing Coordinated Universal Time
+ * to one containing a foreigh local time.  Foreign_UTC_offset is
+ * the offset in seconds between UTC and the desired local time.
+ */
+int
+time_UTC_to_foreign_local (struct tm *coordinated_universal_time,
+			   int foreign_UTC_offset,
+			   struct tm *local_time_tm,
+			   int variable_length_seconds_before_year);
 
 /* Convert a Coordinated Universal Time to local time.  */
 int
