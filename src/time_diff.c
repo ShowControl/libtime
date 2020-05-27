@@ -1,9 +1,9 @@
 /*
- * File: time_diff.c, author: John Sauter, date: October 11, 2019.
+ * File: time_diff.c, author: John Sauter, date: May 22, 2020.
  */
 
 /*
- * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2020 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ diff_day_seconds (struct tm *A_tm, struct tm *B_tm,
  * If you want to use fixed-length seconds for all dates, set
  * variable_length_seconds_before_year to INT_MIN.  If you want 
  * fixed-length seconds starting January 1, 1972, but variable-length
- * seconds before January 1, 1972, set varilable_length_seconds_before_year
+ * seconds before January 1, 1972, set variable_length_seconds_before_year
  * to 1972.  If you want to ignore leap seconds entirely, set
  * variable_length_seconds_before_year to INT_MAX.
  */
