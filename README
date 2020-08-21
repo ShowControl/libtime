@@ -1,6 +1,6 @@
-Libtime is a package of subroutines for the manipulation of time values
-on 64-bit computers.  The subroutines handle leap seconds correctly by
-avoiding the use of POSIX time_t for telling time.
+Libtime is a package of subroutines for the manipulation of time values.
+The subroutines handle leap seconds correctly by avoiding the use of
+POSIX time_t for telling time.
 
 Notes to those who write software that calls libtime subroutines:
 
@@ -23,7 +23,7 @@ For installation from a repository, libtime is divided into three RPMs:
 libtime for those who run programs that call libtime, libtime-devel for
 those who write programs that call libtime, and libtime-doc, which contains
 the comprehensive documentation for libtime.  If you install libtime-devel
-from a RPM repository the library is installed in /usr/lib, so you need
+from an RPM repository the library is installed in /usr/lib, so you need
 specify only -ltime to compile and link with it.
 
 In your Python source code, define the entry points with:
@@ -72,7 +72,7 @@ https://commons.wikimedia.org/wiki/File:Extending_Coordinated_Universal_Time_to_
 
 That document is the source for the leap seconds table, which is built
 from file extraordinary_days.dat.  The sources for that document are embedded
-in the PDF.
+in its PDF, as are the sources for libtime embedded in avoid_time_t.pdf.
 
 There are several test program in the distribution kit, which are built
 automatically.  I use test_ep to be sure all of the entry points are
@@ -81,7 +81,7 @@ make distcheck and I also extract all of the embedded files from the PDF
 into a clean directory and make sure the result builds.
 
 On platforms without a C compiler that implements 128-bit integers, a subset
-library is provided, missing int128_to_string and time_tm_nano_to_integer.
+library is provided, omitting int128_to_string and time_tm_nano_to_integer.
 
 I have not tried to port libtime to the Ubuntu distribution of GNU/Linux,
 but Alien seems to create reasonable .deb files from the libtime, libtime-devel
@@ -94,81 +94,86 @@ Here is the checklist I use to be sure I am distributing working software:
 2. Update the version number to today's date, and update the version-info
    triplet, in all the places where they appear.
 
-3. Build and test the libtime tarball.
+3. Delete any previous tarballs and RPMs: rm *.gz, rm *.rpm.
 
-4. do Make build_RPMs to create and test the SRPM.
-
-5. When the build is finished, use an internet browser to connect to
-   the Fedora Copr web site, log in, and examine the results of the
-   build.  If the build has failed, adjust the code, the spec file or
-   the platforms to make it succeed, and keep re-running it until
-   it does succeed.
+4. Make sure the latest version of proleptic_utc_with_leap_seconds
+   is installed.
    
-6.  Make sure the built RPMs work:
-    dnf copr disable johnsauter/libtime
-    dnf copr enable johnsauter/test
-    dnf install libtime-devel
-    compile one of the test programs and run it.
-    dnf remove libtime-devel
-    dnf install libtime
-    Make sure the test program still runs but does not compile.
-    dnf install libtime-doc
-    Use evince to check the PDF at /usr/share/doc/libtime-doc/avoid_time_t.pdf
+5. Build and test the libtime tarball.  In the following commands,
+   /usr is the location of the data file provided by
+   proleptic_utc_with_leap_seconds.
+   
+   ./autogen.sh --download
+   ./configure --prefix=/usr
+   make
+   make pdf
+   make check
+   make dist
+   make distcheck
 
-7.  When everything works, build it again for public use:
-    copr-cli build libtime <name of the srpm>
-    
-8.  Make sure the tarball will build from the PDF:
+6. Type Make build_RPMs to create and test the SRPM file.
+
+7. Do a test build of libtime on COPR by typing
+   copr-cli build libtime libtime-*.src.rpm
+   
+8. When the build is finished, use an internet browser to connect to
+   the Fedora Copr web site, log in, and examine the results of the
+   libtime project build.  If the build has failed, correct any problems
+   to the best of your ability and re-run the build until the only
+   errors left are due to the COPR infrastructure.  At that point, tell
+   the COPR web site to regenerate the repositories.
+
+9. Wait a few minutes for the repository mirrors to receive the new
+   code, then type sudo dnf update --refresh to make sure the new
+   version is avaialble.
+   
+10. Make sure the tarball will build from the PDF:
     Create an empty subdirectory.
     Copy the PDF file to it.
     Use Okular to extract all of its embedded files.
-    bash fix_files.sh.  ./configure.  Make.  Make check.
-    Make PDF.  Make dist.  Make distcheck.
+    Type the following:
+    bash fix_files.sh.
+    ./configure.
+    Make.
+    Make check.
+    Make PDF.
+    Make dist.
+    Make distcheck.
 
-As of April 10, 2020, this is the platform support matrix for libtime
+As of August 18, 2020, this is the platform support matrix for libtime
 using the copr build system with test_for_disabled_adjtimex disabled.
 The bugzilla entry for the problem with adjtimex is 1778298.
 
-centos-stream-aarch64: yes: with 128-bit integers
-centos-stream-x86_64: yes: with 128-bit integers
-custom-1-i386: no: no useradd
-custom-1-x86_64: no: no useradd
-epel-6-i386: no: no python3 >= 3.5
-epel-6-x86_64: no: no python3 >= 3.5
-epel-7-aarch64: yes: with 128-bit integers
-epel-7-x86_64: yes: with 128-bit integers
 epel-8-aarch64: yes: with 128-bit integers
 epel-8-X86_64: yes: with 128-bit integers
-fedora-30-aarch64: yes: with 128-bit integers
-fedora-30-i386: yes: without 128-bit integers
-fedora-30-x86_64: yes: with 128-bit integers
 fedora-31-aarch64: yes: with 128-bit integers
 fedora-31-armhfp: yes: without 128-bit integers 
 fedora-31-i386: yes: without 128-bit integers
+fedora-31-s390x: no: proleptic_utc_with_leap_seconds will not build
 fedora-31-x86_64: yes: with 128-bit integers
 fedora-32-aarch64: yes: with 128-bit integers
 fedora-32-armhfp: yes: without 128-bit integers 
 fedora-32-i386: yes: without 128-bit integers
+fedora-32-s390x: no: proleptic_utc_with_leap_seconds will not build
 fedora-32-x86_64: yes: with 128-bit integers
-fedora-rawhide-aarch64: yes: with 128-bit integers
+fedora-33-aarch64: yes: with 128-bit integers
+fedora-33-armhfp: yes: without 128-bit integers 
+fedora-33-i386: yes: without 128-bit integers
+fedora-33-s390x: yes: with 128-bit integers
+fedora-32-x86_64: yes: with 128-bit integers
+fedora-rawhide-aarch64: mo: shell failure
 fedora-rawhide-armhfp: yes: without 128-bit integers
-fedora-rawhide-i386: yes: without 128-bit integers
-fedora-rawhide-x86_64: yes: with 128-bit integers
-magela-7-aarch64: no: ./depcomp: no such file or directory
-magela-7-i586: no: ./depcomp: no such file or directory
-magela-7-x86_64: no: ./depcomp: no such file or directory
-magela-cauldron-aarch64: no: man file not found in libtime
-magela-cauldron-i586: no: man file not found in libtime
-magela-cauldron-x86_64: no: man file not found in libtime
-opensuse-leap-15.1-aarch64: no: unable to download repo updates-oss
-opensuse-leap-15.1-x86_64: no: TZ= on command line doesn't work
-opensuse-leap-15.2-aarch64: no: TZ= on command line doesn't work
-opensuse-leap-15.2-x86_64: no: TZ= on command line doesn't work
+fedora-rawhide-i386: no: shell failure
+fedora-rawhide-s390x: yes: with 128-bit integers
+fedora-rawhide-x86_64: no: shell failure
 opensuse-tumbleweed-aarch64: yes: with 128-bit integers
-opensuse-tumbleweed-i586: no: TZ= on command line doesn't work
 opemsuse-tumbleweed-x86_64: yes: with 128-bit integers
 
 Note the lack of ppc64le platforms.  In the past, when those platforms
 were in the COPR build, the builds were successful when the corresponding
 X86_64 builds were successful, and they supported 128-bit integers.
-In addition, the build was successful with Fedora 29.
+In addition, the build was successful with Fedora 29 and 30.
+
+The s390x failures on Fedora 31 and 32 are due to the python script that
+creates the data file provided by proleptic_utc_with_leap_seconds failing
+with a segfault.
