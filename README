@@ -132,13 +132,13 @@ Here is the checklist I use to be sure I am distributing working software:
     Copy the PDF file to it.
     Use Okular to extract all of its embedded files.
     Type the following:
-    bash fix_files.sh.
-    ./configure.
-    Make.
-    Make check.
-    Make PDF.
-    Make dist.
-    Make distcheck.
+    bash fix_files.sh
+    ./configure
+    Make
+    Make check
+    Make PDF
+    Make dist
+    Make distcheck
 
 As of August 28, 2020, this is the platform support matrix for libtime
 using the copr build system with test_for_disabled_adjtimex disabled.
@@ -160,7 +160,7 @@ fedora-33-aarch64: yes: with 128-bit integers
 fedora-33-armhfp: yes: without 128-bit integers 
 fedora-33-i386: yes: without 128-bit integers
 fedora-33-s390x: yes: with 128-bit integers
-fedora-32-x86_64: yes: with 128-bit integers
+fedora-33-x86_64: yes: with 128-bit integers
 fedora-rawhide-aarch64: yes: with 128-bit integers
 fedora-rawhide-armhfp: yes: without 128-bit integers
 fedora-rawhide-i386: yes: without 128-bit integers
