@@ -6,7 +6,7 @@
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
 AC_PREREQ([2.69])
-AC_INIT([libtime], [2020.10.30],
+AC_INIT([libtime], [2020.11.06],
 [John_Sauter@systemeyescomputerstore.com],
 [libtime], ["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE

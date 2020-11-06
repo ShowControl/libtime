@@ -1,5 +1,5 @@
 #!/bin/bash
-# File: build_RPMs.sh, author: John Sauter, date: April 25, 2020.
+# File: build_RPMs.sh, author: John Sauter, date: November 6, 2020.
 # Build the RPMs for libtime
 
 # Requires fedora-packager, rpmdevtools, copr-cli.
@@ -19,13 +19,14 @@ umask 022
 rm -f SOURCES/*
 rm -f SRPMS/*
 rm -f RPMS/x86_64/*
-# Copy in the new tarball.
+# Copy in the new tarball and spec file.
 popd
 cp -v libtime-*.tar.gz ~/rpmbuild/SOURCES/
+cp -v libtime.spec ~/rpmbuild/SOURCES/
 pushd ~/rpmbuild/SOURCES
 chmod 0644 libtime-*.tar.gz
 # Build and test the source RPM.
-rpmbuild -ta libtime-*.tar.gz
+rpmbuild -ba libtime.spec
 # Copy back the source RPM so it can be copied from github.
 popd
 cp -v ~/rpmbuild/SRPMS/libtime-*.src.rpm .

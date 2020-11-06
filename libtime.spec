@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2020.10.30
+Version:        2020.11.06
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -11,9 +11,7 @@ BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  python3 >= 3.5
 BuildRequires:  git
-# The following file is the list of leap seconds.  It is provided by
-# package proleptic_utc_with_leap_seconds.
-BuildRequires:  %{_datadir}/proleptic_utc_with_leap_seconds/data/extraordinary_days.dat
+BuildRequires:  proleptic_utc_with_leap_seconds
 
 %global _hardened_build 1
 
@@ -95,6 +93,10 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Fri Nov 06 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2020.11.06-1 Adjust future leap seconds starting in 2033.
+* Tue Nov 03 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2020.10.30-2 Depend on the package, not on a file it provides.
 * Fri Oct 30 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2020.10.30-1 Adjust future leap seconds starting in 2033.
 * Fri Oct 23 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
