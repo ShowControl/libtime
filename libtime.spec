@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2020.11.13
+Version:        2020.11.20
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -93,6 +93,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Fri Nov 20 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2020.11.20-1 Adjust future leap seconds starting in 2067.
 * Fri Nov 13 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2020.11.13-1 Delay the December 2093 leap second by six months to June 2094.
 * Fri Nov 06 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>

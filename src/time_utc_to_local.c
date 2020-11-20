@@ -1,5 +1,5 @@
 /*
- * File: time_utc_to_local.c, author: John Sauter, date: May 13, 2020.
+ * File: time_utc_to_local.c, author: John Sauter, date: November 14, 2020.
  */
 
 /*
@@ -30,7 +30,7 @@
 #include "time_subroutines.h"
 
 /* Convert a tm structure containing Coordinated Universal Time
- * to one containing a foreigh local time.  Foreign_UTC_offset is
+ * to one containing a foreign local time.  Foreign_UTC_offset is
  * the offset in seconds between UTC and the desired local time.
  */
 int

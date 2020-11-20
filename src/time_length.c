@@ -1,9 +1,9 @@
 /*
- * File: time_length.c, author: John Sauter, date: November 11, 2018.
+ * File: time_length.c, author: John Sauter, date: November 14, 2020.
  */
 
 /*
- * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2020 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -189,7 +189,7 @@ time_length_prev_UTC_minute (struct tm *time_tm,
   int return_value;
 
   /* Compute the previous minute.  If this minute is the first 
-   * minute of he year, the previous minute will be the last 
+   * minute of the year, the previous minute will be the last 
    * minute of the previous year.  */
   time_copy_tm (time_tm, &prev_minute_tm);
   prev_minute_tm.tm_min = time_tm->tm_min - 1;

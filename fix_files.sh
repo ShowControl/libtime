@@ -31,6 +31,7 @@ mv example_03.c examples/
 mv example_04.c examples/
 mv example_05.c examples/
 mv example_06.py examples/
+mv example_07.py examples/
 mkdir tests
 mv test_add.c tests/
 mv test_diff.c tests/
