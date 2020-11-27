@@ -1,4 +1,4 @@
-# File: Makefile.am for libtime, author: John Sauter, date: April 26, 2020.
+# File: Makefile.am for libtime, author: John Sauter, date: November 21, 2020.
 #
 # Copyright © 2020 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -190,16 +190,20 @@ pdf-local: avoid_time_t.pdf fix_files.sh
 .PHONEY: pdf-local
 
 # Building the PDF depends on the bbl file, which is built below.
-# When the bbl file is available, run LaTeX three times to be sure
-# the forward references are resolved.  There is a slight chance that
-# this process will be unstable, with the size of a reference changing
-# the pagination, thus changing the size of a reference to that page.
+# When the bbl file is available, run LaTeX four times to be sure
+# the forward references are resolved and the pdf byte count correct.
+# There is a slight chance that this process will be unstable,
+# with the size of a reference changing the pagination, thus changing
+# the size of a reference to that page.
+# Perhaps someday we will check that this is not happening
+# by verifying that the size of the last and next-to-last runs match.
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	dtai_table.tab time_subroutines.h time_subroutines.py \
 	examples/example_02.c examples/example_03.c examples/example_06.py \
 	examples/example_07.py \
 	example_03_output.txt libtime.pc extraordinary_days.dat \
 	$(libtime_la_SOURCES)
+	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
 	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
