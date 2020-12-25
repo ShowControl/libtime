@@ -118,7 +118,8 @@ Here is the checklist I use to be sure I am distributing working software:
    
 8. When the build is finished, use an internet browser to connect to
    the Fedora Copr web site, log in, and examine the results of the
-   libtime project build.  If the build has failed, correct any problems
+   libtime project build.  If the build has failed on any important
+   platforms, correct any problems
    to the best of your ability and re-run the build until the only
    errors left are due to the COPR infrastructure.  At that point, tell
    the COPR web site to regenerate the repositories.
@@ -140,17 +141,20 @@ Here is the checklist I use to be sure I am distributing working software:
     Make dist
     Make distcheck
 
-As of August 28, 2020, this is the platform support matrix for libtime
+As of December 18, 2020, this is the platform support matrix for libtime
 using the copr build system with test_for_disabled_adjtimex disabled.
 The bugzilla entry for the problem with adjtimex is 1778298.
 
+centos-stream-aarch64: no: package python3-pandas not available
+centos-stream-x86_64: no: package python3-pandas not available
+custom-1-i386: no: no useradd in chroot
+custom-1-x86_64: no: no useradd in chroot
+epel-6-i386: no: python version before 3.5
+epel-6-x86_64: no: python version before 3.5
+epel-7-aarch64: no: package python3-pandas not available
+epel-7-x86_64: no: package python3-pandas not available
 epel-8-aarch64: yes: with 128-bit integers
 epel-8-X86_64: yes: with 128-bit integers
-fedora-31-aarch64: yes: with 128-bit integers
-fedora-31-armhfp: yes: without 128-bit integers 
-fedora-31-i386: yes: without 128-bit integers
-fedora-31-s390x: yes: with 128-bit integers
-fedora-31-x86_64: yes: with 128-bit integers
 fedora-32-aarch64: yes: with 128-bit integers
 fedora-32-armhfp: yes: without 128-bit integers 
 fedora-32-i386: yes: without 128-bit integers
@@ -161,11 +165,25 @@ fedora-33-armhfp: yes: without 128-bit integers
 fedora-33-i386: yes: without 128-bit integers
 fedora-33-s390x: yes: with 128-bit integers
 fedora-33-x86_64: yes: with 128-bit integers
+fedora-eln-aarch64: yes: with 128-bit integers
+fedora-eln-i386: yes: without 128-bit integers
+fedora-eln-s390x: yes: with 128-bit integers
+fedora-eln-x86_64: yes: with 128-bit integers
 fedora-rawhide-aarch64: yes: with 128-bit integers
 fedora-rawhide-armhfp: yes: without 128-bit integers
 fedora-rawhide-i386: yes: without 128-bit integers
 fedora-rawhide-s390x: yes: with 128-bit integers
-fedora-rawhide-x86_64: no: shell failure
+fedora-rawhide-x86_64: yes: with 128-bit integers
+magela-7-aarch64: no: MAN file not found
+magela-7-i586: no: checksum error in repo
+magela-7-x86_64: no: MAN file not found
+magela-cauldron-aarch64: no: status code 404 download repository metadata
+magela-cauldron-i586: no: status code 404 download repository metadata
+magela-cauldron-x86_64: no: status code 404 download repository metadata
+opensuse-leap-15.1-aarch64: no: TZ= does not work on the command line
+opensuse-leap-15.1-x86_64: no: TZ= does not work on the command line
+opensuse-leap-15.2-aarch64: no: TZ= does not work on the command line
+opensuse-leap-15.2-x86_64: no: TZ= does not work on the command line
 opensuse-tumbleweed-aarch64: yes: with 128-bit integers
 opensuse-tumbleweed-i586: no: TZ= does not work on the command line
 opemsuse-tumbleweed-x86_64: yes: with 128-bit integers
@@ -173,4 +191,4 @@ opemsuse-tumbleweed-x86_64: yes: with 128-bit integers
 Note the lack of ppc64le platforms.  In the past, when those platforms
 were in the COPR build, the builds were successful when the corresponding
 X86_64 builds were successful, and they supported 128-bit integers.
-In addition, the build was successful with Fedora 29 and 30.
+In addition, the build was successful with Fedora 29, 30 and 31.
