@@ -1,5 +1,5 @@
 #!/bin/bash
-# File: build_RPMs.sh, author: John Sauter, date: November 6, 2020.
+# File: build_RPMs.sh, author: John Sauter, date: January 21, 2021.
 # Build the RPMs for libtime
 
 # Requires fedora-packager, rpmdevtools, copr-cli.
@@ -39,7 +39,7 @@ rpmlint libtime-*.rpm
 popd
 # Disable building with Mock until I can figure out how to
 # add a repository.
-#mock -r fedora-31-x86_64 libtime-*.src.rpm
+#mock -r fedora-33-x86_64 libtime-*.src.rpm
 # now that all local tests have passed, see if it builds on copr
 #copr-cli build test libtime-*.src.rpm
 
