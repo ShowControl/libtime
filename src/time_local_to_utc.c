@@ -1,9 +1,9 @@
 /*
- * File: time_local_to_utc.c, author: John Sauter, date: November 11, 2018.
+ * File: time_local_to_utc.c, author: John Sauter, date: January 26, 2021.
  */
 
 /*
- * Copyright © 2018 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2021 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -91,8 +91,15 @@ time_local_to_UTC (struct tm *local_time,
   utc_time_tm.tm_min = utc_time_tm.tm_min - minutes_offset;
   utc_time_tm.tm_sec = utc_time_tm.tm_sec - seconds_offset;
 
+  /* Make sure the other fields in the tm structure do not contain garbage.  */
+  utc_time_tm.tm_wday = 0;
+  utc_time_tm.tm_yday = 0;
+  utc_time_tm.tm_isdst = -1;
+  utc_time_tm.tm_gmtoff = 0;
+  utc_time_tm.tm_zone = NULL;
+  
   /* Make sure the fields of the tm structure are all in their 
-   * valid ranges.  */
+   * valid ranges and update the fields output by mktime.  */
   time_UTC_normalize (&utc_time_tm, utc_time_tm.tm_sec,
 		      variable_length_seconds_before_year);
 

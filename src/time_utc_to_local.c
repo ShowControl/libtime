@@ -1,9 +1,9 @@
 /*
- * File: time_utc_to_local.c, author: John Sauter, date: November 14, 2020.
+ * File: time_utc_to_local.c, author: John Sauter, date: January 25, 2021.
  */
 
 /*
- * Copyright © 2020 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2021 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -98,7 +98,15 @@ time_UTC_to_foreign_local (struct tm *coordinated_universal_time,
   local_time_tm->tm_min = utc_time_tm.tm_min;
   local_time_tm->tm_sec = utc_time_tm.tm_sec;
 
-  /* Make sure all the fields are in their valid ranges.  */
+  /* Make sure the other fields in the tm structure do not contain garbage.  */
+  local_time_tm->tm_wday = 0;
+  local_time_tm->tm_yday = 0;
+  local_time_tm->tm_isdst = -1;
+  local_time_tm->tm_gmtoff = gmt_offset;
+  local_time_tm->tm_zone = NULL;
+
+  /* Make sure all the fields are in their valid ranges
+   * and update the fields output by mktime.  */
   time_local_normalize (local_time_tm, local_time_tm->tm_sec,
 			variable_length_seconds_before_year);
   
