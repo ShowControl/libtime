@@ -1,5 +1,5 @@
 /*
- * File: time_local_to_utc.c, author: John Sauter, date: January 26, 2021.
+ * File: time_local_to_utc.c, author: John Sauter, date: January 25, 2021.
  */
 
 /*
