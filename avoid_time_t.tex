@@ -103,11 +103,11 @@
   % Hyperxmp says we should not quote the underscores with
   % backslash, but this produces subscripting, which is not permitted.
   % pdfurl={https://commons.wikimedia.org/wiki/File:Avoid\_Using\_POSIX\_time\_t\_for\_Telling\_Time.pdf},
-  pdfdate={2021-02-26},
+  pdfdate={2021-03-05},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
-\date{2021-02-26}
+\date{2021-03-05}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -620,23 +620,38 @@ Python {\ttfamily time.struct\_time}, which is able to represent leap seconds.
 \section{Embedded files}
 \label{section:Embedded_files}
 To save you the trouble of typing in these subroutines, they are embedded
-in this PDF file.  You can extract them using okular or Adobe Acrobat Reader.
+in this PDF file.
 Also included are some sample and test programs, and the configuration
 scripts needed to compile the programs and construct this PDF file.
 Building the PDF file requires {\LaTeX} and Python.
 
 If you have only the PDF file, you can build the time library
-and include files by
-extracting the embedded files into an empty directory,
-typing {\ttfamily bash fix\_files.sh}, 
-then typing {\ttfamily ./configure},
-and finally {\ttfamily make}.
-Once the library is built you can install it by typing
+and include files as follows:
+\begin{enumerate}
+\item Install package proleptic\_utc\_with\_leap\_seconds
+  to get file {\ttfamily extraordinary\_days.dat} installed.
+  You can find a tarball at this URL:
+  \url{https://github.com/ShowControl/proleptic_utc_with_leap_seconds}.
+  Like this library it can also be built from its PDF file, which is
+  at \url{https://commons.wikimedia.org/wiki/File:Extending_Coordinated_Universal_Time_to_Dates_Before_1972.pdf}.
+\item Create an empty directory.
+\item Copy the PDF file to it.
+\item Create within that directory subdirectories {\ttfamily examples},
+{\ttfamily m4}, {\ttfamily src} and {\ttfamily tests}.
+\item Extract the embedded files from the PDF file using pdfdetach -saveall.
+\item Type {\ttfamily fix\_files.sh} to correct the permissions of
+  the extracted files.
+  \embedfile[desc={Fix permissions of extracted files},
+  mimetype={text/plain}]{fix_files.sh}
+\item Build the library the usual way with {\ttfamily ./configure}
+and {\ttfamily make}.
+\item Once the library is built you can install it by typing
 {\ttfamily sudo make install}.
+\end{enumerate}
 
 If you have the compressed tar file, extract its contents to an empty
 directory, then type {\ttfamily ./configure},
-then {\ttfamily make} and finally {\ttfamily sudo make install} to
+and {\ttfamily make}.  Type {\ttfamily sudo make install} to
 install the library.  If you want the PDF you can get it by
 typing {\ttfamily make pdf}.
 
@@ -744,8 +759,6 @@ in libtime.
   mimetype={text/plain}]{test-driver}
 \embedfile[desc={compare check\_time output with expected output},
   mimetype={text/plain}]{verify_files_template.sh}
-\embedfile[desc={fix permissions and directories of files},
-  mimetype={text/plain}]{fix_files.sh}
 \embedfile[desc={test the Python interface},
   mimetype={text/plain}]{tests/test_python_interface.py}
 \embedfile[desc={spec file to build RPMs},
@@ -925,9 +938,10 @@ exactly when the Sun will rise a year from now.  Because Coordinated
 Universal Time is tied to the rotation of the Earth, it is similarly
 uncertain.
 
-We have good records of the rotation rate of the Earth from the time
+We have increasingly good records of the rotation rate of the Earth
+from the time
 of the invention of the telescope and the pendulum clock until
-the present.  Prior to 1700, the measurements become uncertain.
+the present.  Prior to \num{1825}, the measurements become uncertain.
 Efforts have been made to improve our knowledge of the rotation
 rate of the Earth in historical times\citep{2004JHA....35..327M}%
 \citep{2005JHA....36..339M}\citep{1997A&A...322..347S}%
@@ -943,10 +957,10 @@ reliable the further out you go.
 The table will be updated from time to time to capture present
 observations of the Earth's rotation and better estimates from
 historical times.  If your application deals with times before
-1700 or more than six months in the future, you should recompute
+\num{1825} or more than six months in the future, you should recompute
 your times whenever the DTAI table is updated.  In the example
 of the rocket over Central Park, if you had pre-computed the times
-in 2015, you would have missed the leap second at the end of
+in 2015, you might have missed the leap second at the end of
 December 31, 2016.  The update to the DTAI table in the middle
 of 2016 should cause the schedule for the remainder of the year
 to be recomputed, resulting in a launch time of 23:59:59 for
@@ -997,6 +1011,12 @@ programs, but some kernel changes would result in better UTC support.
 \section{Update History}
 
 \begin{description}
+\item[2021-03-05 5:38:2]Include the latest research on historical values
+  of delta T.  Adjust essentially all leap seconds before 1825 and
+  in the future.  The next leap second is predicted to be on June 30, 2031,
+  and it will be a negative leap second.
+\item[2021-03-03 5:37:2]Suggest pdfdetach rather than okular
+  for extracting files from the PDF.
 \item[2021-02-26 5:37:2]Adjust future leap seconds starting in 2104.
 \item[2021-02-19 5:36:2]Adjust future leap seconds starting in 2051.
 \item[2021-02-12 5:35:2]Adjust future leap seconds starting in 2103.
