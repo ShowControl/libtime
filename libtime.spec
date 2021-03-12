@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2021.03.05
+Version:        2021.03.12
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -93,6 +93,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Fri Mar 12 2021 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2021.03.12-1 Adjust future leap seconds starting in 2030.
 * Fri Mar 05 2021 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2021.03.05-1 Include the latest research on historical values of delta T.
 * Fri Feb 26 2021 John Sauter <John_Sauter@systemeyescomputerstore.com>

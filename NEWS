@@ -1,3 +1,6 @@
+2021-03-12 5:39:2
+  Adjust future leap seconds starting in 2030.
+  
 2021-03-05 5:38:2
   Include the latest research on historical values of delta T.
   Adjust essentially all leap seconds before 1825 and in the future.

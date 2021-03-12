@@ -103,11 +103,11 @@
   % Hyperxmp says we should not quote the underscores with
   % backslash, but this produces subscripting, which is not permitted.
   % pdfurl={https://commons.wikimedia.org/wiki/File:Avoid\_Using\_POSIX\_time\_t\_for\_Telling\_Time.pdf},
-  pdfdate={2021-03-05},
+  pdfdate={2021-03-12},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
-\date{2021-03-05}
+\date{2021-03-12}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -345,7 +345,7 @@ between two times expressed using the {\ttfamily tm} structure.
   mimetype={text/plain}]{src/time_diff.c}
 The table of changes in DTAI is too long to present here in full,
 but here are some of the lines:
-\inputminted[firstline=46875,lastline=46913]{c}{dtai_table.tab}
+\inputminted[firstline=46156,lastline=46184]{c}{dtai_table.tab}
 \embedfile[desc={Table of changes in DTAI, used by time\_diff.c},
   mimetype={text/plain}]{dtai_table.tab}
 \embedfile[desc={Size of the table of changes in DTAI},
@@ -1011,6 +1011,7 @@ programs, but some kernel changes would result in better UTC support.
 \section{Update History}
 
 \begin{description}
+  \item[2021-03-12 5:39:2]Adjust future leap seconds starting in 2030.
 \item[2021-03-05 5:38:2]Include the latest research on historical values
   of delta T.  Adjust essentially all leap seconds before 1825 and
   in the future.  The next leap second is predicted to be on June 30, 2031,

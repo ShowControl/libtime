@@ -1,6 +1,6 @@
-# File: Makefile.am for libtime, author: John Sauter, date: November 21, 2020.
+# File: Makefile.am for libtime, author: John Sauter, date: March 11, 2021.
 #
-# Copyright © 2020 by John Sauter.
+# Copyright © 2021 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
@@ -220,6 +220,14 @@ avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
 # The output of example 3 is presented in the document.
 example_03_output.txt : example_03
 	$(builddir)/example_03 >$(builddir)/example_03_output.txt
+
+# Include the signature file in the repository
+signature : ${PACKAGE}-${VERSION}.tar.gz.asc
+.PHONEY: signature
+
+${PACKAGE}-${VERSION}.tar.gz.asc : ${PACKAGE}-${VERSION}.tar.gz
+	rm -f ${PACKAGE}-*.tar.gz.asc
+	gpg2 --detach-sign --armor ${PACKAGE}-${VERSION}.tar.gz
 
 # Support pgk-config
 pkgconfigdir = $(libdir)/pkgconfig
