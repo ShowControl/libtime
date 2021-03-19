@@ -1,4 +1,4 @@
-# File: Makefile.am for libtime, author: John Sauter, date: March 11, 2021.
+# File: Makefile.am for libtime, author: John Sauter, date: March 18, 2021.
 #
 # Copyright © 2021 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -46,7 +46,7 @@ EXTRA_DIST = read_extraordinary_days_table.py \
 	avoid_time_t.tex \
 	references.bib \
 	legalcode.txt \
-	autogen.sh 
+	autogen.sh John_Sauter_public_key.asc
 
 # Also distribute the text for the man command.
 dist_man_MANS = libtime.3

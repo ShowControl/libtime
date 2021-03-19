@@ -1,5 +1,10 @@
+2021-03-19 5:40:2
+  Adjust future leap seconds starting in 2068.
+  
 2021-03-12 5:39:2
-  Adjust future leap seconds starting in 2030.
+  Adjust future leap seconds starting in 2030.  The next leap second is
+  predicted to be on December 31, 2030, and it will be a negative leap
+  second.
   
 2021-03-05 5:38:2
   Include the latest research on historical values of delta T.
