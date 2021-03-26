@@ -49,7 +49,7 @@ In addition, there is concise documentation in man libtime.
 Notes to those who maintain libtime:
 
 To create the documentation file, invoke ./configure with --enable-pdf.
-You will need LaTeX to build it.  Building the distribution kit builds
+You will need LuaLaTeX to build it.  Building the distribution kit builds
 the PDF automatically.  For the convenience of those who write programs
 that call the libtime subroutines, the documentation is also kept at this
 URL:
@@ -103,13 +103,14 @@ Here is the checklist I use to be sure I am distributing working software:
    /usr is the location of the data file provided by
    proleptic_utc_with_leap_seconds.
    
-   ./autogen.sh --download
-   ./configure --prefix=/usr
-   make
-   make pdf
-   make check
-   make dist
-   make distcheck
+     ./autogen.sh --download
+     ./configure --prefix=/usr
+     make
+     make pdf
+     make check
+     make dist
+     make distcheck
+     make signature
 
 6. Type Make build_RPMs to create and test the SRPM file.
 
@@ -126,21 +127,24 @@ Here is the checklist I use to be sure I am distributing working software:
 
 9. Wait a few minutes for the repository mirrors to receive the new
    code, then type sudo dnf update --refresh to make sure the new
-   version is avaialble.
+   version is avaialble.  At this point you can delete old repositories
+   from COPR.
    
 10. Make sure the tarball will build from the PDF:
     Create an empty subdirectory.
     Copy the PDF file to it.
-    Use Okular to extract all of its embedded files.
+    Use pdfdetach -saveall to extract all of its embedded files.
     Type the following:
-    bash fix_files.sh
-    ./configure
-    Make
-    Make check
-    Make PDF
-    Make dist
-    Make distcheck
-
+      bash fix_files.sh
+      ./configure --prefix=/usr
+      make
+      make check
+      make PDF
+      make dist
+      make distcheck
+      make signature
+      make RPMs
+    
 If you download the tarball from the git repository, you can also download
 its signature file, which has the same name as the tarball with .asc appended.
 I created the signature file using gpg version 2.  To verify that the tarball
@@ -175,6 +179,17 @@ sub   elg2048 2009-08-26 [E]
 This should not change between versions without a good reason, so you
 can examine a copy of this README file from an old tarball to increase
 your confidence that the latest tarball was also created by me.
+
+
+Notes to those who wish to package libtime in a distribution of GNU/Linux:
+
+The tarball lives on github at ShowControl/libtime.  It gets its table
+of leap seconds from file extraordinary_days.dat, which is provided by
+package proleptic_utc_with_leap_seconds, which lives on github at
+ShowControl/proleptic_utc_with_leap_seconds.  The tarball includes
+a spec file which lists its dependencies.  I use that spec file
+to build the package on COPR.  I would be happy to include any
+modifications you make to the spec file in the tarball.
 
 As of December 18, 2020, this is the platform support matrix for libtime
 using the copr build system with test_for_disabled_adjtimex disabled.
