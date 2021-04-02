@@ -35,7 +35,7 @@ If you install libtime-doc from an RPM repository this will be in
 /usr/share/doc/libtime-doc/.  If you are installing from the tarball
 you can create the PDF by adding --enable-pdf to the ./configure line
 before running make, or doing a second run of make with make pdf.
-You will need LaTeX and many of its packages to compile the PDF.
+You will need LuaLaTeX and many of its packages to compile the PDF.
 Sudo make install will then install the file in /usr/local/share/doc/libtime/.
 
 If it is not convenient to compile the documentation, it is also available
@@ -45,106 +45,6 @@ https://commons.wikimedia.org/wiki/File:Avoid_Using_POSIX_time_t_for_Telling_Tim
 
 In addition, there is concise documentation in man libtime.
 
-
-Notes to those who maintain libtime:
-
-To create the documentation file, invoke ./configure with --enable-pdf.
-You will need LuaLaTeX to build it.  Building the distribution kit builds
-the PDF automatically.  For the convenience of those who write programs
-that call the libtime subroutines, the documentation is also kept at this
-URL:
-
-https://commons.wikimedia.org/wiki/File:Avoid_Using_POSIX_time_t_for_Telling_Time.pdf
-
-The version number of libtime is the distribution date, since the
-unpredictability of leap seconds means the library will never be finished.
-When updating the version number in configure.ac, don't forget to update
-the sharable image version triplet, which is in configure.ac, NEWS and
-the revision history section of avoid_time_t.tex.
-
-The date also appears in avoid_time_t.tex, in three places: in the
-PDF metadata, on the title page, and in the revision history.  The date
-is also in file references.bib, so other documents can refer to the
-current version.  That file is alse used by "Extending Coordinated
-Universal Time to Dates Before 1972", at this URL:
-
-https://commons.wikimedia.org/wiki/File:Extending_Coordinated_Universal_Time_to_Dates_Before_1972.pdf
-
-That document is the source for the leap seconds table, which is built
-from file extraordinary_days.dat.  The sources for that document are embedded
-in its PDF, as are the sources for libtime embedded in avoid_time_t.pdf.
-
-There are several test program in the distribution kit, which are built
-automatically.  I use test_ep to be sure all of the entry points are
-working.  To verify that the distribution kit is valid, I use
-make distcheck and I also extract all of the embedded files from the PDF
-into a clean directory and make sure the result builds.
-
-On platforms without a C compiler that implements 128-bit integers, a subset
-library is provided, omitting int128_to_string and time_tm_nano_to_integer.
-
-I have not tried to port libtime to the Ubuntu distribution of GNU/Linux,
-but Alien seems to create reasonable .deb files from the libtime, libtime-devel
-and libtime-doc RPMs.
-
-Here is the checklist I use to be sure I am distributing working software:
-
-1. Perform whatever updates are called for to the libtime sources.
-
-2. Update the version number to today's date, and update the version-info
-   triplet, in all the places where they appear.
-
-3. Delete any previous tarballs and RPMs: rm *.gz, rm *.rpm.
-
-4. Make sure the latest version of proleptic_utc_with_leap_seconds
-   is installed.
-   
-5. Build and test the libtime tarball.  In the following commands,
-   /usr is the location of the data file provided by
-   proleptic_utc_with_leap_seconds.
-   
-     ./autogen.sh --download
-     ./configure --prefix=/usr
-     make
-     make pdf
-     make check
-     make dist
-     make distcheck
-     make signature
-
-6. Type Make build_RPMs to create and test the SRPM file.
-
-7. Do a test build of libtime on COPR by typing
-   copr-cli build libtime libtime-*.src.rpm
-   
-8. When the build is finished, use an internet browser to connect to
-   the Fedora Copr web site, log in, and examine the results of the
-   libtime project build.  If the build has failed on any important
-   platforms, correct any problems
-   to the best of your ability and re-run the build until the only
-   errors left are due to the COPR infrastructure.  At that point, tell
-   the COPR web site to regenerate the repositories.
-
-9. Wait a few minutes for the repository mirrors to receive the new
-   code, then type sudo dnf update --refresh to make sure the new
-   version is avaialble.  At this point you can delete old repositories
-   from COPR.
-   
-10. Make sure the tarball will build from the PDF:
-    Create an empty subdirectory.
-    Copy the PDF file to it.
-    Use pdfdetach -saveall to extract all of its embedded files.
-    Type the following:
-      bash fix_files.sh
-      ./configure --prefix=/usr
-      make
-      make check
-      make PDF
-      make dist
-      make distcheck
-      make signature
-      make RPMs
-    
 If you download the tarball from the git repository, you can also download
 its signature file, which has the same name as the tarball with .asc appended.
 I created the signature file using gpg version 2.  To verify that the tarball
@@ -181,6 +81,181 @@ can examine a copy of this README file from an old tarball to increase
 your confidence that the latest tarball was also created by me.
 
 
+Notes to anyone who wishes to maintain libtime:
+
+To create the documentation file, invoke ./configure with --enable-pdf.
+You will need LuaLaTeX to build it.  Building the distribution kit builds
+the PDF automatically.  For the convenience of those who write programs
+that call the libtime subroutines, the documentation is also kept at this
+URL:
+
+https://commons.wikimedia.org/wiki/File:Avoid_Using_POSIX_time_t_for_Telling_Time.pdf
+
+The version number of libtime is the distribution date, since the
+unpredictability of leap seconds means the library will never be finished.
+When updating the version number in configure.ac, don't forget to update
+the sharable image version triplet, which is in configure.ac, NEWS and
+the revision history section of avoid_time_t.tex.  If you make a change
+to libtime that is not backwards-compatible, you will also have to
+change the spec file.  Such changes are discouraged because they
+require modifying potentially all the software that depends on libtime.
+
+The date also appears in avoid_time_t.tex, in three places: in the
+PDF metadata, on the title page, and in the revision history.  The date
+is also in file references.bib, so other documents can refer to the
+current version.  That file is alse used by "Extending Coordinated
+Universal Time to Dates Before 1972", at this URL:
+
+https://commons.wikimedia.org/wiki/File:Extending_Coordinated_Universal_Time_to_Dates_Before_1972.pdf
+
+That document is the source for the leap seconds table, which is built
+from file extraordinary_days.dat.  The sources for that document are embedded
+in its PDF, as are the sources for libtime embedded in avoid_time_t.pdf.
+
+There are several test program in the distribution kit, which are built
+automatically.  I use test_ep to be sure all of the entry points are
+working.  To verify that the distribution kit is valid, I use
+make distcheck and I also extract all of the embedded files from the PDF
+into a clean directory and make sure the result builds.
+
+On platforms without a C compiler that implements 128-bit integers, a subset
+library is provided, omitting int128_to_string and time_tm_nano_to_integer.
+If you are cross-compiling you will need to tell the configure script
+whether or not the target computer has support for 128-bit integers.
+
+I have not tried to port libtime to the Ubuntu distribution of GNU/Linux,
+but Alien seems to create reasonable .deb files from the libtime, libtime-devel
+and libtime-doc RPMs.
+
+If this is the first change you are making to libtime since taking it over
+from the previous maintainer, you should add your PGP public key to the
+tarball and update this README file to show it.  Don't forget to embed
+it in the PDF file.
+
+Here is the checklist I use to be sure I am distributing working software.
+I start with proleptic_utc_with_leap_seconds and libtime installed, and in the
+libtime subdirectory of the show_control subdirectory of the Theatre project.
+
+1. Perform whatever updates are called for to the libtime sources.
+
+2. Edit file configure.ac to set the version number to the expected
+distribution date, and update the version-info triplet.  There are comments in
+configure.ac explaining the version-info triplet.
+
+3. Edit file libtime.spec to set the version number to the value in
+configure.ac and add an entry to the revision history.  If the only reason
+we are updating libtime is because proleptic_utc_with_leap_seconds changed,
+use the same comment as in that package's spec file.
+
+4. Edit file NEWS to add the new version number, the new version-info
+triplet, and the reason for the update.
+
+5. Edit file avoid_time_t.tex to update the revision date on the title
+page and in the PDF metadata.  Update the revision history using the
+information in the NEWS file.
+
+6. Type "rm *.gz" and "rm *.rpm" to get rid of old files with wrong version
+numbers in their names.
+   
+7. Build and test the libtime tarball.  In the following commands,
+/usr is the prefix of the location of the data file provided by
+proleptic_utc_with_leap_seconds.  The commands should all run without error.
+   
+     ./autogen.sh --download
+     ./configure --prefix=/usr
+     make
+     make pdf
+     make check
+     make dist
+     make distcheck
+     make signature
+     gpg2 libtime*.asc
+
+That last step should declare that the tarball has a good signature.
+You will use that signature later to verify that the tarball has
+not been accidently corrupted.
+
+8. Use evince to verify that avoid_time_t.pdf has the correct date
+on its cover page, the revision hsitory has been updated and the
+pagination looks OK.
+
+9. Type "make RPMs" to create and test the SRPM file.  RPMlint
+will complain about what it perceives as spelling errors and the fact
+that the tarball has not yet been uploaded to github.  It may also
+complain that the date in the changelog is in the future.  Anything
+else needs to be investigated.  This is the first step that tests
+the spec file.  If you need to change it go back to the autogen step,
+since the spec file is included in the tarball.
+
+10. Make sure the tarball will build from the PDF:  All of these commands
+should run without error.
+    mkdir test_pdf.
+    cp avoid_tme_t.pdf test_pdf/
+    cd test_pdf/
+    mkdir examples/
+    mkdir m4/
+    mkdir src/
+    mkdir tests/
+    pdfdetach -saveall avoid_time_t.pdf
+    bash fix_files.sh
+    ./configure --prefix=/usr
+    make
+    make check
+    make PDF
+    make dist
+    make distcheck
+    make RPMs
+
+11. Type "cd .." and "rm -r test_pdf/.  We are done with the subdirectory.
+    
+12. Use an internet browser to log in to the Fedora COPR web site.
+Navigate to project libtime.  Make sure it is configured to build
+the package on all platforms.
+
+13. Type "copr-cli build libtime libtime-*.src.rpm" to attempt to build
+libtime on lots of different platforms using COPR.
+
+14. When the build is finished, check the COPR weh site to see if it
+succeeded on all of the important platforms.  If the build has failed on any
+important platforms, correct any problems to the best of your ability
+and re-run the build until the only errors left are due to the COPR
+infrastructure.  At that point, tell the COPR web site to regenerate
+the repositories.  You may be forced to declare certain formerly important
+platforms as unimportant if they refuse to build the package for no good reason.
+If you had to modify any of the files, return to the autogen step.
+
+15. Wait a few minutes for the repository mirrors to receive the new
+code, then type "sudo dnf update --refresh" to make sure the new
+version is avaialble.  At this point you can delete old libtime repositories
+from COPR.
+   
+16. Upload the avoid_time_t.pdf file to wikimedia.  Update its revision
+date, both structured and unstructured.
+
+17. Type "make distclean" and "cd ..".
+
+18. Type "git add ." and "git commit -a -m" followed by a comment in
+quotation marks describing the reason for the update.  This should be
+the same comment used in the spec file.  This updates the git repository
+for the show_control sub-project of the Theatre project..
+
+19. Type "bash push_public.sh" to copy the updated files to the local
+copy of the github repository.
+
+20. Type "cd repositories/libtime", "git add ." and "git commit -a -m "
+followed by the comment in quotation marks that you used above.
+
+21. Type "git tag -s " followed by the version number from the spec file
+followed by -m and the comment in quotation marks that you used above.
+
+22. Type "git push" and "git push --tags" to copy the updated project
+to github.
+
+23. Type "gpg libtime*.asc".  Gpg should declare that the tarball has a good
+signature.  If it does not it has been corrupted.  Go back to the autogen
+step to re-create it.  You will not have to edit any files.
+
+
 Notes to those who wish to package libtime in a distribution of GNU/Linux:
 
 The tarball lives on github at ShowControl/libtime.  It gets its table
@@ -192,7 +267,7 @@ to build the package on COPR.  I would be happy to include any
 modifications you make to the spec file in the tarball.
 
 As of December 18, 2020, this is the platform support matrix for libtime
-using the copr build system with test_for_disabled_adjtimex disabled.
+using the COPR build system with test_for_disabled_adjtimex disabled.
 The bugzilla entry for the problem with adjtimex is 1778298.
 
 centos-stream-aarch64: no: package python3-pandas not available
@@ -240,5 +315,7 @@ opemsuse-tumbleweed-x86_64: yes: with 128-bit integers
 
 Note the lack of ppc64le platforms.  In the past, when those platforms
 were in the COPR build, the builds were successful when the corresponding
-X86_64 builds were successful, and they supported 128-bit integers.
-In addition, the build was successful with Fedora 29, 30 and 31.
+x86_64 builds were successful, and they supported 128-bit integers.
+In addition, the build has been successful with Fedora 29, 30 and 31.
+
+End of file README
