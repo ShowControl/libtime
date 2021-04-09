@@ -169,7 +169,7 @@ proleptic_utc_with_leap_seconds.  The commands should all run without error.
      make dist
      make distcheck
      make signature
-     gpg2 libtime*.asc
+     gpg2 libtime*.asc libtime*.tar.gz
 
 That last step should declare that the tarball has a good signature.
 You will use that signature later to verify that the tarball has
@@ -188,7 +188,10 @@ the spec file.  If you need to change it go back to the autogen step,
 since the spec file is included in the tarball.
 
 10. Make sure the tarball will build from the PDF:  All of these commands
-should run without error.
+should run without error.  The autogen command is at the end instead of
+before configure, since configure is supposed to work without first
+running autogen, but autogen should still work.
+
     mkdir test_pdf.
     cp avoid_tme_t.pdf test_pdf/
     cd test_pdf/
@@ -201,10 +204,11 @@ should run without error.
     ./configure --prefix=/usr
     make
     make check
-    make PDF
+    make pdf
     make dist
     make distcheck
     make RPMs
+    ./autogen.sh --download
 
 11. Type "cd .." and "rm -r test_pdf/.  We are done with the subdirectory.
     
@@ -229,7 +233,7 @@ code, then type "sudo dnf update --refresh" to make sure the new
 version is avaialble.  At this point you can delete old libtime repositories
 from COPR.
    
-16. Upload the avoid_time_t.pdf file to wikimedia.  Update its revision
+16. Upload the avoid_time_t.pdf file to Wikimedia.  Update its revision
 date, both structured and unstructured.
 
 17. Type "make distclean" and "cd ..".
@@ -266,17 +270,16 @@ a spec file which lists its dependencies.  I use that spec file
 to build the package on COPR.  I would be happy to include any
 modifications you make to the spec file in the tarball.
 
-As of December 18, 2020, this is the platform support matrix for libtime
+As of April 2, 2021, this is the platform support matrix for libtime
 using the COPR build system with test_for_disabled_adjtimex disabled.
 The bugzilla entry for the problem with adjtimex is 1778298.
 
-centos-stream-aarch64: no: package python3-pandas not available
-centos-stream-x86_64: no: package python3-pandas not available
+centos-stream-8-aarch64: no: package python3-pandas not available
+centos-stream-8-x86_64: no: package python3-pandas not available
 custom-1-i386: no: no useradd in chroot
 custom-1-x86_64: no: no useradd in chroot
 epel-6-i386: no: python version before 3.5
 epel-6-x86_64: no: python version before 3.5
-epel-7-aarch64: no: package python3-pandas not available
 epel-7-x86_64: no: package python3-pandas not available
 epel-8-aarch64: yes: with 128-bit integers
 epel-8-X86_64: yes: with 128-bit integers
@@ -290,8 +293,13 @@ fedora-33-armhfp: yes: without 128-bit integers
 fedora-33-i386: yes: without 128-bit integers
 fedora-33-s390x: yes: with 128-bit integers
 fedora-33-x86_64: yes: with 128-bit integers
+fedora-34-aarch64: yes: with 128-bit integers
+fedora-34-armhfp: yes: without 128-bit integers 
+fedora-34-i386: yes: without 128-bit integers
+fedora-34-s390x: yes: with 128-bit integers
+fedora-34-x86_64: yes: with 128-bit integers
 fedora-eln-aarch64: yes: with 128-bit integers
-fedora-eln-i386: yes: without 128-bit integers
+fedora-eln-i386: no: nothing provides go-srpm-macros
 fedora-eln-s390x: yes: with 128-bit integers
 fedora-eln-x86_64: yes: with 128-bit integers
 fedora-rawhide-aarch64: yes: with 128-bit integers
@@ -300,11 +308,11 @@ fedora-rawhide-i386: yes: without 128-bit integers
 fedora-rawhide-s390x: yes: with 128-bit integers
 fedora-rawhide-x86_64: yes: with 128-bit integers
 magela-7-aarch64: no: MAN file not found
-magela-7-i586: no: checksum error in repo
+magela-7-i586: no: MAN file not found
 magela-7-x86_64: no: MAN file not found
-magela-cauldron-aarch64: no: status code 404 download repository metadata
-magela-cauldron-i586: no: status code 404 download repository metadata
-magela-cauldron-x86_64: no: status code 404 download repository metadata
+magela-cauldron-aarch64: no: jdcal needs python 3.8
+magela-cauldron-i586: no: jdcal needs python 3.8
+magela-cauldron-x86_64: no: jdcal needs python 3.8
 opensuse-leap-15.1-aarch64: no: TZ= does not work on the command line
 opensuse-leap-15.1-x86_64: no: TZ= does not work on the command line
 opensuse-leap-15.2-aarch64: no: TZ= does not work on the command line
