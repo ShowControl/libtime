@@ -195,10 +195,7 @@ running autogen, but autogen should still work.
     mkdir test_pdf.
     cp avoid_tme_t.pdf test_pdf/
     cd test_pdf/
-    mkdir examples/
-    mkdir m4/
-    mkdir src/
-    mkdir tests/
+    mkdir examples m4 src tests
     pdfdetach -saveall avoid_time_t.pdf
     bash fix_files.sh
     ./configure --prefix=/usr
@@ -255,9 +252,10 @@ followed by -m and the comment in quotation marks that you used above.
 22. Type "git push" and "git push --tags" to copy the updated project
 to github.
 
-23. Type "gpg libtime*.asc".  Gpg should declare that the tarball has a good
-signature.  If it does not it has been corrupted.  Go back to the autogen
-step to re-create it.  You will not have to edit any files.
+23. Type "gpg --verify libtime*.asc libtime*.tar.gz".  Gpg should declare 
+that the tarball has a good signature.  If it does not it has been corrupted.  
+Go back to the autogen step to re-create it.  You will not have to edit 
+any files.
 
 
 Notes to those who wish to package libtime in a distribution of GNU/Linux:
