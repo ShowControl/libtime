@@ -169,7 +169,7 @@ proleptic_utc_with_leap_seconds.  The commands should all run without error.
      make dist
      make distcheck
      make signature
-     gpg2 libtime*.asc libtime*.tar.gz
+     gpg --verify libtime*.asc libtime*.tar.gz
 
 That last step should declare that the tarball has a good signature.
 You will use that signature later to verify that the tarball has
@@ -189,7 +189,7 @@ since the spec file is included in the tarball.
 
 10. Make sure the tarball will build from the PDF:  All of these commands
 should run without error.  The autogen command is at the end instead of
-before configure, since configure is supposed to work without first
+before configure since configure is supposed to work without first
 running autogen, but autogen should still work.
 
     mkdir test_pdf.
