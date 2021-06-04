@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2021.05.28
+Version:        2021.06.04
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -15,6 +15,13 @@ BuildRequires:  proleptic_utc_with_leap_seconds
 
 %global _hardened_build 1
 
+# Do not rebuild the PDF file on RHEL, since it lacks TeX.
+%if 0%{?rhel}
+%global rebuild_pdf 0
+%else
+%global rebuild_pdf 1
+%endif
+
 %description
 Manipulate time values stored in a POSIX tm structure.
 
@@ -22,8 +29,14 @@ Manipulate time values stored in a POSIX tm structure.
 %autosetup -S git
 
 %build
+# Tell configure to rebuild the PDF only if TeX is available.
+%if %{rebuild_pdf}
+%configure --enable-pdf
+%else
 %configure
-%make_build
+%endif
+
+%make_build 
 
 %install
 %make_install
@@ -44,6 +57,12 @@ POSIX time_t, which does not support leap seconds.
 %package doc
 Summary: Comprehensive documentation for %{name}
 Requires: %{name}%{?_isa} = %{version}-%{release}
+
+%if %{rebuild_pdf}
+# gnuplot and texlive-scheme-full are needed only to rebuild the PDF file.
+BuildRequires:  gnuplot
+BuildRequires:  texlive-scheme-full
+%endif
 
 %description doc
 The %{name}-doc package contains the documentation for %{name}-devel
@@ -71,6 +90,7 @@ includes the RPM spec file.
 %exclude /usr/share/doc/%{name}/NEWS
 %exclude /usr/share/doc/%{name}/README
 %exclude /usr/share/doc/%{name}/LICENSE
+%exclude /usr/share/doc/%{name}/avoid_time_t.pdf
 %license LICENSE
 %license COPYING
 
@@ -81,7 +101,7 @@ includes the RPM spec file.
 %{_includedir}/time_subroutines.h
 %{_libdir}/libtime.so
 %{_libdir}/pkgconfig/libtime.pc
-%{_mandir}/man3/libtime.3.gz
+%{_mandir}/man3/libtime.3.*
 %doc AUTHORS ChangeLog NEWS README
 %license LICENSE
 %license COPYING
@@ -93,6 +113,12 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Fri Jun 04 2021 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2021.06.04-1 Adjust future leap seconds starting in 2063.
+* Sun May 30 2021 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2021.05.28-4 Rebuild PDF file except on RHEL.
+* Sat May 29 2021 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2021.05.28-2 Allow for a future change in the man file compression.
 * Fri May 28 2021 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2021.05.28-1 Adjust future leap seconds starting in 2182.
 * Fri May 21 2021 John Sauter <John_Sauter@systemeyescomputerstore.com>

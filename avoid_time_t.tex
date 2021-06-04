@@ -103,11 +103,11 @@
   % Hyperxmp says we should not quote the underscores with
   % backslash, but this produces subscripting, which is not permitted.
   % pdfurl={https://commons.wikimedia.org/wiki/File:Avoid\_Using\_POSIX\_time\_t\_for\_Telling\_Time.pdf},
-  pdfdate={2021-05-28},
+  pdfdate={2021-06-04},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
-\date{2021-05-28}
+\date{2021-06-04}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -1010,9 +1010,75 @@ programs, but some kernel changes would result in better UTC support.
   this fixes the inaccuracy of file times.
 \end{enumerate}
 
+\section{Future Work}
+The table of leap seconds will need to be updated every six months,
+when the IERS releases Bulletin C with a new leap second announcement.
+These updates can also capture the latest research on the rotation
+of the Earth in historical times.  It would be nice if these updates
+could be included in the software automatically.
+
+\section{Licensing}
+\label{section:Licensing}
+As noted on the first page, this paper is licensed under a Creative
+Commons Attribution-ShareAlike 4.0 International License.  The code
+presented here, and embedded in the PDF file, is licensed under
+the GPL, version 3 or later.
+\embedfile[desc={General Public License version 3},
+  mimetype={text/plain}]{LICENSE}
+
+The full text of the Creative Commons Attribution-ShareAlike 4.0
+International license is at this web site:
+\url{https://creativecommons.org/licenses/by-sa/4.0/legalcode}%
+\embedfile[desc={Plaintext version of Creative Commons BY-SA 4.0 license},
+  mimetype={text/plain}]{legalcode.txt}, and is embedded in this
+PDF file.  What follows is a human-readable summary of it.
+
+\subsection{You are free to:}
+\begin{description}
+\item[Share ---]copy and redistribute the material in any medium or format, and
+\item[Adapt ---]remix, transform, and build upon the material
+\end{description}
+for any purpose, even commercially.  The licensor cannot revoke these
+freedoms as long as you follow the license terms.
+\subsection{Under the following terms:}
+\begin{description}
+\item[Attribution ---]You must give appropriate credit\footnote{If supplied,
+  you must provide the name of the creator and attribution parties,
+  a copyright notice, a license notice, a disclaimer notice, and a link
+  to the material.}, provide a link to
+  the license, and indicate if changes were made\footnote{You must indicate if
+    you modified the material and retain an indication of previous
+    modifications.}.  You may do so in any
+  reasonable manner, but not in any that suggests the licensor endorses you
+  or your use.
+\item[ShareAlike ---]If you remix, transform, or build upon the material,
+  you must distribute your contributions under the same
+  license\footnote{You may also use any of the licenses listed as compatible
+    at the following web site:
+    \url{https://creativecommons.org/compatiblelicenses}}
+  as the original.
+\item[No additional restrictions ---]You may not apply legal terms or
+  technological measures\footnote{The license prohibits application of
+    effective technological measures, defined with reference to Article 11
+    of the WIPO Copyright Treaty.}
+  that legally restrict others from doing anything
+  the license permits.
+\end{description}
+\subsection{Notices:}
+\begin{itemize}
+\item{You do not have to comply with the license for elements of the
+  material in the public domain or where your use is permitted by an
+  exception or limitation.}
+\item{No warranties are given.  The license may not give you all of the
+  permissions necessary for your intended use.  For example, other rights
+  such as publicity, privacy or moral rights may limit how you use the
+  material.}
+\end{itemize}
+
 \section{Revision History}
 
 \begin{description}
+\item[2021-06-04 5:50:2]Adjust future leap seconds starting in 2063.
 \item[2021-05-28 5:49:2]Adjust future leap seconds starting in 2182.
 \item[2021-05-21 5:48:2]Adjust future leap seconds starting in 2029.
   The next leap second is predicted to be on December 31, 2029, and
@@ -1251,79 +1317,6 @@ programs, but some kernel changes would result in better UTC support.
   Handle converting $-2^{127}$ to a string. 
 \item[2016-12-21 0:0:0] Original distribution.
 \end{description}
-
-\section{Future Work}
-The table of leap seconds will need to be updated every six months,
-when the IERS releases Bulletin C with a new leap second announcement.
-These updates can also capture the latest research on the rotation
-of the Earth in historical times.  It would be nice if these updates
-could be included in the software automatically.
-
-% Avoid a problem with the URL in the next section being broken across a page.
-%\newpage
-
-\section{Licensing}
-\label{section:Licensing}
-As noted on the first page, this paper is licensed under a Creative
-Commons Attribution-ShareAlike 4.0 International License.  The code
-presented here, and embedded in the PDF file, is licensed under
-the GPL, version 3 or later.
-\embedfile[desc={General Public License version 3},
-  mimetype={text/plain}]{LICENSE}
-
-The full text of the Creative Commons Attribution-ShareAlike 4.0
-International license is at this web site:
-\url{https://creativecommons.org/licenses/by-sa/4.0/legalcode}%
-\embedfile[desc={Plaintext version of Creative Commons BY-SA 4.0 license},
-  mimetype={text/plain}]{legalcode.txt}, and is embedded in this
-PDF file.  What follows is a human-readable summary of it.
-
-\subsection{You are free to:}
-\begin{description}
-\item[Share ---]copy and redistribute the material in any medium or format, and
-\item[Adapt ---]remix, transform, and build upon the material
-\end{description}
-for any purpose, even commercially.  The licensor cannot revoke these
-freedoms as long as you follow the license terms.
-\subsection{Under the following terms:}
-\begin{description}
-\item[Attribution ---]You must give appropriate credit\footnote{If supplied,
-  you must provide the name of the creator and attribution parties,
-  a copyright notice, a license notice, a disclaimer notice, and a link
-  to the material.}, provide a link to
-  the license, and indicate if changes were made\footnote{You must indicate if
-    you modified the material and retain an indication of previous
-    modifications.}.  You may do so in any
-  reasonable manner, but not in any that suggests the licensor endorses you
-  or your use.
-\item[ShareAlike ---]If you remix, transform, or build upon the material,
-  you must distribute your contributions under the same
-  license\footnote{You may also use any of the licenses listed as compatible
-    at the following web site:
-    \url{https://creativecommons.org/compatiblelicenses}}
-  as the original.
-\item[No additional restrictions ---]You may not apply legal terms or
-  technological measures\footnote{The license prohibits application of
-    effective technological measures, defined with reference to Article 11
-    of the WIPO Copyright Treaty.}
-  that legally restrict others from doing anything
-  the license permits.
-\end{description}
-\subsection{Notices:}
-\begin{itemize}
-\item{You do not have to comply with the license for elements of the
-  material in the public domain or where your use is permitted by an
-  exception or limitation.}
-\item{No warranties are given.  The license may not give you all of the
-  permissions necessary for your intended use.  For example, other rights
-  such as publicity, privacy or moral rights may limit how you use the
-  material.}
-\end{itemize}
-
-% The bibliography contains URLs, and it is difficult to break URLs across
-% a page boundary, particularly when there are footnotes.  To avoid this
-% problem, put the bibliography on its own page.
-%\newpage
 
 \bibliography{references}
 \embedfile[desc={Bibliography},mimetype={text/plain}]{references.bib}

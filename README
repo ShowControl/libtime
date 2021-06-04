@@ -268,7 +268,7 @@ a spec file which lists its dependencies.  I use that spec file
 to build the package on COPR.  I would be happy to include any
 modifications you make to the spec file in the tarball.
 
-As of April 2, 2021, this is the platform support matrix for libtime
+As of May 30, 2021, this is the platform support matrix for libtime
 using the COPR build system with test_for_disabled_adjtimex disabled.
 The bugzilla entry for the problem with adjtimex is 1778298.
 
@@ -276,9 +276,9 @@ centos-stream-8-aarch64: no: package python3-pandas not available
 centos-stream-8-x86_64: no: package python3-pandas not available
 custom-1-i386: no: no useradd in chroot
 custom-1-x86_64: no: no useradd in chroot
-epel-6-i386: no: python version before 3.5
-epel-6-x86_64: no: python version before 3.5
-epel-7-x86_64: no: package python3-pandas not available
+epel-6-i386: no: %python_provide not recognized
+epel-6-x86_64: no: %python_provide not recognized
+epel-7-x86_64: no: packages python3-pandas and python3-scipy not available
 epel-8-aarch64: yes: with 128-bit integers
 epel-8-X86_64: yes: with 128-bit integers
 fedora-32-aarch64: yes: with 128-bit integers
@@ -296,28 +296,34 @@ fedora-34-armhfp: yes: without 128-bit integers
 fedora-34-i386: yes: without 128-bit integers
 fedora-34-s390x: yes: with 128-bit integers
 fedora-34-x86_64: yes: with 128-bit integers
-fedora-eln-aarch64: yes: with 128-bit integers
+fedora-eln-aarch64: no: build issues
 fedora-eln-i386: no: nothing provides go-srpm-macros
-fedora-eln-s390x: yes: with 128-bit integers
-fedora-eln-x86_64: yes: with 128-bit integers
+fedora-eln-s390x: no: build issues
+fedora-eln-x86_64: no: build issues
 fedora-rawhide-aarch64: yes: with 128-bit integers
 fedora-rawhide-armhfp: yes: without 128-bit integers
 fedora-rawhide-i386: yes: without 128-bit integers
 fedora-rawhide-s390x: yes: with 128-bit integers
 fedora-rawhide-x86_64: yes: with 128-bit integers
-magela-7-aarch64: no: MAN file not found
-magela-7-i586: no: MAN file not found
-magela-7-x86_64: no: MAN file not found
-magela-cauldron-aarch64: no: jdcal needs python 3.8
-magela-cauldron-i586: no: jdcal needs python 3.8
-magela-cauldron-x86_64: no: jdcal needs python 3.8
-opensuse-leap-15.1-aarch64: no: TZ= does not work on the command line
-opensuse-leap-15.1-x86_64: no: TZ= does not work on the command line
+magela-7-aarch64: no: TeX not present
+magela-7-i586: no: TeX not present
+magela-7-x86_64: no: TeX not present
+magela-cauldron-aarch64: no: TeX not present
+magela-cauldron-i586: no: TeX not present
+magela-cauldron-x86_64: no: TeX not present
+openmandriva-cooker-aarch65: no: python3-pandas and python3-scipy not available
+openmandriva-cooker-i686 no: python3-pandas and python3-scipy not available
+openmandriva-cooker-x86_64 no: python3-pandas and python3-scipy not available
+openmandriva-rolling-aarch64 no: python3-pandas and python3-scipy not available
+openmandriva-rolling-i686 no: python3-pandas and python3-scipy not available
+openmandriva-rolling-x86_64 no: python3-pandas and python3-scipy not available
 opensuse-leap-15.2-aarch64: no: TZ= does not work on the command line
 opensuse-leap-15.2-x86_64: no: TZ= does not work on the command line
+opensuse-leap-15.3-aarch64: no: GPG check failed
+opensuse-leap-15.3-x86_64: no: GPG check failed
 opensuse-tumbleweed-aarch64: yes: with 128-bit integers
 opensuse-tumbleweed-i586: no: TZ= does not work on the command line
-opemsuse-tumbleweed-x86_64: yes: with 128-bit integers
+opemsuse-tumbleweed-x86_64: no: problem with openssl
 
 Note the lack of ppc64le platforms.  In the past, when those platforms
 were in the COPR build, the builds were successful when the corresponding
