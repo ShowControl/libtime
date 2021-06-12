@@ -6,7 +6,7 @@
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
 AC_PREREQ([2.69])
-AC_INIT([libtime], [2021.06.04],
+AC_INIT([libtime], [2021.06.11],
 [John_Sauter@systemeyescomputerstore.com],
 [libtime], ["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
@@ -35,7 +35,7 @@ AC_ARG_ENABLE([pdf],
 AM_CONDITIONAL([ENABLE_PDF], [test "$enable_pdf" = "yes"])
 
 # We get the extraordinary_days.dat file from the
-# proleptic_utc_with_leap_seconds package.  We need to know how
+# proleptic_utc_with_leap_seconds package.  We need to know where
 # that package installed the file.  By default, it used the
 # same prefix as we are using.
 #
@@ -95,7 +95,7 @@ LT_INIT()
 # in the libtime.spec file must also be changed.
 #
 AC_SUBST(libtool_version_current,"5")
-AC_SUBST(libtool_version_revision, "50")
+AC_SUBST(libtool_version_revision, "51")
 AC_SUBST(libtool_version_age, "2")
 
 # Checks for programs.
@@ -121,8 +121,8 @@ AC_CHECK_FUNCS([clock_gettime localtime_r memset strerror adjtimex])
 
 # Check for support of 128-bit integers.
 # Without such support, two subroutines are omitted from the library.
-# The user can say to omit the 128-bit subroutines, but they are included
-# by default if the C compiler supports the data type.
+# The user can tell configure to omit the 128-bit subroutines,
+# but by detault they are included if the C compiler supports the data type.
 AC_ARG_ENABLE([int128],
 	[AS_HELP_STRING([--enable-int128], [use 128-bit integers])],
 	[case "${enableval}" in
