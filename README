@@ -1,3 +1,5 @@
+# README for libtime project, last updated September 12, 2021.
+
 Libtime is a package of subroutines for the manipulation of time values.
 The subroutines handle leap seconds correctly by avoiding the use of
 POSIX time_t for telling time.
@@ -22,9 +24,9 @@ in /usr/local/lib, do this:
 For installation from a repository, libtime is divided into three RPMs:
 libtime for those who run programs that call libtime, libtime-devel for
 those who write programs that call libtime, and libtime-doc, which contains
-the comprehensive documentation for libtime.  If you install libtime-devel
-from an RPM repository the library is installed in /usr/lib, so you need
-specify only -ltime to compile and link with it.
+the comprehensive documentation for libtime.  If you install libtime
+from an RPM repository the library is installed in /usr/lib rather than
+/usr/local/lib, so you need specify only -ltime to compile and link with it.
 
 In your Python source code, define the entry points with:
 
@@ -41,7 +43,7 @@ Sudo make install will then install the file in /usr/local/share/doc/libtime/.
 If it is not convenient to compile the documentation, it is also available
 at this URL:
 
-https://commons.wikimedia.org/wiki/File:Avoid_Using_POSIX_time_t_for_Telling_Time.pdf
+https://www.systemeyescomputerstore.com/leap_seconds/avoid_time_t.pdf
 
 In addition, there is concise documentation in man libtime.
 
@@ -89,7 +91,7 @@ the PDF automatically.  For the convenience of those who write programs
 that call the libtime subroutines, the documentation is also kept at this
 URL:
 
-https://commons.wikimedia.org/wiki/File:Avoid_Using_POSIX_time_t_for_Telling_Time.pdf
+https://www.systemeyescomputerstore.com/leap_seconds/avoid_time_t.pdf
 
 The version number of libtime is the distribution date, since the
 unpredictability of leap seconds means the library will never be finished.
@@ -106,7 +108,7 @@ is also in file references.bib, so other documents can refer to the
 current version.  That file is alse used by "Extending Coordinated
 Universal Time to Dates Before 1972", at this URL:
 
-https://commons.wikimedia.org/wiki/File:Extending_Coordinated_Universal_Time_to_Dates_Before_1972.pdf
+https://www.systemeyescomputerstore.com/leap_seconds/proleptic_UTC.pdf
 
 That document is the source for the leap seconds table, which is built
 from file extraordinary_days.dat.  The sources for that document are embedded
@@ -130,7 +132,7 @@ and libtime-doc RPMs.
 If this is the first change you are making to libtime since taking it over
 from the previous maintainer, you should add your PGP public key to the
 tarball and update this README file to show it.  Don't forget to embed
-it in the PDF file.
+your PGP public key in the PDF file.
 
 Here is the checklist I use to be sure I am distributing working software.
 I start with proleptic_utc_with_leap_seconds and libtime installed, and in the
@@ -193,7 +195,7 @@ before configure since configure is supposed to work without first
 running autogen, but autogen should still work.
 
     mkdir test_pdf.
-    cp avoid_tme_t.pdf test_pdf/
+    cp avoid_time_t.pdf test_pdf/
     cd test_pdf/
     mkdir examples m4 src tests
     pdfdetach -saveall avoid_time_t.pdf
@@ -230,29 +232,39 @@ code, then type "sudo dnf update --refresh" to make sure the new
 version is avaialble.  At this point you can delete old libtime repositories
 from COPR.
    
-16. Upload the avoid_time_t.pdf file to Wikimedia.  Update its revision
-date, both structured and unstructured.
+16. Update the local image of the web site that shows a chart of leap seconds
+and advocates for the libtime project.
 
-17. Type "make distclean" and "cd ..".
+    cd ~/Projects/leap_seconds/bokeh/
+    make
+    firefox index.html
 
-18. Type "git add ." and "git commit -a -m" followed by a comment in
+17. Verify that the chart and its table look good.  Verify that the interactive
+features of the chart work.  Verify that the links work.  If everything looks 
+good type "make publish" to update the files on the local copy of the web site.
+
+18. Type "cd ~/Projects/Theatre/show_control/libtime/"
+
+19. Type "make distclean" and "cd ..".
+
+20. Type "git add ." and "git commit -a -m" followed by a comment in
 quotation marks describing the reason for the update.  This should be
 the same comment used in the spec file.  This updates the git repository
-for the show_control sub-project of the Theatre project..
+for the show_control sub-project of the Theatre project.
 
-19. Type "bash push_public.sh" to copy the updated files to the local
+21. Type "bash push_public.sh" to copy the updated files to the local
 copy of the github repository.
 
-20. Type "cd repositories/libtime", "git add ." and "git commit -a -m "
+22. Type "cd repositories/libtime", "git add ." and "git commit -a -m "
 followed by the comment in quotation marks that you used above.
 
-21. Type "git tag -s " followed by the version number from the spec file
+23. Type "git tag -s " followed by the version number from the spec file
 followed by -m and the comment in quotation marks that you used above.
 
-22. Type "git push" and "git push --tags" to copy the updated project
+24. Type "git push" and "git push --tags" to copy the updated project
 to github.
 
-23. Type "gpg --verify libtime*.asc libtime*.tar.gz".  Gpg should declare 
+25. Type "gpg --verify libtime*.asc libtime*.tar.gz".  Gpg should declare 
 that the tarball has a good signature.  If it does not it has been corrupted.  
 Go back to the autogen step to re-create it.  You will not have to edit 
 any files.
@@ -268,34 +280,42 @@ a spec file which lists its dependencies.  I use that spec file
 to build the package on COPR.  I would be happy to include any
 modifications you make to the spec file in the tarball.
 
-As of May 30, 2021, this is the platform support matrix for libtime
+As of September 12, 2021, this is the platform support matrix for libtime
 using the COPR build system with test_for_disabled_adjtimex disabled.
 The bugzilla entry for the problem with adjtimex is 1778298.
 
 centos-stream-8-aarch64: no: package python3-pandas not available
+centos-stream-8-ppc64le: no: package python3-pandas not available
 centos-stream-8-x86_64: no: package python3-pandas not available
+centos-stream-9-aarch64: no: package python3-pandas not available
+centos-stream-9-x86_64: no: package python3-pandas not available
 custom-1-i386: no: no useradd in chroot
 custom-1-x86_64: no: no useradd in chroot
-epel-6-i386: no: %python_provide not recognized
-epel-6-x86_64: no: %python_provide not recognized
+epel-6-i386: no: python3 older than version 3.5
+epel-6-x86_64: no: python3 older than version 3.5
+epel-7-ppc64le: no: packages python3-pandas and python3-scipy not available
 epel-7-x86_64: no: packages python3-pandas and python3-scipy not available
 epel-8-aarch64: yes: with 128-bit integers
+epel-8-ppc64le: yes: with 128-bit integers
 epel-8-X86_64: yes: with 128-bit integers
-fedora-32-aarch64: yes: with 128-bit integers
-fedora-32-armhfp: yes: without 128-bit integers 
-fedora-32-i386: yes: without 128-bit integers
-fedora-32-s390x: yes: with 128-bit integers
-fedora-32-x86_64: yes: with 128-bit integers
 fedora-33-aarch64: yes: with 128-bit integers
 fedora-33-armhfp: yes: without 128-bit integers 
 fedora-33-i386: yes: without 128-bit integers
+fedora-33-ppc64le: yes: with 128-bit integers
 fedora-33-s390x: yes: with 128-bit integers
 fedora-33-x86_64: yes: with 128-bit integers
 fedora-34-aarch64: yes: with 128-bit integers
 fedora-34-armhfp: yes: without 128-bit integers 
 fedora-34-i386: yes: without 128-bit integers
+fedora-34-ppc64le: yes: with 128-bit integers
 fedora-34-s390x: yes: with 128-bit integers
 fedora-34-x86_64: yes: with 128-bit integers
+fedora-35-aarch64: yes: with 128-bit integers
+fedora-35-armhfp: yes: without 128-bit integers 
+fedora-35-i386: yes: without 128-bit integers
+fedora-35-ppc64le: yes: with 128-bit integers
+fedora-35-s390x: yes: with 128-bit integers
+fedora-35-x86_64: yes: with 128-bit integers
 fedora-eln-aarch64: no: build issues
 fedora-eln-i386: no: nothing provides go-srpm-macros
 fedora-eln-s390x: no: build issues
@@ -303,11 +323,12 @@ fedora-eln-x86_64: no: build issues
 fedora-rawhide-aarch64: yes: with 128-bit integers
 fedora-rawhide-armhfp: yes: without 128-bit integers
 fedora-rawhide-i386: yes: without 128-bit integers
+fedora-rawhide-ppc64le: yes: with 128-bit integers
 fedora-rawhide-s390x: yes: with 128-bit integers
 fedora-rawhide-x86_64: yes: with 128-bit integers
-magela-7-aarch64: no: TeX not present
-magela-7-i586: no: TeX not present
-magela-7-x86_64: no: TeX not present
+magela-8-aarch64: no: TeX not present
+magela-8-i586: no: TeX not present
+magela-8-x86_64: no: TeX not present
 magela-cauldron-aarch64: no: TeX not present
 magela-cauldron-i586: no: TeX not present
 magela-cauldron-x86_64: no: TeX not present
@@ -317,17 +338,22 @@ openmandriva-cooker-x86_64 no: python3-pandas and python3-scipy not available
 openmandriva-rolling-aarch64 no: python3-pandas and python3-scipy not available
 openmandriva-rolling-i686 no: python3-pandas and python3-scipy not available
 openmandriva-rolling-x86_64 no: python3-pandas and python3-scipy not available
-opensuse-leap-15.2-aarch64: no: TZ= does not work on the command line
-opensuse-leap-15.2-x86_64: no: TZ= does not work on the command line
-opensuse-leap-15.3-aarch64: no: GPG check failed
-opensuse-leap-15.3-x86_64: no: GPG check failed
-opensuse-tumbleweed-aarch64: yes: with 128-bit integers
-opensuse-tumbleweed-i586: no: TZ= does not work on the command line
-opemsuse-tumbleweed-x86_64: no: problem with openssl
+opensuse-leap-15.2-aarch64: no: pygmentize missing
+opensuse-leap-15.2-x86_64: no: pygmentize missing
+opensuse-leap-15.3-aarch64: no: pygmentize missing
+opensuse-leap-15.3-x86_64: no: pygmentize missing
+opensuse-tumbleweed-aarch64: no: pygmentize missing
+opensuse-tumbleweed-i586: no: pygmentize missing
+opensuse-tumbleweed-ppc64le: no: pygmentize missing
+opemsuse-tumbleweed-x86_64: no: pygmentize missing
+oraclelinux-7-aatch64: no: TeX missing
+oraclelinux-7-x86_64: no: TeX missing
+oraclelinux-8-aarch64: no: package python3-pandas not available
+oraclelinux-8-x86_64: no: package python3-pandas not available
 
-Note the lack of ppc64le platforms.  In the past, when those platforms
-were in the COPR build, the builds were successful when the corresponding
-x86_64 builds were successful, and they supported 128-bit integers.
-In addition, the build has been successful with Fedora 29, 30 and 31.
+In the past, the build has also been successful with Fedora 29 through 32.
+If COPR could not build the RPM for your distribution, or your distribution
+is not listed, try compiling from the sources, which are embedded in the
+PDF file.
 
 End of file README
