@@ -1,4 +1,9 @@
-2021-12-10 3.65.2
+2022-01-07 5.66.2
+  Update to IERS Bulletin C 63, issued January 5, 2022.
+  There will be no leap second at the end of June, 2022.
+  Adjust future leap seconds starting in 2155.
+
+2021-12-10 5.65.2
   Adjust future leap seconds starting in 2030.  The next leap second is
   predicted to be a negative leap second on June 30, 2031.
   
