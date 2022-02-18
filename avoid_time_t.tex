@@ -33,21 +33,25 @@
 % 1. Latin Modern matches Don Knuth's Computer Modern
 %\setmainfont{Latin Modern Roman}[SmallCapsFont={Latin Modern Roman Caps}]
 %\usepackage{unicode-math}
+%\newcommand{\filename}{\ttfamily}
 
 % 2. Libertine
 %\setmainfont[Ligatures={Common},Numbers=Proportional]{Linux Libertine O}
 %\setsansfont{Linux Biolinum O}
 %\usepackage{unicode-math}
 %\setmathfont[Scale=MatchUppercase]{libertinusmath-regular.otf}
+%\newcommand{\filename}{\ttfamily}
 
 % 3. Garamond
 %\usepackage{garamondlibre}
 %\usepackage{unicode-math}
+%\newcommand{\filename}{\ttfamily}
 
 % 4. Old Standard
 % Small caps doesn't work.
 %\setmainfont{OldStandard}
 %\usepackage{unicode-math}
+%\newcommand{\filename}{\ttfamily}
 
 % 5. Liberation
 % Small caps doesn't work.
@@ -56,12 +60,14 @@
 %\setsansfont{Liberation Sans}
 %\setmonofont[SmallCapsFont={Liberation Mono}]{Liberation Mono}
 %\usepackage{unicode-math}
+%\newcommand{\filename}{\ttfamily}
 
 % 6. GNU Freefont
 \setmainfont{FreeSerif}
 \setsansfont{FreeSans}
 \setmonofont{FreeMono}
 \usepackage{unicode-math}
+\newcommand{\filename}{\ttfamily\small}
 
 \usepackage[pdfencoding=unicode,pagebackref]{hyperref}
 \bibliographystyle{plainnat}
@@ -378,7 +384,7 @@ International Earth Rotation and Reference Systems Service (IERS)
 issues its Bulletin
 C\footnote{\url{https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html}}
 announcing the next leap second.  See file
-{\ttfamily extraordinary\_days.dat}, also embedded in this PDF file,
+{\filename extraordinary\_days.dat}, also embedded in this PDF file,
 for details.
 
 \subsection{gmtime and gmtime\_r}
@@ -611,7 +617,7 @@ Write a module to define the interface, as follows:
 \inputminted[firstline=28,lastline=385]{Python}{time_subroutines.py}
 \embedfile[desc={Source for module for calling time subroutines from Python},
   mimetype={text/plain}]{time_subroutines.py.in}
-This file is provided as {\ttfamily time\_subroutines.py}.
+This file is provided as {\filename time\_subroutines.py}.
 Import ctypes and the module, and you can then call the subroutines
 from Python.  Here is a Python script to demonstrate this:
 \inputminted[firstline=27,lastline=98]{Python}{tests/demo_python.py}
@@ -641,15 +647,15 @@ If you have only the PDF file, you can build the time library
 and include files as follows:
 \begin{enumerate}
 \item Install package proleptic\_utc\_with\_leap\_seconds
-  to get file {\ttfamily extraordinary\_days.dat} installed.
+  to get file {\filename extraordinary\_days.dat} installed.
   You can find a tarball at this URL:
   \url{https://github.com/ShowControl/proleptic_utc_with_leap_seconds}.
   Like this library it can also be built from its PDF file, which is at
   \url{https://drive.google.com/file/d/1VGMXCYG5VMQYVyC4y3aVwVf82yeisuWu/view}.
 \item Create an empty directory.
 \item Copy the PDF file to it.
-\item Create within that directory subdirectories {\ttfamily examples},
-{\ttfamily m4}, {\ttfamily src} and {\ttfamily tests}.
+\item Create within that directory subdirectories {\filename examples},
+{\filename m4}, {\filename src} and {\filename tests}.
 \item Extract the embedded files from the PDF file using pdfdetach -saveall.
 \item Type {\ttfamily bash fix\_files.sh} to correct the permissions of
   the extracted files.
@@ -961,7 +967,7 @@ rate of the Earth in historical times\citep{2004JHA....35..327M}%
 \citep{2005JHA....36..339M}\citep{1997A&A...322..347S}%
 \citep{2011ASSP...23....3S}\citep{1986PEPI...44..281M}%
 \citep{Stephenson20160404}.
-This software carries a table in file {\ttfamily extraordinary\_days.dat}
+This software carries a table in file {\filename extraordinary\_days.dat}
 that reaches back to the year \num{-2000} and forward to
 the year \num{2500} based on the latest research on the rotation
 of the Earth.
@@ -1090,6 +1096,7 @@ freedoms as long as you follow the license terms.
 \section{Revision History}
 
 \begin{description}
+\item[2022-02-18 5:67:3]Adjust future leap seconds starting in 2141.
 \item[2022-01-07 5:66:2]Adjust future leap seconds starting in 2155.
   Update to IERS Bulletin C 63, saying there will be no leap second
   at the end of June, 2022..
@@ -1168,8 +1175,8 @@ freedoms as long as you follow the license terms.
 \item[2020-12-04 5:26:2]Adjust future leap seconds starting in 2070.
 \item[2020-11-27 5:25:2]Adjust future leap seconds starting in 2097.
 \item[2020-11-20 5:24:2]Adjust future leap seconds starting in 2067.
-\item[2020-11-15 5:23:2]Update file {\ttfamily fix\_files.sh}
-  to include {\ttfamily example\_07.py}.
+\item[2020-11-15 5:23:2]Update file {\filename fix\_files.sh}
+  to include {\filename example\_07.py}.
 \item[2020-11-13 5:23:2]Convert this document to the Garamond font.
   Delay the December 2093 leap second by six months to June 2094.
 \item[2020-11-06 5:22:2]Adjust future leap seconds starting in 2033.
