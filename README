@@ -1,4 +1,4 @@
-# README for libtime project, last updated January 9, 2022.
+# README for libtime project, last updated February 19, 2022.
 
 Libtime is a package of subroutines for the manipulation of time values.
 The subroutines handle leap seconds correctly by avoiding the use of
@@ -217,7 +217,7 @@ the package on all platforms.
 13. Type "copr-cli build libtime libtime-*.src.rpm" to attempt to build
 libtime on lots of different platforms using COPR.
 
-14. When the build is finished, check the COPR weh site to see if it
+14. When the build is finished, check the COPR web site to see if it
 succeeded on all of the important platforms.  If the build has failed on any
 important platforms, correct any problems to the best of your ability
 and re-run the build until the only errors left are due to the COPR
