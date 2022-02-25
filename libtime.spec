@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2022.02.20
+Version:        2022.02.25
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -62,6 +62,8 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 # gnuplot and texlive-scheme-full are needed only to rebuild the PDF file.
 BuildRequires:  gnuplot
 BuildRequires:  texlive-scheme-full
+# Make the Andika font available in case the documentation uses it.
+BuildRequires: sil-andika-fonts
 %endif
 
 %description doc
@@ -113,6 +115,10 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Fri Feb 25 2022 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2022.02.25-1 Adjust future leap seconds starting in 2030.
+* Mon Feb 21 2022 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2022.02.21-1 The PDF might need the Andika font.
 * Sun Feb 20 2022 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2022.02.20-1 Adjust future leap seconds starting in 2068.
 * Sat Feb 19 2022 John Sauter <John_Sauter@systemeyescomputerstore.com>
