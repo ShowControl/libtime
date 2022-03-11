@@ -33,49 +33,69 @@
 % Font choices: pick one.
 
 % 1. Latin Modern matches Don Knuth's Computer Modern
-%\setmainfont{Latin Modern Roman}[SmallCapsFont={Latin Modern Roman Caps}]
 %\usepackage{unicode-math}
-%\newcommand{\filename}{\ttfamily}
+%\setmainfont{Latin Modern Roman}[SmallCapsFont={Latin Modern Roman Caps}]
+%\setmonofont{Latin Modern Mono}
+%\setmathfont{Latin Modern Math}
+%\newcommand{\filename}{\ttfamily\smaller}
 
 % 2. Libertine
+%\usepackage{unicode-math}
 %\setmainfont[Ligatures={Common},Numbers=Proportional]{Linux Libertine O}
 %\setsansfont{Linux Biolinum O}
-%\usepackage{unicode-math}
 %\setmathfont[Scale=MatchUppercase]{libertinusmath-regular.otf}
 %\newcommand{\filename}{\ttfamily}
 
-% 3. Garamond
-%\usepackage{garamondlibre}
+% 3. Garamond Libre
 %\usepackage{unicode-math}
+%\usepackage{garamondlibre}
 %\newcommand{\filename}{\ttfamily}
 
 % 4. Old Standard
 % Small caps doesn't work.
-%\setmainfont{OldStandard}
 %\usepackage{unicode-math}
+%\setmainfont{OldStandard}
 %\newcommand{\filename}{\ttfamily}
 
 % 5. Liberation
 % Small caps doesn't work.
+%\usepackage{unicode-math}
 %\defaultfontfeatures{Scale=MatchLowercase}
 %\setmainfont{Liberation Serif}
 %\setsansfont{Liberation Sans}
 %\setmonofont[SmallCapsFont={Liberation Mono}]{Liberation Mono}
-%\usepackage{unicode-math}
 %\newcommand{\filename}{\ttfamily}
 
 % 6. GNU Freefont
-\setmainfont{FreeSerif}
-\setsansfont{FreeSans}
-\setmonofont{FreeMono}
-\usepackage{unicode-math}
-\newcommand{\filename}{\ttfamily\smaller}
-\renewcommand{\RSpercentTolerance}{0}
+%\usepackage{unicode-math}
+%\setmainfont{FreeSerif}
+%\setsansfont{FreeSans}
+%\setmonofont{FreeMono}
+%\newcommand{\filename}{\ttfamily\smaller}
+%\renewcommand{\RSpercentTolerance}{0}
 
 % 7. Andika
-%\setmainfont{Andika}
 %\usepackage{unicode-math}
+%\setmainfont{Andika}
 %\newcommand{\filename}{\ttfamily\smaller}
+
+% 8. Bahnschrift
+%\usepackage{unicode-math}
+%\setmainfont{Bahnschrift}
+%\newcommand{\filename}{\ttfamily}
+
+% 9. Charis Sil
+%\usepackage{unicode-math}
+%\setmainfont{Charis Sil}
+%\newcommand{\filename}{\ttfamily}
+
+% 10. E B Garamond
+\usepackage{unicode-math}
+\setmainfont{ebgaramond}
+\setsansfont{Charis Sil}
+\setmonofont[SmallCapsFont={Liberation Mono}]{source code pro}
+\setmathfont{Garamond-Math.otf}
+\newcommand{\filename}{\ttfamily\smaller}
 
 \usepackage[pdfencoding=unicode,pagebackref,breaklinks]{hyperref}
 \bibliographystyle{plainnat}
@@ -103,8 +123,8 @@
     This paper is made available under a
     Creative Commons Attribution-ShareAlike 4.0 International License.
     You can read a human-readable summary of the license at
-    \url{https://creativecommons.org/licenses/by-sa/4.0}, which contains
-    a link to the full text of the license.
+    \href{https://creativecommons.org/licenses/by-sa/4.0}{https://creativecommons.org/licenses/by-sa/4.0},
+    which contains a link to the full text of the license.
     See also section \ref{section:Licensing} of this paper.}
 }
 \author{John Sauter\footnote{
@@ -128,11 +148,11 @@
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2022 by John Sauter},
   pdfurl={https://drive.google.com/file/d/1qapHtjBotUWy3k\%5f6zk-OjKF\%5fOYctdr2A/view},
-  pdfdate={2022-02-25},
+  pdfdate={2022-03-11},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
-\date{2022-02-25}
+\date{2022-03-11}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -141,7 +161,7 @@
 \end{abstract}
 \begin{description}
 \item[Keywords:]Coordinated Universal Time; UTC; POSIX; time\_t.
-\item[URL:]\url{https://drive.google.com/file/d/1qapHtjBotUWy3k\_6zk-OjKF\_OYctdr2A/view}
+\item[URL:]\href{https://drive.google.com/file/d/1qapHtjBotUWy3k\_6zk-OjKF\_OYctdr2A/view}{https://drive.google.com/file/d/1qapHtjBotUWy3k\_6zk-OjKF\_OYctdr2A/view}
 \end{description}
   
 %\tableofcontents
@@ -330,8 +350,9 @@ The above subroutine is not included in the library, though
 the library does contain
 {\ttfamily time\_test\_for\_disabled\_adjtimex}.
 Feel free to express yourself as you see fit about the disabling
-of {\ttfamily adjtimex}.  Fedora bugzilla \num{1778298} contains my
-opinion.
+of {\ttfamily adjtimex}.  Fedora bugzilla
+\num{1778298}\footnote{\href{https://bugzilla.redhat.com/show_bug.cgi?id=1778298}{https://bugzilla.redhat.com/show\_bug.cgi?id=1778298}}
+contains my opinion.
 
 \subsection{clock\_nanosleep}
 Clock\_nanosleep with clock ID set to CLOCK\_REAL\-TIME and with flag
@@ -390,7 +411,7 @@ The table can be generated automatically\citep{JBS_001}, but the ultimate
 source of its data is based on manually editing a file when the
 International Earth Rotation and Reference Systems Service (IERS)
 issues its Bulletin
-C\footnote{\url{https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html}}
+C\footnote{\href{https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html}{https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html}}
 announcing the next leap second.  See file
 {\filename extraordinary\_days.dat}, also embedded in this PDF file,
 for details.
@@ -657,9 +678,9 @@ and include files as follows:
 \item Install package proleptic\_utc\_with\_leap\_seconds
   to get file {\filename extraordinary\_days.dat} installed.
   You can find a tarball at this URL:
-  \small\url{https://github.com/ShowControl/proleptic_utc_with_leap_seconds}.
+  \href{https://github.com/ShowControl/proleptic_utc_with_leap_seconds}{https://github.com/ShowControl/proleptic\_utc\_with\_leap\_seconds}.
   Like this library it can also be built from its PDF file, which is at
-  \small\url{https://drive.google.com/file/d/1VGMXCYG5VMQYVyC4y3aVwVf82yeisuWu/view}.
+  \href{https://drive.google.com/file/d/1VGMXCYG5VMQYVyC4y3aVwVf82yeisuWu/view}{https://drive.google.com/file/d/1VGMXCYG5VMQYVyC4y3aVwVf82yeisuWu/view}.
 \item Create an empty directory.
 \item Copy the PDF file to it.
 \item Create within that directory subdirectories {\filename examples},
@@ -795,7 +816,7 @@ in libtime.
   mimetype={text/plain}]{John_Sauter_public_key.asc}
 
 These files are also available on github, at the following URL:
-\url{https://github.com/ShowControl/libtime}.
+\href{https://github.com/ShowControl/libtime}{https://github.com/ShowControl/libtime}.
 That directory has all of the code displayed in this document,
 the {\LaTeX} source for this document,
 a tarball which holds the sources plus the build and install procedure,
@@ -933,7 +954,8 @@ but we prefer to code in Python.
 
 \subsection{Displaying Local Time in Another Time Zone}
 Howard E. Hinnant has an excellent package of time subroutines
-for C++ at this URL: \url{https://howardhinnant.github.io/date/tz.html}.
+for C++ at this URL:
+\href{https://howardhinnant.github.io/date/tz.html}{https://howardhinnant.github.io/date/tz.html}.
 One of his examples is displaying the local time of arrival of a flight
 from New York City to Tehran, leaving on December 31, 1978 at 12:01 PM
 local time and flying for 14 hours and 44 minutes.  Local time in
@@ -955,7 +977,7 @@ from the time zone data base, as Howard's example does.
 
 Another good resource for time zone information is
 the International Components for Unicode, at
-\url{http://site.icu-project.org}.
+\href{http://site.icu-project.org}{http://site.icu-project.org}.
 See the Date/Time Services under ICU User Guide.
 
 \section{Limitations}
@@ -1054,7 +1076,7 @@ the GPL, version 3 or later.
 
 The full text of the Creative Commons Attribution-ShareAlike 4.0
 International license is at this web site:
-\url{https://creativecommons.org/licenses/by-sa/4.0/legalcode}%
+\href{https://creativecommons.org/licenses/by-sa/4.0/legalcode}{https://creativecommons.org/licenses/by-sa/4.0/legalcode}%
 \embedfile[desc={Plaintext version of Creative Commons BY-SA 4.0 license},
   mimetype={text/plain}]{legalcode.txt}, and is embedded in this
 PDF file.  What follows is a human-readable summary of it.
@@ -1081,7 +1103,7 @@ freedoms as long as you follow the license terms.
   you must distribute your contributions under the same
   license\footnote{You may also use any of the licenses listed as compatible
     at the following web site:
-    \url{https://creativecommons.org/compatiblelicenses}}
+    \href{https://creativecommons.org/compatiblelicenses}{https://creativecommons.org/compatiblelicenses}}
   as the original.
 \item[No additional restrictions ---]You may not apply legal terms or
   technological measures\footnote{The license prohibits application of
@@ -1104,6 +1126,8 @@ freedoms as long as you follow the license terms.
 \section{Revision History}
 
 \begin{description}
+\item[2022-03-11 5:70:2]Adjust future leap seconds starting in 2062.
+\item[2022-03-08 5:69:2]Try out the EB Garamond font.
 \item[2022-02-25 5:69:2]Adjust future leap seconds starting in 2030.
   The next leap second is predicted to be a negative leap second
   on December 31, 2030.  The Andika font needs more work---I need to
