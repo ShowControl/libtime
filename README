@@ -1,4 +1,4 @@
-# README for libtime project, last updated February 19, 2022.
+# README for libtime project, last updated September 16, 2022.
 
 Libtime is a package of subroutines for the manipulation of time values.
 The subroutines handle leap seconds correctly by avoiding the use of
@@ -193,7 +193,7 @@ should run without error.  The autogen command is at the end instead of
 before configure since configure is supposed to work without first
 running autogen, but autogen should still work.
 
-    mkdir test_pdf.
+    mkdir test_pdf
     cp avoid_time_t.pdf test_pdf/
     cd test_pdf/
     mkdir examples m4 src tests

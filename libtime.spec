@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2022.09.09
+Version:        2022.09.16
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -118,6 +118,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Fri Sep 16 2022 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2022.09.16-1 Adjust future leap seconds starting in 2027.
 * Fri Sep 09 2022 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2022.09.09-1 Adjust future leap seconds starting in 2135.
 * Fri Aug 12 2022 John Sauter <John_Sauter@systemeyescomputerstore.com>
