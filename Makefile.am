@@ -1,4 +1,4 @@
-# File: Makefile.am for libtime, author: John Sauter, date: March 18, 2021.
+# File: Makefile.am for libtime, author: John Sauter, date: December 7, 2022.
 #
 # Copyright © 2021 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -9,6 +9,9 @@ AUTOMAKE_OPTIONS = subdir-objects
 
 # We are building libtime.
 lib_LTLIBRARIES = libtime.la
+
+# Use additional error checking.
+AM_CFLAGS='-D_FORTIFY_SOURCE=3'
 
 # These are the sources from which we will build the library.
 libtime_la_SOURCES = src/time_copy.c \

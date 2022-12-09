@@ -1,5 +1,5 @@
 /*
- * File: POSIX_epoch.c, author: John Sauter, date: November 16, 2019.
+ * File: POSIX_epoch.c, author: John Sauter, date: December 9, 2022.
  * Print the date of the POSIX epoch.
  */
 
@@ -57,7 +57,7 @@ do_print ()
    * and the value of "seconds since the epoch" between.
    * If the times match, the "seconds since the epoch"
    * corresponds to the fetched time.  If not, do the
-   * tthre fetches over again.  Also, reject the value of
+   * three fetches over again.  Also, reject the value of
    * "seconds since the epoch" computed during a leap
    * second, since it isn't well-defined then.  */
   for (;;)
@@ -72,14 +72,14 @@ do_print ()
 	}
     }
 
-  /* Subtract the number of SI seconds since the epoch from
-   * the current time to get the time of the epoch.  */
+
+  /* Compute the time that is "seconds since the epoch" seconds ago,
+   * counting all leap seconds.  */
   time_UTC_add_seconds (&time2_tm, -seconds_since_epoch, INT_MIN);
 
-  /* Subtract the number of wall clock seconds since the epoch
-   * from the current time to get the time of the epoch.  */
+  /* Compute it again, ignoring leap seconds.  */
   time_copy_tm (&time1_tm, &time3_tm);
-  time_UTC_add_seconds (&time3_tm, -seconds_since_epoch, 1972);
+  time_UTC_add_seconds (&time3_tm, -seconds_since_epoch, INT_MAX);
   
   /* Print the results.  */
   time_tm_to_string (&time1_tm, &buffer1 [0], sizeof (buffer1));
@@ -88,7 +88,7 @@ do_print ()
   printf ("Current time is %s.\n" 
 	  "So-called seconds since the POSIX epoch is %d.\n" 
 	  "%d SI seconds before %s is %s.\n"
-	  "%d wall-clock seconds before %s is %s.\n",
+	  "%d non-leap seconds before %s is %s.\n",
 	  buffer1,
 	  seconds_since_epoch,
 	  seconds_since_epoch, buffer1, buffer2,
@@ -109,10 +109,10 @@ do_print ()
   time_UTC_add_seconds (&time2_tm, -seconds_count, INT_MIN);
   time_tm_to_string (&time2_tm, &buffer2 [0], sizeof (buffer2));
   time_copy_tm (&time1_tm, &time3_tm);
-  time_UTC_add_seconds (&time3_tm, -seconds_count, 1972);
+  time_UTC_add_seconds (&time3_tm, -seconds_count, INT_MAX);
   time_tm_to_string (&time3_tm, &buffer3 [0], sizeof (buffer3));
   printf ("%d SI seconds before %s is %s.\n"
-	  "%d wall-clock seconds before %s is %s..\n",
+	  "%d non-leap seconds before %s is %s.\n",
 	  seconds_count, buffer1, buffer2,
 	  seconds_count, buffer1, buffer3);
     
