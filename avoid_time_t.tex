@@ -1,6 +1,6 @@
 % Main LaTeX source file for avoid_time_t.pdf
 
-% Copyright © 2022 by John Sauter.
+% Copyright © 2023 by John Sauter.
 % Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
 % license.  See https://creativecommons.org/license/by-sa/4.0/.
 
@@ -22,12 +22,12 @@
 \usepackage{siunitx}
 \usepackage{graphics}
 \usepackage{natbib}
-\usepackage{hyperxmp}
+\usepackage[kpsewhich=true]{minted}
 \usepackage[tracking]{microtype}
 \usepackage{hyphenat}
 \usepackage{fancyvrb}
 \usepackage{relsize}
-\usepackage[kpsewhich=true]{minted}
+\usepackage{hyperxmp}
 %\usepackage{flexisym}
 
 % Font choices: pick one.
@@ -119,7 +119,7 @@
   mimetype={text/plain}]{avoid_time_t.tex}
 \title{Avoid Using POSIX {\ttfamily time\_t} for Telling
   Time\footnote{Copyright
-    {\copyright} 2022 by John Sauter.
+    {\copyright} 2023 by John Sauter.
     This paper is made available under a
     Creative Commons Attribution-ShareAlike 4.0 International License.
     You can read a human-readable summary of the license at
@@ -146,16 +146,16 @@
   pdfcontactpostcode={03063-4066},
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
-  pdfcopyright={Copyright {\copyright} 2022 by John Sauter},
+  pdfcopyright={Copyright {\copyright} 2023 by John Sauter},
   pdfurl={https://drive.google.com/file/d/18xG15FdcmEVKTaaSNDymWoiTtdy6jH-0/view?usp=sharing},
-  pdfdate={2022-12-30},
+  pdfdate={2023-01-06},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
 
 
 
-\date{2022-12-30}
+\date{2023-01-06}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -1128,6 +1128,7 @@ freedoms as long as you follow the license terms.
 \section{Revision History}
 
 \begin{description}
+\item[2023-01-06 5.98.2]Adjust future leap seconds starting in 2038.
 \item[2022-12-30 5.97.2]Adjust future leap seconds starting in 2169.
 \item[2022-12-23 5:96:2]Adjust future leap seconds starting in 2028.
   The next leap second is predicted to be a negative leap second

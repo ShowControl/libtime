@@ -14,9 +14,9 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: December 7, 2022.
+# File: Makefile.am for libtime, author: John Sauter, date: January 6, 2023.
 #
-# Copyright © 2021 by John Sauter.
+# Copyright © 2023 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
