@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2023.01.27
+Version:        2023.02.03
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -118,6 +118,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Fri Feb 03 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2023.02.03-1 Adjust future leap seconds starting in 2229.
 * Fri Jan 27 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2023.01.27-1 Adjust future leap seconds starting in 2063.
 * Fri Jan 13 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
