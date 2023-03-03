@@ -1,4 +1,4 @@
-# README for libtime project, last updated September 16, 2022.
+# README for libtime project, last updated February 26, 2023.
 
 Libtime is a package of subroutines for the manipulation of time values.
 The subroutines handle leap seconds correctly by avoiding the use of
@@ -268,78 +268,105 @@ that the tarball has a good signature.  If it does not it has been corrupted.
 Go back to the autogen step to re-create it.  You will not have to edit 
 any files.
 
-As of January 9, 2022, this is the platform support matrix for libtime
+As of February 26, 2023, this is the platform support matrix for libtime
 using the COPR build system with test_for_disabled_adjtimex disabled.
 The bugzilla entry for the problem with adjtimex is 1778298.
+
+centos-stream+epel-next-8.aarch64: yes: with 128-bit integers
+centos-stream+epel-next-8.ppc64le: yes: with 128-bit integers
+centos-stream+epel-next-8.x86_64: yes: with 128-bit integers
+centos-stream+epel-next-9.aarch64: no: package python3-pandas not available
+centos-stream+epel-next-9.ppc64le: no: package python3-pandas not available
+centos-stream+epel-next-9.s390x: no: package python3-pandas not available
+centos-stream+epel-next-9.x86_64: no: package python3-pandas not available
 
 centos-stream-8-aarch64: no: package python3-pandas not available
 centos-stream-8-ppc64le: no: package python3-pandas not available
 centos-stream-8-x86_64: no: package python3-pandas not available
 centos-stream-9-aarch64: no: package python3-pandas not available
-centos-stream-9-x86_64: no: package python3-pandas missing and build issues
+centos-stream-9-ppc64le no: package python3-pandas not available
+centos-stream-9-s390x: no: package python3-pandas not available
+centos-stream-9-x86_64: no: package python3-pandas not available
 custom-1-i386: no: no useradd in chroot
 custom-1-x86_64: no: no useradd in chroot
-epel-6-i386: no: python3 older than version 3.5
-epel-6-x86_64: no: python3 older than version 3.5
+epel-6-i386: no: %python_provide unknown
+epel-6-x86_64: no: %python_provide unknown
 epel-7-ppc64le: no: packages python3-pandas and python3-scipy not available
 epel-7-x86_64: no: packages python3-pandas and python3-scipy not available
 epel-8-aarch64: yes: with 128-bit integers but not rebuilding PDF file
 epel-8-ppc64le: yes: with 128-bit integers but not rebuilding PDF file
+epel-8-s390x: yes: with 128-bit integers but not rebuilding PDF file
 epel-8-X86_64: yes: with 128-bit integers but not rebuilding PDF file
-epel9-aarch64: no: package python3-pandas not available
-epel9-x86_64: no: packages python3-pandas and python3-scipy not available
+epel-9-aarch64: no: package python3-pandas not available
+epel-9-ppc64le: no: package python3-pandas not available
+epel-9-s390x: no: package python3-pandas not available
+epel-9-x86_64: no: package python3-pandas not available
 
-fedora-34-aarch64: yes: with 128-bit integers
-fedora-34-armhfp: yes: without 128-bit integers
-fedora-34-i386: yes: without 128-bit integers
-fedora-34-ppc64le: yes: with 128-bit integers
-fedora-34-s390x: yes: with 128-bit integers
-fedora-34-x86_64: yes: with 128-bit integers
-fedora-35-aarch64: yes: with 128-bit integers
-fedora-35-armhfp: yes: without 128-bit integers
-fedora-35-i386: yes: without 128-bit integers
-fedora-35-ppc64le: yes: with 128-bit integers
-fedora-35-s390x: yes: with 128-bit integers
-fedora-35-x86_64: yes: with 128-bit integers 
-fedora-eln-aarch64: yes: with 128-bit integers
-fedora-eln-i386: no: nothing provides go-srpm-macros
-fedora-eln-ppc64le: yes: with 128-bit integers
-fedora-eln-s390x: yes: with 128-bit integers
-fedora-eln-x86_64: yes: with 128-bit integers
+fedora-36-aarch64: yes: with 128-bit integers
+fedora-36-armhfp: yes: without 128-bit integers
+fedora-36-i386: yes: without 128-bit integers
+fedora-36-ppc64le: yes: with 128-bit integers
+fedora-36-s390x: yes: with 128-bit integers
+fedora-36-x86_64: yes: with 128-bit integers
+fedora-37-aarch64: yes: with 128-bit integers
+fedora-37-i386: no: java-headless not available
+fedora-37-ppc64le: yes: with 128-bit integers
+fedora-37-s390x: yes: with 128-bit integers
+fedora-37-x86_64: yes: with 128-bit integers 
+fedora-38-aarch64: yes: with 128-bit integers 
+fedora-38-i386: no: java-headless not available
+fedora-38-ppc64le: yes: with 128-bit integers
+fedora-38-s390x: yes: with 128-bit integers
+fedora-38-x86_64: yes: with 128-bit integers 
+
+fedora-eln-aarch64: no: package python3-pandas not available
+fedora-eln-i386: no: binutils and rpm difficulties
+fedora-eln-ppc64le: no: package python3-pandas not available
+fedora-eln-s390x: no: package python3-pandas not available
+fedora-eln-x86_64: no: python3-pandas not available
+
 fedora-rawhide-aarch64: yes: with 128-bit integers
-fedora-rawhide-armhfp: yes: without 128-bit integers 
-fedora-rawhide-i386: yes: without 128-bit integers
+fedora-rawhide-i386: no: java-headless not available
 fedora-rawhide-ppc64le: yes: with 128-bit integers
 fedora-rawhide-s390x: yes: with 128-bit integers
 fedora-rawhide-x86_64: yes: with 128-bit integers
  
-magela-8-aarch64: no: TeX not present
-magela-8-i586: no: TeX not present
-magela-8-x86_64: no: TeX not present
-magela-cauldron-aarch64: no: TeX not present
-magela-cauldron-i586: no: TeX not present
-magela-cauldron-x86_64: no: TeX not present
-openmandriva-cooker-aarch64: no: python3-pandas and python3-scipy not available
-openmandriva-cooker-i686: no: python3-pandas and python3-scipy not available
-openmandriva-cooker-x86_64: no: python3-pandas and python3-scipy not available
-openmandriva-rolling-aarch64 no: python3-pandas and python3-scipy not available
-openmandriva-rolling-i686: no: python3-pandas and python3-scipy not available
-openmandriva-rolling-x86_64: no: python3-pandas and python3-scipy not available
-opensuse-leap-15.2-aarch64: no: TeXlive 2017 microtype and pdfurl errors
-opensuse-leap-15.2-x86_64: no: TeXlive 2017 microtype and pdfurl errors
-opensuse-leap-15.3-aarch64: no: TeXlive 2017 microtype and pdfurl errors
-opensuse-leap-15.3-x86_64: no: TeXlive 2017 microtype and pdfurl errors
-opensuse-tumbleweed-aarch64: no: pygmentize not installed
-opensuse-tumbleweed-i586: no: pygmentize not installed
-opensuse-tumbleweed-ppc64le: no: pygmentize not installed
-opensuse-tumbleweed-x86_64: no: pygmentize not installed
+magela-8-aarch64: no: TeX not available
+magela-8-i586: no: TeX not available
+magela-8-x86_64: no: TeX not available
+magela-cauldron-aarch64: no: TeX not available
+magela-cauldron-i586: no: TeX not available
+magela-cauldron-x86_64: no: TeX not available
+openeuler-20.03.aarch64: no: TeX not available
+openeuler-20.03.x86_64: no: TeX not present
+openeuler-22.03.aarch64: no: TeX not present
+openeuler-22.03.x86_64: no: TeX not present
+openmandriva-cooker-aarch64: no: download failure
+openmandriva-cooker-i686: no: download failure
+openmandriva-cooker-x86_64: no: download failure
+openmandriva-rolling-aarch64 no: download failure
+openmandriva-rolling-i686: no: download failure
+openmandriva-rolling-x86_64: no: download failure
+opensuse-leap-15.3-aarch64: no: liberation-mono-fonts not available
+opensuse-leap-15.3-x86_64: no: liberation-mono-fonts not available
+opensuse-leap-15.4-aarch64: no: liberation-mono-fonts not available
+opensuse-leap-15.4-x86_64: no: liberation-mono-fonts not available
+opensuse-tumbleweed-aarch64: no: liberation-mono-fonts not available
+opensuse-tumbleweed-i586: no: liberation-mono-fonts not available
+opensuse-tumbleweed-ppc64le: no: liberation-mono-fonts not available
+opensuse-tumbleweed-x86_64: no: liberation-mono-fonts not available
 oraclelinux-7-aatch64: no: packages pthon3-pandas, -numpy and -scipy missing
 oraclelinux-7-x86_64: no: packages pthon3-pandas, -numpy and -scipy missing
 oraclelinux-8-aarch64: no: package python3-pandas not available
 oraclelinux-8-x86_64: no: package python3-pandas not available
 
-In the past, the build has also been successful with Fedoras 29 through 33.
-If COPR could not build the RPM for your distribution, or your distribution
+rhel-7-x86_64: no: packages pthon3-pandas, -numpy and -scipy missing
+rhel-8-x86_64: no: package python3-pandas not available
+rhel-9-aarch64: no: package python3-pandas not available
+rhel-9-x86_64: no: package python3-pandas not available
+
+In the past, the build has also been successful with Fedoras 29 through 35.
+If COPR can not build the RPM for your distribution, or if your distribution
 is not listed, try compiling from the sources, which are embedded in the
 PDF file.
 
