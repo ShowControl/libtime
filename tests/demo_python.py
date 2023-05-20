@@ -1,7 +1,7 @@
 #!python3
 #  -*- coding: utf-8
 
-# Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+# Copyright © 2023 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ print ("Corresponding integer = " + str(now_int) + ".")
 tm_3 = time_subroutines.tm (tm_year = 2016 - 1900, tm_mon = 12 - 1,
                             tm_mday = 31, tm_hour = 23, tm_min = 59,
                             tm_sec = 59, tm_isdst = 0, tm_gmtoff = 0,
-                            tm_zome = None)
+                            tm_zone = None)
 
 # Calculate the day of the week and the day of the month.
 time_subroutines.time_UTC_normalize (tm_3, tm_3.tm_sec,

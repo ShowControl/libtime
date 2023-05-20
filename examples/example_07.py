@@ -1,7 +1,7 @@
 #!python3
 #  -*- coding: utf-8
 
-# Copyright © 2021 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+# Copyright © 2023 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -86,7 +86,8 @@ def example_7 (flight_time):
 # The flight time is quoted as 14 hours and 44 minutes,
 # but that assumes that all minutes are 60 seconds in length.
 # In fact, the flight time is the same no matter what the
-# clocks say, so we express the flight time as a number of seconds.
+# clocks say, so we express the flight time as a number of
+# seconds.
 example_7 ((14 * 3600) + (44 * 60))
 
 # End of file example_07.py
