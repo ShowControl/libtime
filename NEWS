@@ -1,6 +1,10 @@
+2023-06-02 5.118.2
+  Adjust future leap seconds starting in 2032.  The next leap second is
+  predicted to be a negative leap second on June 30, 2033.
+
 2023-05-26 5.117.2
   Adjust future leap seconds starting in 2032.  The next leap second is
-  predicted to be a negative leap second on December 31, 2023.
+  predicted to be a negative leap second on December 31, 2032.
 
 2023-05-19 5.116.2
   Update the documentation.  Adjust future leap seconds starting in 2184.
