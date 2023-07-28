@@ -1,4 +1,4 @@
-# README for libtime project, last updated February 26, 2023.
+# README for libtime project, last updated July 22, 2023.
 
 Libtime is a package of subroutines for the manipulation of time values.
 The subroutines handle leap seconds correctly by avoiding the use of
@@ -178,7 +178,7 @@ You will use that signature later to verify that the tarball has
 not been accidently corrupted.
 
 8. Use evince to verify that avoid_time_t.pdf has the correct date
-on its cover page, the revision hsitory has been updated and the
+on its cover page, the revision history has been updated and the
 pagination looks OK.
 
 9. Type "make RPMs" to create and test the SRPM file.  RPMlint
