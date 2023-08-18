@@ -1,4 +1,4 @@
-# README for libtime project, last updated July 22, 2023.
+# README for libtime project, last updated August 13, 2023.
 
 Libtime is a package of subroutines for the manipulation of time values.
 The subroutines handle leap seconds correctly by avoiding the use of
@@ -181,12 +181,10 @@ not been accidently corrupted.
 on its cover page, the revision history has been updated and the
 pagination looks OK.
 
-9. Type "make RPMs" to create and test the SRPM file.  RPMlint
-will complain that the tarball has not yet been uploaded to github.
-It may also complain that the date in the changelog is in the future.
-Anything else needs to be investigated.  This is the first step that tests
-the spec file.  If you need to change it go back to the autogen step,
-since the spec file is included in the tarball.
+9. Type "make RPMs" to create and test the SRPM file.  RPMlint will complain
+that the -doc RPM has no binaries.  Anything else needs to be investigated.
+This is the first step that tests the spec file.  If you need to change it
+go back to the autogen step, since the spec file is included in the tarball.
 
 10. Make sure the tarball will build from the PDF:  All of these commands
 should run without error.  The autogen command is at the end instead of
@@ -221,52 +219,60 @@ libtime on lots of different platforms using COPR.
 succeeded on all of the important platforms.  If the build has failed on any
 important platforms, correct any problems to the best of your ability
 and re-run the build until the only errors left are due to the COPR
-infrastructure.  At that point, tell the COPR web site to regenerate
-the repositories.  You may be forced to declare certain formerly important
-platforms as unimportant if they refuse to build the package for no good reason.
-If you had to modify any of the files, return to the autogen step.
+infrastructure.  If you had to modify any of the files, return to the autogen
+step.
 
-15. Wait a few minutes for the repository mirrors to receive the new
+15. You may be forced to declare certain formerly important platforms as
+unimportant if they refuse to build the package for no good reason.
+
+16. Delete the old builds and regenerate the repositories.
+
+17. Wait a few minutes for the repository mirrors to receive the new
 code, then type "sudo dnf update --refresh" to make sure the new
-version is avaialble.  At this point you can delete old libtime repositories
-from COPR.
-   
-16. Update the local image of the web site that shows a chart of leap seconds
-and advocates for the libtime project.
+version is avaialble.
 
-    cd ~/Projects/leap_seconds/bokeh/
-    make
-    firefox index.html
+18. Copy the latest version of avoid_time_t.pdf to the bokeh sub-project
+of the leap_seconds project, so it can be included in the update of
+the web site.
 
-17. Verify that the chart and its table look good.  Verify that the interactive
-features of the chart work.  Verify that the links work.  If everything looks 
-good type "make publish" to update the files on the local copy of the web site.
+    cp avoid_time_t.pdf ~/Projects/leap_seconds/bokeh/
+    
+19. Type "make distclean"
 
-18. Type "cd ~/Projects/Theatre/show_control/libtime/"
+20. TYpe "cd ..".
 
-19. Type "make distclean" and "cd ..".
-
-20. Type "git add ." and "git commit -a -m" followed by a comment in
+21. Type "git add ." and "git commit -a -m" followed by a comment in
 quotation marks describing the reason for the update.  This should be
-the same comment used in the spec file.  This updates the git repository
-for the show_control sub-project of the Theatre project.
+the same comment used in the spec file's revision history.
+This updates the git repository for the show_control sub-project of the
+Theatre project.
 
-21. Type "bash push_public.sh" to copy the updated files to the local
+22. Type "bash push_public.sh" to copy the updated files to the local
 copy of the github repository.
 
-22. Type "cd repositories/libtime", "git add ." and "git commit -a -m "
+23. Type "cd repositories/libtime", "git add ." and "git commit -a -m "
 followed by the comment in quotation marks that you used above.
 
-23. Type "git tag -s " followed by the version number from the spec file
+24. Type "git tag -s " followed by the version number from the spec file
 followed by -m and the comment in quotation marks that you used above.
 
-24. Type "git push" and "git push --tags" to copy the updated project
+25. Type "git push" and "git push --tags" to copy the updated project
 to github.
 
-25. Type "gpg --verify libtime*.asc libtime*.tar.gz".  Gpg should declare 
+26. Type "gpg --verify libtime*.asc libtime*.tar.gz".  Gpg should declare 
 that the tarball has a good signature.  If it does not it has been corrupted.  
 Go back to the autogen step to re-create it.  You will not have to edit 
 any files.
+
+27. If you are updating libtime because you are updating
+proleptic_utc_with_leap_seconds, return to that project and continue from
+where you were.  Otherwise, this would be a good time to update
+the local copy of the web site with the new avoid_time_t.pdf.
+
+    cd ~/Projects/leap_seconds/bokeh/
+    make publish
+
+28. After the local copy is updated, export it to the live site.
 
 As of February 26, 2023, this is the platform support matrix for libtime
 using the COPR build system with test_for_disabled_adjtimex disabled.
