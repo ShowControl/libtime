@@ -1,9 +1,9 @@
 /*
- * File: int128_to_string.c, author: John Sauter, date: April 28, 2019.
+ * File: int128_to_string.c, author: John Sauter, date: September 17, 2023.
  */
 
 /*
- * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2023 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,10 +31,10 @@
 #include "time_subroutines.h"
 
 /* Convert a 128-bit integer to a string.  
- * Return value is the number of characters written into the string,
+ * The return value is the number of characters written into the string,
  * not counting the trailing NUL character.  
- * Value is the integer to be converted.
- * Result is a pointer to a string; result_size is its length.  
+ * Value_p is a pointer to the integer to be converted.
+ * Result is a pointer to the output string; result_size is its length.  
  * The string should be at least 41 characters long, to hold a
  * maximum-sized result.  */
 
@@ -54,15 +54,20 @@ int128_to_string (__int128 *value_p, char *result, int result_size)
   volatile __int128 volatile_value;
   __int128 value;
   
-  size_remaining = result_size;
+  size_remaining = result_size;  /* Guard against exceeding the size
+				  * of the result string.  */
   result_pointer = result;
-  character_count = 0;
+  character_count = 0;  /* Keep track of the number of characters
+			 * we write, so we can return it.  */
 
-  /* Don't require the value parameter to be 16-byte aligned.  */
+  /* Don't require the value parameter to be 16-byte aligned.
+  * Python represents a 128-bit number as a structure of two
+  * 64-bit numbers, and so does not know that such a structure
+  * should be 16-byte aligned.  */
   memcpy (&value, value_p, sizeof(value));
   
   /* If the value is negative, produce a minus sign
-   * and then produce its absolute value.  */
+   * and then produce digits for its absolute value.  */
   if (value < 0)
     {
       positive_value = -value;
@@ -86,10 +91,8 @@ int128_to_string (__int128 *value_p, char *result, int result_size)
 	{
 	  *result_pointer = '0';
 	  result_pointer = result_pointer + 1;
-	  size_remaining = size_remaining - 1;
 	  character_count = character_count + 1;
 	  *result_pointer = 0;
-	  size_remaining = size_remaining - 1;
 	}
       return (character_count);
     }
@@ -142,13 +145,11 @@ int128_to_string (__int128 *value_p, char *result, int result_size)
     {
       *result_pointer = '0' + current_digit;
       result_pointer = result_pointer + 1;
-      size_remaining = size_remaining - 1;
       character_count = character_count + 1;
 
       /* If we are being called recursively, the following NUL byte
        * will be overwritten by the next digit.  */
       *result_pointer = 0;
-      size_remaining = size_remaining - 1;
     }
 
   /* By returning the number of characters we wrote into the string,

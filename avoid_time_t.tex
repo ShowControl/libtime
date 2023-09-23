@@ -148,12 +148,12 @@
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2023 by John Sauter},
   pdfurl={https://www.systemeyescomputerstore.com/leap\%5Fseconds/proleptic\%5FUTC.pdf},
-  pdfdate={2023-09-15},
+  pdfdate={2023-09-22},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
 
-\date{2023-09-15}
+\date{2023-09-22}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -1123,6 +1123,11 @@ freedoms as long as you follow the license terms.
 \section{Revision History}
 
 \begin{description}
+\item[2023-09-22 5.133.2]Adjust future leap seconds starting in 2029.
+  The next leap second is predicted to be a negative leap second
+  on June 30, 2029.
+\item[2023-09-17]Remove redundant code in int128\_to\_string
+  found by Facebook / infer.
 \item[2023-09-15 5.132.2]Adjust future leap seconds starting in 2034.
   The next leap second is predicted to be a negative leap second
   on December 31, 2034.
