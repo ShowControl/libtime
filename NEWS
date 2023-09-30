@@ -1,3 +1,10 @@
+2023-09-29 5.134.2
+  Adjust future leap seconds starting in 2029.  The next leap second is
+  predicted to be a positive leap second on December 31, 2047.
+  Remove support for EPEL 8.  I was never comfortable with bypassing
+  the rebuild of the PDF, and I don't like Red Hat's license change,
+  which diminishes their support of free software.
+  
 2023-09-22 5.133.2
   Adjust future leap seconds starting in 2029.  The next leap second is
   predicted to be a negative leap second on June 30, 2029.

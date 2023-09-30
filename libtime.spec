@@ -1,6 +1,6 @@
 Name:           libtime
-Version:        2023.09.22
-Release:        1%{?dist}
+Version:        2023.09.29
+Release:        2%{?dist}
 Summary:        Manipulate time values
 
 License:        GPLv3+
@@ -15,13 +15,6 @@ BuildRequires:  proleptic_utc_with_leap_seconds
 
 %global _hardened_build 1
 
-# Do not rebuild the PDF file on RHEL, since it lacks TeX.
-%if 0%{?rhel}
-%global rebuild_pdf 0
-%else
-%global rebuild_pdf 1
-%endif
-
 %description
 Manipulate time values stored in a POSIX tm structure.
 
@@ -29,12 +22,7 @@ Manipulate time values stored in a POSIX tm structure.
 %autosetup -S git
 
 %build
-# Tell configure to rebuild the PDF only if TeX is available.
-%if %{rebuild_pdf}
 %configure --enable-pdf
-%else
-%configure
-%endif
 
 %make_build 
 
@@ -58,7 +46,6 @@ POSIX time_t, which does not support leap seconds.
 Summary: Comprehensive documentation for %{name}
 Requires: %{name}%{?_isa} = %{version}-%{release}
 
-%if %{rebuild_pdf}
 # gnuplot and texlive-scheme-full are needed only to rebuild the PDF file.
 BuildRequires:  gnuplot
 BuildRequires:  texlive-scheme-full
@@ -67,7 +54,6 @@ BuildRequires:  texlive-scheme-full
 BuildRequires: sil-andika-fonts
 BuildRequires: sil-charis-fonts
 BuildRequires: liberation-mono-fonts
-%endif
 
 %description doc
 The %{name}-doc package contains the documentation for %{name}-devel
@@ -87,7 +73,6 @@ includes the RPM spec file.
 %{_libdir}/libtime.so.3
 %{_libdir}/libtime.so.3.*
 %exclude %{_libdir}/libtime.a
-%exclude %{_libdir}/libtime.la
 %exclude /usr/share/doc/%{name}/AUTHORS
 %exclude /usr/share/doc/%{name}/COPYING
 %exclude /usr/share/doc/%{name}/ChangeLog
@@ -118,6 +103,10 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Sat Sep 30 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2023.09.29-2 Remove support for EPEL
+* Fri Sep 29 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2023.09.29-1 Adjust future leap seconds starting in 2029.
 * Fri Sep 22 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2023.09.17-1 Adjust future leap seconds starting in 2029.
 * Sun Sep 17 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
