@@ -1,6 +1,6 @@
 Name:           libtime
-Version:        2023.09.29
-Release:        2%{?dist}
+Version:        2023.10.07
+Release:        1%{?dist}
 Summary:        Manipulate time values
 
 License:        GPLv3+
@@ -103,6 +103,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Sat Oct 07 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2023.10.07-1 Adjust future leap seconds starting in 2029.
 * Sat Sep 30 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2023.09.29-2 Remove support for EPEL
 * Fri Sep 29 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
