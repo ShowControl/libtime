@@ -1,4 +1,4 @@
-# README for libtime project, last updated August 13, 2023.
+# README for libtime project, last updated October 28, 2023.
 
 Libtime is a package of subroutines for the manipulation of time values.
 The subroutines handle leap seconds correctly by avoiding the use of
@@ -6,38 +6,80 @@ POSIX time_t for telling time.
 
 Notes to those who write software that calls libtime subroutines:
 
-If you wish to install libtime from the tarball you will need GNU make
-and python version 3.  Install the libtime library the usual way:
-    ./configure
+If you are using the Fedora distribution of GNU/Linux, the simplest way
+to install libtime is from Fedora Copr:
+
+    sudo dnf copr enable johnsauter/libtime
+
+and respond "y" when it asks if you are sure.  When that is complete,
+install the project:
+
+    sudo dnf install libtime
+
+With this method the library will be updated automatically whenever the
+list of leap seconds changes.
+
+If you are not running Fedora, or you prefer not to use Copr, you can
+clone the project from github, then build and install the software.
+Navigate to a convenient place in the file system of your computer
+and clone the project:
+
+    git clone git@github.com:ShowControl/libtime
+
+then build and install the library:
+
+  cd libtime
+  ./configure --prefix=/usr
+  make
+  sudo make install
+
+I recommend using --prefix=/usr on the ./configure command so the library
+will be installed in /usr/share.  If you omit the --prefix=/usr, the
+library will be installed in /usr/local/share.
+
+If you do not have access to github but you do have the documentation PDF
+file avoid_time_t.pdf, you can extract the files necessary to build
+the tarball from the PDF.  In a convenient place in the file system of
+your computer, create a directory named libtime, copy the avoid_time_t.pdf
+file into it, then build and install the library:
+
+    mkdir libtime
+    cp avoid_time_t.pdf libtime/
+    cd libtime/
+    mkdir examples m4 src tests
+    pdfdetach -saveall avoid_time_t.pdf
+    bash fix_files.sh
+    ./configure --prefix=/usr
     make
     sudo make install
-
-In your C source code, define the entry points with:
+    
+Once the library is installed, in your C source code define the entry points
+with:
 
     #include <time_subroutines.h>
-    
-To compile and link your program prog.c, which uses the library installed
-in /usr/local/lib, do this:
+
+When compiling and linking your program with GCC, specify -ltime.
+
+If you installed libtime in /usr/local/share rather than /usr/share,
+compile and link your program prog.c as follows:
 
     gcc -L/usr/local/lib/ -Wl,-rpath=/usr/local/lib prog.c -ltime -o prog
-
-For installation from a repository, libtime is divided into three RPMs:
-libtime for those who run programs that call libtime, libtime-devel for
-those who write programs that call libtime, and libtime-doc, which contains
-the comprehensive documentation for libtime.  If you install libtime
-from an RPM repository the library is installed in /usr/lib rather than
-/usr/local/lib, so you need specify only -ltime to compile and link with it.
 
 In your Python source code, define the entry points with:
 
    import time_subroutines
    
+For installation from a repository, libtime is divided into three RPMs:
+libtime for those who run programs that call libtime, libtime-devel for
+those who write programs that call libtime, and libtime-doc, which contains
+the comprehensive documentation for libtime.
+
 Comprehensive documentation for the time subroutines is in avoid_time_t.pdf.
 If you install libtime-doc from an RPM repository this will be in
-/usr/share/doc/libtime-doc/.  If you are installing from the tarball
-you can create the PDF by adding --enable-pdf to the ./configure line
-before running make, or doing a second run of make with make pdf.
-You will need LuaLaTeX and many of its packages to compile the PDF.
+/usr/share/doc/libtime-doc/.  If you are installing by cloning the
+github repository you can create the PDF by adding --enable-pdf to the
+./configure line before running make, or by doing a second run of make with
+make pdf.  You will need LuaLaTeX and many of its packages to compile the PDF.
 Sudo make install will then install the file in /usr/local/share/doc/libtime/.
 
 If it is not convenient to compile the documentation, it is also available
@@ -46,41 +88,6 @@ at this URL:
 https://www.systemeyescomputerstore.com/leap_seconds/avoid_time_t.pdf
 
 In addition, there is concise documentation in man libtime.
-
-If you download the tarball from the git repository, you can also download
-its signature file, which has the same name as the tarball with .asc appended.
-I created the signature file using gpg version 2.  To verify that the tarball
-was created by me you will need my public key.  You can get my PGP public key
-from a keyserver, from my web site using the WSD protocol by typing
-gpg --locate-external-keys John_Sauter@systemeyescomputerstore.com
-or by extracting file John_Sauter_public_key.asc from the tarball
-and importing it into gpg.  That last process is not too secure, since
-if the tarball is compromised the public key could also be compromised.
-Thus, to improve its security, here is what you should see when you list
-the public key file:
-
-pub   rsa2048 2012-03-01 [SC]
-      E24AD25BE5FE4914A60349EC70303EA19A0B511E
-uid           John Sauter <John_Sauter@systemeyescomputerstore.com>
-uid           keybase.io/john_sauter <john_sauter@keybase.io>
-uid           [jpeg image of size 3091]
-sub   rsa2048 2012-03-01 [E]
-pub   rsa4096 2016-04-20 [SC] [revoked: 2016-04-20]
-      BB3334308DE0C78126C7123C2A6E2A4F026FC76C
-uid           John Sauter (Asus Q200E) <John_Sauter@systemeyescomputerstore.com>
-sub   rsa4096 2016-04-20 [E] [revoked: 2016-04-20]
-pub   rsa2048 2012-10-25 [SC]
-      A62580C913EA6A40C9DCAB87064A96E03DF7EE1D
-uid           John Sauter <John_Sauter@systemeyescomputerstore.com>
-sub   rsa2048 2012-10-25 [E]
-pub   dsa1024 2009-08-26 [SCA]
-      2D8B16E2E7EBE79403234AAB644086A281CE86BF
-uid           John Sauter <John_Sauter@systemeyescomputerstore.com>
-sub   elg2048 2009-08-26 [E]
-
-This should not change between versions without a good reason, so you
-can examine a copy of this README file from an old tarball to increase
-your confidence that the latest tarball was also created by me.
 
 
 Notes to anyone who wishes to maintain libtime:
@@ -131,14 +138,16 @@ and libtime-doc RPMs.
 
 If this is the first change you are making to libtime since taking it over
 from the previous maintainer, you should add your PGP public key to the
-tarball and update this README file to show it.  Don't forget to embed
-your PGP public key in the PDF file.
+tarball and the PDF.  See John_Sauter_public_key.asc in Makefile.am
+and avoid_time_t.tex for an example.
 
 Here is the checklist I use to be sure I am distributing working software.
 I start with proleptic_utc_with_leap_seconds and libtime installed, and in the
-libtime subdirectory of the show_control subdirectory of the Theatre project.
+directory which is a clone of the github repository.
 
-1. Perform whatever updates are called for to the libtime sources.
+1. Perform whatever updates are called for to the libtime sources.  If you are
+just rebuilding libtime because proleptic_utc_with_leap_seconds changed,
+no changes to the source code are required.
 
 2. Edit file configure.ac to set the version number to the expected
 distribution date, and update the version-info triplet.  There are comments in
@@ -156,10 +165,17 @@ triplet, and the reason for the update.
 page and in the PDF metadata.  Update the revision history using the
 information in the NEWS file.
 
-6. Type "rm *.gz" and "rm *.rpm" to get rid of old files with wrong version
-numbers in their names.
+6. Get rid of old files with wrong version numbers in their names:
+   rm *.gz
+   rm *.rpm
+
+7. Edit reference.bib to update the publication date of "Avoid Using POSIX
+time_t for Telling Time".  This is the documentation for the project,
+which you will be publishing as part of updating the project.  This file
+should be centralized so that every publication gets the latest copy,
+but I haven't figured out a way to do this yet.
    
-7. Build and test the libtime tarball.  In the following commands,
+8. Build and test the libtime tarball.  In the following commands,
 /usr is the prefix of the location of the data file provided by
 proleptic_utc_with_leap_seconds.  The commands should all run without error.
    
@@ -177,16 +193,18 @@ That last step should declare that the tarball has a good signature.
 You will use that signature later to verify that the tarball has
 not been accidently corrupted.
 
-8. Use evince to verify that avoid_time_t.pdf has the correct date
+9. Use evince to verify that avoid_time_t.pdf has the correct date
 on its cover page, the revision history has been updated and the
 pagination looks OK.
 
-9. Type "make RPMs" to create and test the SRPM file.  RPMlint will complain
+10. Create and test the SRPM file.  RPMlint will complain
 that the -doc RPM has no binaries.  Anything else needs to be investigated.
 This is the first step that tests the spec file.  If you need to change it
 go back to the autogen step, since the spec file is included in the tarball.
 
-10. Make sure the tarball will build from the PDF:  All of these commands
+   make RPMs
+
+11. Make sure the tarball will build from the PDF:  All of these commands
 should run without error.  The autogen command is at the end instead of
 before configure since configure is supposed to work without first
 running autogen, but autogen should still work.
@@ -206,175 +224,79 @@ running autogen, but autogen should still work.
     make RPMs
     ./autogen.sh --download
 
-11. Type "cd .." and "rm -r test_pdf/.  We are done with the subdirectory.
+12. We are done with the test_pdf subdirectory:
+
+    cd ..
+    rm -r test_pdf/
     
-12. Use an internet browser to log in to the Fedora COPR web site.
+13. Use an internet browser to log in to the Fedora Copr web site.
 Navigate to project libtime.  Make sure it is configured to build
 the package on all platforms.
 
-13. Type "copr-cli build libtime libtime-*.src.rpm" to attempt to build
-libtime on lots of different platforms using COPR.
+14. Attempt to build libtime on lots of different platforms using Copr:
 
-14. When the build is finished, check the COPR web site to see if it
+    copr-cli build libtime libtime-*.src.rpm
+
+This will build libtime on your Copr account, which means you should direct
+Copr users to your repository rather than mine.  If you would like to use my
+Copr repository you will need permission.  Log in to Fedora Copr, then
+navigate to this project's overview at
+
+    https://copr.fedorainfracloud.org/coprs/johnsauter/libtime/
+
+choose Settings, click on the types of permissions you want, and click on
+Request.  Please contact me first so the request won't come at me out of
+the blue.  My e-mail address is John_Sauter@systemeyescomputerstore.com.
+
+After you have permission, to build into my Copr repository:
+
+    copr-cli build johnsauter/libtime libtime-*.src.rpm
+    
+
+15. When the build is finished, check the Copr web site to see if it
 succeeded on all of the important platforms.  If the build has failed on any
 important platforms, correct any problems to the best of your ability
-and re-run the build until the only errors left are due to the COPR
-infrastructure.  If you had to modify any of the files, return to the autogen
+and re-run the build until the only errors left are due to the Copr
+infrastructure.  If you have to modify any of the files, return to the autogen
 step.
 
-15. You may be forced to declare certain formerly important platforms as
+16. You may be forced to declare certain formerly important platforms as
 unimportant if they refuse to build the package for no good reason.
 
-16. Delete the old builds and regenerate the repositories.
+17. Delete the old builds and regenerate the repositories.
 
-17. Wait a few minutes for the repository mirrors to receive the new
-code, then type "sudo dnf update --refresh" to make sure the new
-version is avaialble.
+18. Wait a few minutes for the repository mirrors to receive the new
+code, then type the following to make sure the new version is avaialble:
 
-18. Copy the latest version of avoid_time_t.pdf to the bokeh sub-project
-of the leap_seconds project, so it can be included in the update of
-the web site.
+    sudo dnf update --refresh
 
-    cp avoid_time_t.pdf ~/Projects/leap_seconds/bokeh/
+19. If you have a web site from which you make available the current version
+of avoid_time_t.pdf, copy the file to the web site now, since it will be
+deleted from this directory in the next step.
+
+20. Update the sources on github:
+
+    make distclean
+    git add .
+    git commit -a -m "<comment>"
+    git tag -s "<version>" -m "<comment>"
+    git push
+    git push --tags
+
+The notation <comment> means a brief description of the change.
+If you are rebuilding libtime just because proleptic_utc_with_leap_seconds
+changed, use the same comment that you used in that project.
+For example, "Adjust future leap seconds starting in 2499."
+The notation <version> means the version number as recorded in the
+spec file and elsewhere.
     
-19. Type "make distclean"
+21. Verify that the tarball has not been corrupted:
 
-20. TYpe "cd ..".
+    gpg --verify libtime*.asc libtime*.tar.gz
 
-21. Type "git add ." and "git commit -a -m" followed by a comment in
-quotation marks describing the reason for the update.  This should be
-the same comment used in the spec file's revision history.
-This updates the git repository for the show_control sub-project of the
-Theatre project.
-
-22. Type "bash push_public.sh" to copy the updated files to the local
-copy of the github repository.
-
-23. Type "cd repositories/libtime", "git add ." and "git commit -a -m "
-followed by the comment in quotation marks that you used above.
-
-24. Type "git tag -s " followed by the version number from the spec file
-followed by -m and the comment in quotation marks that you used above.
-
-25. Type "git push" and "git push --tags" to copy the updated project
-to github.
-
-26. Type "gpg --verify libtime*.asc libtime*.tar.gz".  Gpg should declare 
-that the tarball has a good signature.  If it does not it has been corrupted.  
+Gpg should declare  that the tarball has a good signature.  If it does not
 Go back to the autogen step to re-create it.  You will not have to edit 
 any files.
-
-27. If you are updating libtime because you are updating
-proleptic_utc_with_leap_seconds, return to that project and continue from
-where you were.  Otherwise, this would be a good time to update
-the local copy of the web site with the new avoid_time_t.pdf.
-
-    cd ~/Projects/leap_seconds/bokeh/
-    make publish
-
-28. After the local copy is updated, export it to the live site.
-
-As of February 26, 2023, this is the platform support matrix for libtime
-using the COPR build system with test_for_disabled_adjtimex disabled.
-The bugzilla entry for the problem with adjtimex is 1778298.
-
-centos-stream+epel-next-8.aarch64: yes: with 128-bit integers
-centos-stream+epel-next-8.ppc64le: yes: with 128-bit integers
-centos-stream+epel-next-8.x86_64: yes: with 128-bit integers
-centos-stream+epel-next-9.aarch64: no: package python3-pandas not available
-centos-stream+epel-next-9.ppc64le: no: package python3-pandas not available
-centos-stream+epel-next-9.s390x: no: package python3-pandas not available
-centos-stream+epel-next-9.x86_64: no: package python3-pandas not available
-
-centos-stream-8-aarch64: no: package python3-pandas not available
-centos-stream-8-ppc64le: no: package python3-pandas not available
-centos-stream-8-x86_64: no: package python3-pandas not available
-centos-stream-9-aarch64: no: package python3-pandas not available
-centos-stream-9-ppc64le no: package python3-pandas not available
-centos-stream-9-s390x: no: package python3-pandas not available
-centos-stream-9-x86_64: no: package python3-pandas not available
-custom-1-i386: no: no useradd in chroot
-custom-1-x86_64: no: no useradd in chroot
-epel-6-i386: no: %python_provide unknown
-epel-6-x86_64: no: %python_provide unknown
-epel-7-ppc64le: no: packages python3-pandas and python3-scipy not available
-epel-7-x86_64: no: packages python3-pandas and python3-scipy not available
-epel-8-aarch64: yes: with 128-bit integers but not rebuilding PDF file
-epel-8-ppc64le: yes: with 128-bit integers but not rebuilding PDF file
-epel-8-s390x: yes: with 128-bit integers but not rebuilding PDF file
-epel-8-X86_64: yes: with 128-bit integers but not rebuilding PDF file
-epel-9-aarch64: no: package python3-pandas not available
-epel-9-ppc64le: no: package python3-pandas not available
-epel-9-s390x: no: package python3-pandas not available
-epel-9-x86_64: no: package python3-pandas not available
-
-fedora-36-aarch64: yes: with 128-bit integers
-fedora-36-armhfp: yes: without 128-bit integers
-fedora-36-i386: yes: without 128-bit integers
-fedora-36-ppc64le: yes: with 128-bit integers
-fedora-36-s390x: yes: with 128-bit integers
-fedora-36-x86_64: yes: with 128-bit integers
-fedora-37-aarch64: yes: with 128-bit integers
-fedora-37-i386: no: java-headless not available
-fedora-37-ppc64le: yes: with 128-bit integers
-fedora-37-s390x: yes: with 128-bit integers
-fedora-37-x86_64: yes: with 128-bit integers 
-fedora-38-aarch64: yes: with 128-bit integers 
-fedora-38-i386: no: java-headless not available
-fedora-38-ppc64le: yes: with 128-bit integers
-fedora-38-s390x: yes: with 128-bit integers
-fedora-38-x86_64: yes: with 128-bit integers 
-
-fedora-eln-aarch64: no: package python3-pandas not available
-fedora-eln-i386: no: binutils and rpm difficulties
-fedora-eln-ppc64le: no: package python3-pandas not available
-fedora-eln-s390x: no: package python3-pandas not available
-fedora-eln-x86_64: no: python3-pandas not available
-
-fedora-rawhide-aarch64: yes: with 128-bit integers
-fedora-rawhide-i386: no: java-headless not available
-fedora-rawhide-ppc64le: yes: with 128-bit integers
-fedora-rawhide-s390x: yes: with 128-bit integers
-fedora-rawhide-x86_64: yes: with 128-bit integers
- 
-magela-8-aarch64: no: TeX not available
-magela-8-i586: no: TeX not available
-magela-8-x86_64: no: TeX not available
-magela-cauldron-aarch64: no: TeX not available
-magela-cauldron-i586: no: TeX not available
-magela-cauldron-x86_64: no: TeX not available
-openeuler-20.03.aarch64: no: TeX not available
-openeuler-20.03.x86_64: no: TeX not present
-openeuler-22.03.aarch64: no: TeX not present
-openeuler-22.03.x86_64: no: TeX not present
-openmandriva-cooker-aarch64: no: download failure
-openmandriva-cooker-i686: no: download failure
-openmandriva-cooker-x86_64: no: download failure
-openmandriva-rolling-aarch64 no: download failure
-openmandriva-rolling-i686: no: download failure
-openmandriva-rolling-x86_64: no: download failure
-opensuse-leap-15.3-aarch64: no: liberation-mono-fonts not available
-opensuse-leap-15.3-x86_64: no: liberation-mono-fonts not available
-opensuse-leap-15.4-aarch64: no: liberation-mono-fonts not available
-opensuse-leap-15.4-x86_64: no: liberation-mono-fonts not available
-opensuse-tumbleweed-aarch64: no: liberation-mono-fonts not available
-opensuse-tumbleweed-i586: no: liberation-mono-fonts not available
-opensuse-tumbleweed-ppc64le: no: liberation-mono-fonts not available
-opensuse-tumbleweed-x86_64: no: liberation-mono-fonts not available
-oraclelinux-7-aatch64: no: packages pthon3-pandas, -numpy and -scipy missing
-oraclelinux-7-x86_64: no: packages pthon3-pandas, -numpy and -scipy missing
-oraclelinux-8-aarch64: no: package python3-pandas not available
-oraclelinux-8-x86_64: no: package python3-pandas not available
-
-rhel-7-x86_64: no: packages pthon3-pandas, -numpy and -scipy missing
-rhel-8-x86_64: no: package python3-pandas not available
-rhel-9-aarch64: no: package python3-pandas not available
-rhel-9-x86_64: no: package python3-pandas not available
-
-In the past, the build has also been successful with Fedoras 29 through 35.
-If COPR can not build the RPM for your distribution, or if your distribution
-is not listed, try compiling from the sources, which are embedded in the
-PDF file.
 
 
 Notes to those who wish to package libtime in a distribution of GNU/Linux:
@@ -384,7 +306,7 @@ of leap seconds from file extraordinary_days.dat, which is provided by
 package proleptic_utc_with_leap_seconds, which lives on github at
 ShowControl/proleptic_utc_with_leap_seconds.  The tarball includes
 a spec file which lists its dependencies.  I use that spec file
-to build the package on COPR.  I would be happy to include any
+to build the package on Copr.  I would be happy to include any
 modifications you make to the spec file in the tarball.
 
 End of file README
