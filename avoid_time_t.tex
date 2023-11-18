@@ -116,7 +116,9 @@
 
 \begin{document}
 \embedfile[desc={Avoid Using POSIX time\_t for Telling Time},
-  mimetype={text/plain}]{avoid_time_t.tex}
+  mimetype={text/plain},
+  ucfilespec={avoid\_time\_t.tex}]
+          {avoid_time_t.tex}
 \title{Avoid Using POSIX {\ttfamily time\_t} for Telling
   Time\footnote{Copyright
     {\copyright} 2023 by John Sauter.
@@ -148,12 +150,12 @@
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2023 by John Sauter},
   pdfurl={https://www.systemeyescomputerstore.com/leap\%5Fseconds/proleptic\%5FUTC.pdf},
-  pdfdate={2023-11-03},
+  pdfdate={2023-11-17},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
 
-\date{2023-11-03}
+\date{2023-11-17}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -330,7 +332,9 @@ a function which returns the current time in a {\ttfamily tm} structure along
 with the number of nanoseconds since the last second.
 \inputminted[firstline=34]{c}{src/time_current_tm_nano.c}
 \embedfile[desc={Return the current time including nanoseconds},
-  mimetype={text/plain}]{src/time_current_tm_nano.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_current\_tm\_nano.c}]
+          {src/time_current_tm_nano.c}
 
 Notice in the code above the workaround for {\ttfamily adjtimex}
 not working.  I feel that it is intolerable for an environment to
@@ -340,12 +344,16 @@ can do that by calling the following subroutine at the start
 of your program.
 \inputminted[firstline=36]{c}{src/time_test_for_disabled_adjtimex.c}
 \embedfile[desc={Indicate if adjtimex is disabled},
-  mimetype={text/plain}]{src/time_test_for_disabled_adjtimex.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_test\_for\_disabled\_adjtimex.c}]
+          {src/time_test_for_disabled_adjtimex.c}
 If the subroutine returns a non-zero result, your applicaton should
 complain and exit:
 \inputminted[firstline=47,lastline=67]{c}{tests/test_for_disabled_adjtimex.c}
 \embedfile[desc={Complain if adjtimex is disabled},
-  mimetype={text/plain}]{tests/test_for_disabled_adjtimex.c}
+  mimetype={text/plain},
+  ucfilespec={tests/test\_for\_disabled\_adjtimex.c}]
+          {tests/test_for_disabled_adjtimex.c}
 The above subroutine is not included in the library, though
 the library does contain
 {\ttfamily time\_test\_for\_disabled\_adjtimex}.
@@ -366,7 +374,9 @@ a time in a {\ttfamily tm} structure and a count of nanoseconds
 since that second.
 \inputminted[firstline=32]{c}{src/time_sleep_until.c}
 \embedfile[desc={Sleep until the specified time},
-  mimetype={text/plain}]{src/time_sleep_until.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_sleep\_until.c}]
+          {src/time_sleep_until.c}
 See subsection \ref{subsection:difftime} for time\_diff
 and an explanation of variable\_length\_sec\-onds\_before\_year.
 
@@ -389,18 +399,28 @@ Difftime can be replaced by a function which returns the time in seconds
 between two times expressed using the {\ttfamily tm} structure.
 \inputminted[firstline=37]{c}{src/time_diff.c}
 \embedfile[desc={Compute the number of seconds between two times},
-  mimetype={text/plain}]{src/time_diff.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_diff.c}]
+          {src/time_diff.c}
 The table of changes in DTAI is too long to present here in full,
 but here are some of the lines:
 \inputminted[firstline=46156,lastline=46184]{c}{dtai_table.tab}
 \embedfile[desc={Table of changes in DTAI, used by time\_diff.c},
-  mimetype={text/plain}]{dtai_table.tab}
+  mimetype={text/plain},
+  ucfilespec={dtai\_table.tab}]
+          {dtai_table.tab}
 \embedfile[desc={Size of the table of changes in DTAI},
-  mimetype={text/plain}]{dtai_table.h}
+  mimetype={text/plain},
+  ucfilespec={dtai\_table.h}]
+          {dtai_table.h}
 \embedfile[desc={program to create dtai\_table from extraordinary\_days.dat},
-  mimetype={text/plain}]{read_extraordinary_days_table.py}
+  mimetype={text/plain},
+  ucfilespec={read\_extraordinary\_days\_table.py}]
+          {read_extraordinary_days_table.py}
 \embedfile[desc={table of extraordinary days},
-  mimetype={text/plain}]{extraordinary_days.dat}
+  mimetype={text/plain},
+  ucfilespec={extraordinary\_days.dat}]
+          {extraordinary_days.dat}
 The left number is the integer part of the Julian Day Number of the day
 which starts with the new value of DTAI, and the right number is the new
 value of DTAI.
@@ -434,7 +454,9 @@ If you want the local time in a foreign location you can also specify
 the UTC offset.
 \inputminted[firstline=32]{c}{src/time_utc_to_local.c}
 \embedfile[desc={Convert Coordinated Universal Time to local time},
-  mimetype={text/plain}]{src/time_utc_to_local.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_utc\_to\_local.c}]
+          {src/time_utc_to_local.c}
 See subsection \ref{subsection:copy} for time\_copy\_tm,
 subsection \ref{subsection:timeUTCadd} for
 time\_\-length\_\-prev\_\-UTC\_\-minute,
@@ -447,7 +469,9 @@ Mktime converts a {\ttfamily tm} structure that represents local time into a
 {\ttfamily tm} structure that represents Coordinated Universal Time.
 \inputminted[firstline=32]{c}{src/time_local_to_utc.c}
 \embedfile[desc={Convert local time to Coordinated Universal Time},
-  mimetype={text/plain}]{src/time_local_to_utc.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_local\_to\_utc.c}]
+          {src/time_local_to_utc.c}
 See subsection \ref{subsection:timeUTCadd} for time\_UTC\_normalize.
 
 \subsection{nanosleep}
@@ -487,7 +511,9 @@ Time returns the current time as a {\ttfamily time\_t}.
 Instead, return it as a {\ttfamily tm}.
 \inputminted[firstline=34]{c}{src/time_current_tm.c}
 \embedfile[desc={Return the current time in a tm structure},
-  mimetype={text/plain}]{src/time_current_tm.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_current\_tm.c}]
+          {src/time_current_tm.c}
 
 \subsection{timegm}
 Timegm converts a {\ttfamily tm} structure containing Coordinated Universal Time
@@ -497,21 +523,27 @@ as our primary representation of time.  However, it is sometimes
 convenient to represent time as a single value instead of a structure.
 \inputminted[firstline=32]{c}{src/time_tm_to_integer.c}
 \embedfile[desc={Convert a time to an integer},
-  mimetype={text/plain}]{src/time_tm_to_integer.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_tm\_to\_integer.c}]
+          {src/time_tm_to_integer.c}
 
 The following subroutine goes one step further, by including the
 fraction of a second in the value.  Note that this code depends
 on having a C compiler which supports 128-bit integers.
 \inputminted[firstline=32]{c}{src/time_tm_nano_to_integer.c}
 \embedfile[desc={Convert a time to a 128-bit integer},
-  mimetype={text/plain}]{src/time_tm_nano_to_integer.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_tm\_nano\_to\_integer.c}]
+          {src/time_tm_nano_to_integer.c}
 
 A 128-bit integer cannot be printed with printf, so here is a subroutine
 to convert it to a string.  Note that this code depends on having
 a C compiler which supports 128-bit integers.
 \inputminted[firstline=32]{c}{src/int128_to_string.c}
 \embedfile[desc={Convert a 128-bit integer to a string},
-  mimetype={text/plain}]{src/int128_to_string.c}
+  mimetype={text/plain},
+  ucfilespec={src/int128\_to\_string.c}]
+          {src/int128_to_string.c}
 
 \section{Beyond POSIX}
 Just being able to do all the POSIX functions isn't enough to persuade
@@ -525,7 +557,9 @@ here are some subroutines to manipulate a time value.
 Here is how to copy a time value from one {\ttfamily tm} structure to another.
 \inputminted[firstline=34]{c}{src/time_copy.c}
 \embedfile[desc={Copy a time value from one tm structure to another},
-  mimetype={text/plain}]{src/time_copy.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_copy.c}]
+          {src/time_copy.c}
 
 \subsection{Adding years, months, days, hours, minutes or seconds}
 \label{subsection:timeUTCadd}
@@ -538,19 +572,25 @@ to get a valid date.
 \inputminted[firstline=32]{c}{src/time_utc_add.c}
 \embedfile[desc={Change the year, month, day, hour, minute or second
   of a UTC time value},
-  mimetype={text/plain}]{src/time_utc_add.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_utc\_add.c}]
+          {src/time_utc_add.c}
 The routines above use various time\_length subroutines to determine
 the length of the current or previous month or minute.
 \inputminted[firstline=32]{c}{src/time_length.c}
 \embedfile[desc={Determine the length of the current or previous
   month or minute},
-  mimetype={text/plain}]{src/time_length.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_length.c}]
+          {src/time_length.c}
 
 The subroutines above also use time\_UTC\_normalize.
 \inputminted[firstline=32]{c}{src/time_utc_normalize.c}
 \embedfile[desc={Make sure all of the fields of a tm structure
   are in their valid range},
-  mimetype={text/plain}]{src/time_utc_normalize.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_utc\_normalize.c}]
+          {src/time_utc_normalize.c}
 
 \subsection{Doing the same with local time}
 \label{subsection:timelocaladd}
@@ -563,12 +603,16 @@ to get a valid date.
 \inputminted[firstline=32]{c}{src/time_local_add.c}
 \embedfile[desc={Change the year, month, day, hour, minute or second
   of a local time value},
-  mimetype={text/plain}]{src/time_local_add.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_local\_add.c}]
+          {src/time_local_add.c}
 The subroutines above use time\_local\_normalize.
 \inputminted[firstline=32]{c}{src/time_local_normalize.c}
 \embedfile[desc={Make sure all of the fields of a tm structure
   representing a local time are in their valid range},
-  mimetype={text/plain}]{src/time_local_normalize.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_local\_normalize.c}]
+          {src/time_local_normalize.c}
 
 \subsection{Representing a time as a string}
 \label{subsection:tostring}
@@ -578,12 +622,16 @@ can do that.  This subroutine works for both Coordinated Universal Time
 and local time.
 \inputminted[firstline=34]{c}{src/time_tm_to_string.c}
 \embedfile[desc={Convert a time to a string},
-  mimetype={text/plain}]{src/time_tm_to_string.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_tm\_to\_string.c}]
+          {src/time_tm_to_string.c}
 
 If you need more precision you can include the nanoseconds:
 \inputminted[firstline=34]{c}{src/time_tm_nano_to_string.c}
 \embedfile[desc={Convert a precise time to a string},
-  mimetype={text/plain}]{src/time_tm_nano_to_string.c}
+  mimetype={text/plain},
+  ucfilespec={src/time\_tm\_nano\_to\_string.c}]
+          {src/time_tm_nano_to_string.c}
 
 \section{International Atomic Time}
 \label{section:International Atomic Time}
@@ -627,7 +675,9 @@ to return a value.  The attribute ``pure'' means the same except
 that the function can examine (but not change) global variables.
 \inputminted[firstline=37,lastline=283]{c}{time_subroutines.h}
 \embedfile[desc={Source for C header file for time subroutines},
-  mimetype={text/plain}]{time_subroutines.h.in}
+  mimetype={text/plain},
+  ucfilespec={time\_subroutines.h.in}]
+          {time_subroutines.h.in}
 
 \section{Python}
 The Python module datetime contains a class also called datetime
@@ -642,13 +692,17 @@ and use these same C subroutines to manipulate it using
 Write a module to define the interface, as follows:
 \inputminted[firstline=29,lastline=397]{Python}{time_subroutines.py}
 \embedfile[desc={Source for module for calling time subroutines from Python},
-  mimetype={text/plain}]{time_subroutines.py.in}
+  mimetype={text/plain},
+  ucfilespec={time\_subroutines.py.in}]
+          {time_subroutines.py.in}
 This file is provided as {\filename time\_subroutines.py}.
 Import ctypes and the module, and you can then call the subroutines
 from Python.  Here is a Python script to demonstrate this:
 \inputminted[firstline=27,lastline=98]{Python}{tests/demo_python.py}
 \embedfile[desc={Demonstration Python script},
-  mimetype={text/plain}]{tests/demo_python.py}
+  mimetype={text/plain},
+  ucfilespec={tests/demo\_python.py}]
+          {tests/demo_python.py}
 
 Use the Julian Day Number instead of the proleptic Gregorian ordinal
 from the datetime module, since it covers a wider span of time.
@@ -686,7 +740,9 @@ and include files as follows:
 \item Type {\ttfamily bash fix\_files.sh} to correct the permissions of
   the extracted files.
   \embedfile[desc={Fix permissions of extracted files},
-  mimetype={text/plain}]{fix_files.sh}
+    mimetype={text/plain},
+    ucfilespec={fix\_files.sh}]
+            {fix_files.sh}
 \item Build the library the usual way with {\ttfamily ./configure}
 and {\ttfamily make}.
 \item Once the library is built you can install it by typing
@@ -715,102 +771,193 @@ and {\ttfamily time\_tm\_nano\_to\_integer} are not included
 in libtime.
 
 \embedfile[desc={Test program},
-  mimetype={text/plain}]{tests/test_time.c}
+  mimetype={text/plain},
+  ucfilespec={tests/test\_time.c}]{tests/test_time.c}
 \embedfile[desc={Test program},
-  mimetype={text/plain}]{tests/test_JDN.c}
+  mimetype={text/plain},
+  ucfilespec={tests/test\_JDN.c}]
+          {tests/test_JDN.c}
 \embedfile[desc={Test program},
-  mimetype={text/plain}]{tests/test_diff.c}
+  mimetype={text/plain},
+  ucfilespec={tests/test\_diff.c}]
+          {tests/test_diff.c}
 \embedfile[desc={Test program},
-  mimetype={text/plain}]{tests/test_add.c}
+  mimetype={text/plain},
+  ucfilespec={tests/test\_add.c}]
+          {tests/test_add.c}
 \embedfile[desc={Test all of the entry points},
-  mimetype={text/plain}]{tests/test_ep.c}
+  mimetype={text/plain},
+  ucfilespec={tests/test\_ep.c}]
+          {tests/test_ep.c}
 \embedfile[desc={Make sure all lines of source are tested},
-  mimetype={text/plain}]{tests/test_local.c}
+  mimetype={text/plain},
+  ucfilespec={tests/test\_local.c}]
+          {tests/test_local.c}
 \embedfile[desc={Regression test program},
-  mimetype={text/plain}]{tests/print_DTAI.c}
+  mimetype={text/plain},
+  ucfilespec={tests/print\_DTAI.c}]
+          {tests/print_DTAI.c}
 \embedfile[desc={Sample program: sleep until nearly midnight}
-  mimetype={text/plain}]{tests/sleep_until_midnight.c}
+  mimetype={text/plain},
+  ucfilespec={tests/sleep\_until\_midnight.c}]
+          {tests/sleep_until_midnight.c}
 \embedfile[desc={Sample program: print the date of the POSIX epoch}
-  mimetype={text/plain}]{tests/POSIX_epoch.c}
+  mimetype={text/plain},
+  ucfilespec={tests/POSIX\_epoch.c}]
+          {tests/POSIX_epoch.c}
 \embedfile[desc={Sample program: print powers of two}
-  mimetype={text/plain}]{tests/powers_of_two.c}
+  mimetype={text/plain},
+  ucfilespec={tests/powers\_of\_two.c}]
+          {tests/powers_of_two.c}
 \embedfile[desc={template configure script for the document, the included
     code and some test and sample programs},
-  mimetype={text/plain}]{configure.ac}
+  mimetype={text/plain},
+  ucfilespec={configure.ac}]
+          {configure.ac}
 \embedfile[desc={script to rebuild configure.ac and Makefile.am into
     configure and Makefile},
-  mimetype={text/plain}]{autogen.sh}
+  mimetype={text/plain},
+  ucfilespec={autogen.sh}]
+          {autogen.sh}
 \embedfile[desc={configure script for the document, the included
     code and some test and sample programs},
-  mimetype={text/plain}]{configure}
+  mimetype={text/plain},
+  ucfilespec={configure}]
+          {configure}
 \embedfile[desc={Makefile template for the document, the included code
     and some test and sample programs},
-  mimetype={text/plain}]{Makefile.in}
+  mimetype={text/plain},
+  ucfilespec={Makefile.in}]
+          {Makefile.in}
 \embedfile[desc={Automake Makefile template for the document,
     the included code and some test and sample programs},
-  mimetype={text/plain}]{Makefile.am}
+  mimetype={text/plain},
+  ucfilespec={Makefile.am}]
+          {Makefile.am}
 \embedfile[desc={The GPL, version 3},
-  mimetype={text/plain}]{COPYING}
+  mimetype={text/plain},
+  ucfilespec={COPYING}]
+          {COPYING}
 \embedfile[desc={The authors of the package},
-  mimetype={text/plain}]{AUTHORS}
+  mimetype={text/plain},
+  ucfilespec={AUTHORS}]
+          {AUTHORS}
 \embedfile[desc={Release announcements},
-  mimetype={text/plain}]{NEWS}
+  mimetype={text/plain},
+  ucfilespec=NEWS{}]
+          {NEWS}
 \embedfile[desc={Detailed log of changes},
-  mimetype={text/plain}]{ChangeLog}
+  mimetype={text/plain},
+  ucfilespec={ChangeLog}]
+          {ChangeLog}
 \embedfile[desc={Basic description of the package},
-  mimetype={text/plain}]{README}
+  mimetype={text/plain},
+  ucfilespec={README}]
+          {README}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{install-sh}
+  mimetype={text/plain},
+  ucfilespec={install-sh}]
+          {install-sh}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{missing}
+  mimetype={text/plain},
+  ucfilespec={missing}]
+          {missing}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{config.sub}
+  mimetype={text/plain},
+  ucfilespec={config.sub}]
+          {config.sub}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{config.h.in}
+  mimetype={text/plain},
+  ucfilespec={config.h.in}]
+          {config.h.in}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{ltmain.sh}
+  mimetype={text/plain},
+  ucfilespec={ltmain.sh}]
+          {ltmain.sh}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{compile}
+  mimetype={text/plain},
+  ucfilespec={compile}]
+          {compile}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{INSTALL}
+  mimetype={text/plain},
+  ucfilespec={INSTALL}]
+          {INSTALL}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{depcomp}
+  mimetype={text/plain},
+  ucfilespec={depcomp}]
+          {depcomp}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{config.guess}
+  mimetype={text/plain},
+  ucfilespec={config.guess}]
+          {config.guess}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{aclocal.m4}
+  mimetype={text/plain},
+  ucfilespec={aclocal.m4}]
+          {aclocal.m4}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{m4/libtool.m4}
+  mimetype={text/plain},
+  ucfilespec={m4/libtool.m4}]
+          {m4/libtool.m4}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{m4/lt\string~obsolete.m4}
+  mimetype={text/plain},
+  ucfilespec={m4/lt\string~obsolete.m4}]
+          {m4/lt\string~obsolete.m4}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{m4/ltoptions.m4}
+  mimetype={text/plain},
+  ucfilespec={m4/ltoptions.m4}]
+          {m4/ltoptions.m4}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{m4/ltsugar.m4}
+  mimetype={text/plain},
+  ucfilespec={m4/ltsugar.m4}]
+          {m4/ltsugar.m4}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{m4/ltversion.m4}
+  mimetype={text/plain},
+  ucfilespec={m4/ltversion.m4}]
+          {m4/ltversion.m4}
 \embedfile[desc={install file},
-  mimetype={text/plain}]{py-compile}
+  mimetype={text/plain},
+  ucfilespec={py-compile}]
+          {py-compile}
 \embedfile[desc={MAN file},
-  mimetype={text/plain}]{libtime.3}
+  mimetype={text/plain},
+  ucfilespec={libtime.3}]
+          {libtime.3}
 \embedfile[desc={pkg-config file},
-  mimetype={text/plain}]{libtime.pc.in}
+  mimetype={text/plain},
+  ucfilespec={libtime.pc.in}]
+          {libtime.pc.in}
 \embedfile[desc={program to check the subroutines work},
-  mimetype={text/plain}]{check_time.c}
+  mimetype={text/plain},
+  ucfilespec={check\_time.c}]
+          {check_time.c}
 \embedfile[desc={expected output from check\_time},
-  mimetype={text/plain}]{check_time_expected_output.txt}
+  mimetype={text/plain},
+  ucfilespec={check\_time\_expected\_output.txt}]
+          {check_time_expected_output.txt}
 \embedfile[desc={Automake driver for check and distcheck},
-  mimetype={text/plain}]{test-driver}
+  mimetype={text/plain},
+  ucfilespec={test-driver}]
+          {test-driver}
 \embedfile[desc={compare check\_time output with expected output},
-  mimetype={text/plain}]{verify_files_template.sh}
+  mimetype={text/plain},
+  ucfilespec={verify\_files\_template.sh}]
+          {verify_files_template.sh}
 \embedfile[desc={test the Python interface},
-  mimetype={text/plain}]{tests/test_python_interface.py}
+  mimetype={text/plain},
+  ucfilespec={tests/test\_python\_interface.py}]
+          {tests/test_python_interface.py}
 \embedfile[desc={spec file to build RPMs},
-  mimetype={text/plain}]{libtime.spec}
+  mimetype={text/plain},
+  ucfilespec={libtime.spec}]
+          {libtime.spec}
 \embedfile[desc={bash script to build the RPMs},
-  mimetype={text/plain}]{build_RPMs.sh}
+  mimetype={text/plain},
+  ucfilespec={build\_RPMs.sh}]
+          {build_RPMs.sh}
 \embedfile[desc={John Sauter's PGP public key, referenced in README},
-  mimetype={text/plain}]{John_Sauter_public_key.asc}
+  mimetype={text/plain},
+  ucfilespec={John\_Sauter\_public\_key.asc}]
+          {John_Sauter_public_key.asc}
 
 These files are also available on github, at the following URL:
 \href{https://github.com/ShowControl/libtime}{https://github.com/ShowControl/libtime}.
@@ -858,7 +1005,9 @@ at 21:21:35 in time zone America/New\_York, the first
 scheduled backup will be at 2017-01-03T08:00:00Z.
 \inputminted[firstline=44,lastline=76]{c}{examples/example_02.c}
 \embedfile[desc={Example code for periodic backups},
-  mimetype={text/plain}]{examples/example_02.c}
+  mimetype={text/plain},
+  ucfilespec={examples/example\_02.c}]
+          {examples/example_02.c}
 
 Subtract one month from the local time computed above, and
 convert it to Coordinated Universal Time.  Compute the
@@ -886,12 +1035,16 @@ the extra day at the end of February,
 and the leap second at the end of the year.
 \inputminted[firstline=45,lastline=81]{c}{examples/example_03.c}
 \embedfile[desc={Example code for rocket over Central Park},
-  mimetype={text/plain}]{examples/example_03.c}
+  mimetype={text/plain},
+  ucfilespec={examples/example\_03.c}]
+          {examples/example_03.c}
 
 Here is the schedule for 2016:
 \VerbatimInput[fontsize=\relscale{0.95}]{example_03_output.txt}
 \embedfile[desc={Output of example 3},
-  mimetype={text/plain}]{example_03_output.txt}
+  mimetype={text/plain},
+  ucfilespec={example\_03\_output.txt}]
+          {example_03_output.txt}
 
 \subsection{Using International Atomic Time}
 \label{example:TAI}
@@ -907,7 +1060,9 @@ minus 10 to it, specifying that seconds before 1972 are variable length.
 Convert the result to text.  The code looks like this:
 \inputminted[firstline=41,lastline=67]{c}{examples/example_04.c}
 \embedfile[desc={Example code for International Atomic Time},
-  mimetype={text/plain}]{examples/example_04.c}
+  mimetype={text/plain},
+  ucfilespec={examples/example\_04.c}]
+          {examples/example_04.c}
 
 If you find the use of variable-length seconds before 1972 troublesome,
 see the next example.
@@ -938,7 +1093,9 @@ synchronized with the rotation of the Earth.
 
 \inputminted[firstline=41,lastline=74]{c}{examples/example_05.c}
 \embedfile[desc={Example code for PTP}
-  mimetype={text/plain}]{examples/example_05.c}
+  mimetype={text/plain},
+  ucfilespec={examples/example\_05.c}]
+          {examples/example_05.c}
 
 \subsection{Displaying PTP time stamps using Python}
 \label{example:PTP_using_Python}
@@ -947,7 +1104,9 @@ but we prefer to code in Python.
 
 \inputminted[firstline=27,lastline=71]{Python}{examples/example_06.py}
 \embedfile[desc={Example Python code for PTP}
-  mimetype={text/plain}]{examples/example_06.py}
+  mimetype={text/plain},
+  ucfilespec={examples/example\_06.py}]
+          {examples/example_06.py}
 
 \subsection{Displaying Local Time in Another Time Zone}
 Howard E. Hinnant has an excellent package of time subroutines
@@ -966,7 +1125,9 @@ assuming it is run at the departure location.
 
 \inputminted[firstline=27,lastline=91]{Python}{examples/example_07.py}
 \embedfile[desc={Example Python code for PTP}
-  mimetype={text/plain}]{examples/example_07.py}
+  mimetype={text/plain},
+  ucfilespec={examples/example\_07.py}]
+          {examples/example_07.py}
 
 Note that this code must have the UTC offset and the abbreviation
 of Tehran's time zone as constants, rather than extracting them
@@ -1069,13 +1230,17 @@ Commons Attribution-ShareAlike 4.0 International License.  The code
 presented here, and embedded in the PDF file, is licensed under
 the GPL, version 3 or later.
 \embedfile[desc={General Public License version 3},
-  mimetype={text/plain}]{LICENSE}
+  mimetype={text/plain},
+  ucfilespec={LICENSE}]
+          {LICENSE}
 
 The full text of the Creative Commons Attribution-ShareAlike 4.0
 International license is at this web site:
 \href{https://creativecommons.org/licenses/by-sa/4.0/legalcode}{https://creativecommons.org/licenses/by-sa/4.0/legalcode}%
 \embedfile[desc={Plaintext version of Creative Commons BY-SA 4.0 license},
-  mimetype={text/plain}]{legalcode.txt}, and is embedded in this
+  mimetype={text/plain},
+  ucfilespec={legalcode.txt}]
+          {legalcode.txt}, and is embedded in this
 PDF file.  What follows is a human-readable summary of it.
 
 \subsection{You are free to:}
@@ -1123,6 +1288,7 @@ freedoms as long as you follow the license terms.
 \section{Revision History}
 
 \begin{description}
+\item[2023-11-17 5.141.2]Adjust future leap seconds starting in 2056.
 \item[2023-11-03 5.140.2]Adjust future leap seconds starting in 2081.
 \item[2023-10-29 5.139.2]Adjust future leap seconds starting in 2060.
 \item[2023-10-28 5.138.2]Adjust future leap seconds starting in 2439.
@@ -1544,6 +1710,8 @@ freedoms as long as you follow the license terms.
 \end{description}
 
 \bibliography{references}
-\embedfile[desc={Bibliography},mimetype={text/plain}]{references.bib}
+\embedfile[desc={Bibliography},mimetype={text/plain},
+  ucfilespec={references.bib}]
+          {references.bib}
 
 \end{document}

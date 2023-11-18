@@ -1,4 +1,4 @@
-#                                               -*- Autoconf -*-
+                                                -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 #
 # Copyright © 2023 by John Sauter.
@@ -6,7 +6,7 @@
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
 AC_PREREQ([2.69])
-AC_INIT([libtime], [2023.11.03],
+AC_INIT([libtime], [2023.11.17],
 [John_Sauter@systemeyescomputerstore.com],
 [libtime], ["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
@@ -95,7 +95,7 @@ LT_INIT()
 # in the libtime.spec file must also be changed.
 #
 AC_SUBST(libtool_version_current,"5")
-AC_SUBST(libtool_version_revision, "140")
+AC_SUBST(libtool_version_revision, "141")
 AC_SUBST(libtool_version_age, "2")
 
 # Checks for programs.

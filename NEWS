@@ -1,3 +1,8 @@
+2023-11-17 5.141.2
+  Adjust future leap seconds starting in 2056.
+  Use underscores properly when embedding files in the documentation PDF.
+  Use backslashes property in read_extraordinary_days_table.py.
+  
 2023-11-03 5.140.2
   Adjust future leap seconds starting in 2081.
   

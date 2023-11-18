@@ -1,6 +1,6 @@
 Name:           libtime
-Version:        2023.11.03
-Release:        2%{?dist}
+Version:        2023.11.17
+Release:        1%{?dist}
 Summary:        Manipulate time values
 
 License:        GPLv3+
@@ -103,6 +103,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Fri Nov 17 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2023.11.17-1 Adjust future leap seconds starting in 2056.
 * Fri Nov 03 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2023.11.03-2 Correct an error in the PDF file.
 * Fri Nov 03 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
