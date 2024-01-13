@@ -1,10 +1,10 @@
 /*
- * File: test_time.c, author: John Sauter, date: November 23, 2019.
+ * File: test_time.c, author: John Sauter, date: January 7, 2024.
  * Test the time subroutines.
  */
 
 /*
- * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2024 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -28,10 +28,6 @@
  *    e-mail: John_Sauter@systemeyescomputerstore.com
  */
 
-#if HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>		/* getopt_long() */
@@ -45,9 +41,6 @@
 
 #include "time_subroutines.h"
 
-static char *output_file = NULL;
-static double running_time = 0.0;
-static double delay_time = 0.0;
 static int debug_level = 0;
 
 /* routine to exit with an error message */
@@ -58,20 +51,17 @@ errno_exit (const char *s)
   exit (EXIT_FAILURE);
 }
 
-/* Print a log file of the clock.  */
+/* Perform some tests. */
 void
-do_logging (char *log_file_name)
+do_tests ()
 {
-  FILE *log_file;
   struct timespec ts_m, ts_r;
   const clockid_t id_m = CLOCK_MONOTONIC;
   const clockid_t id_r = CLOCK_REALTIME;
-  double start_time, current_time;
   char text_buffer_1 [64];
   char text_buffer_2 [64];
   char text_buffer_3 [64];
   char text_buffer_4 [64];
-  struct timespec delay_timespec;
   int nanoseconds;
   struct tm now_tm;
   long long int current_time_long_long_int;
@@ -86,9 +76,7 @@ do_logging (char *log_file_name)
   struct tm target_time_tm;
   long long int add_nanoseconds;
 
-#if HAVE_int128
   __int128 current_time_int128;
-#endif
     
   printf ("Size of TM struture is: %zu bytes or %zu ints.\n",
 	  sizeof (base_time_tm), sizeof (base_time_tm) / sizeof (int));
@@ -110,74 +98,41 @@ do_logging (char *log_file_name)
   printf ("Size of tm_zone is: %zu.\n",
 	  sizeof(((struct tm *)0)->tm_zone));
   
-  log_file = fopen (log_file_name, "a+");
-  if (log_file == NULL)
-    {
-      errno_exit ("Unable to open output file;");
-    }
-
-  
-  fprintf (log_file, "UTC time string, UTC time with nanoseconds integer, "
-	   "local time string, UTC time string, "
-	   "elapsed_time, UTC time integer, "
-	   "monotonic seconds, monotonic nanoseconds\n");
-
-  /* Compute the start time, so we can stop when requested by -t.  */
-  clock_gettime (id_m, &ts_m);
-  start_time = (double) ts_m.tv_sec + (double) (ts_m.tv_nsec / 1e9);
-  delay_timespec.tv_sec = (int) delay_time;
-  delay_timespec.tv_nsec = ((int) (delay_time * 1E9)) - delay_timespec.tv_sec;
-  delay_time_ns = delay_time * (double) 1e9;
-  
   time_current_tm_nano (&base_time_tm, &base_nanoseconds);
   loop_counter = 0;
   
-  while (1)
-    {
-      clock_gettime (id_r, &ts_r);
-      clock_gettime (id_m, &ts_m);
+  clock_gettime (id_r, &ts_r);
+  clock_gettime (id_m, &ts_m);
 
-      time_current_tm_nano (&now_tm, &nanoseconds);
-      time_tm_nano_to_string (&now_tm, nanoseconds,
-			      text_buffer_1, sizeof(text_buffer_1));
-#if HAVE_int128
-      time_tm_nano_to_integer (&now_tm, nanoseconds,
-			       &current_time_int128);
-      int128_to_string (&current_time_int128,
-			text_buffer_2, sizeof(text_buffer_2));
-#else
-      memset (text_buffer_2, 0, sizeof(text_buffer_2));
-#endif
-      time_tm_to_integer (&now_tm, &current_time_long_long_int);
-      time_UTC_to_local (&now_tm, &local_time_tm, INT_MIN);
-      time_tm_nano_to_string (&local_time_tm, nanoseconds,
-			      text_buffer_3, sizeof(text_buffer_3));
-      time_local_to_UTC (&local_time_tm, &utc_time_tm, INT_MIN);
-      time_tm_nano_to_string (&utc_time_tm, nanoseconds,
-			      text_buffer_4, sizeof(text_buffer_4));
+  time_current_tm_nano (&now_tm, &nanoseconds);
+  time_tm_nano_to_string (&now_tm, nanoseconds,
+			  text_buffer_1, sizeof(text_buffer_1));
+  printf ("UTC time string: %s.\n", text_buffer_1, sizeof(text_buffer_1));
+  
+  time_tm_nano_to_integer (&now_tm, nanoseconds,
+			   &current_time_int128);
+  int128_to_string (&current_time_int128,
+		    text_buffer_2, sizeof(text_buffer_2));
+  printf ("UTC time integer with nanoseconds: %s.\n",
+	  text_buffer_2, sizeof(text_buffer_2));
+  
+  time_tm_to_integer (&now_tm, &current_time_long_long_int);
+  printf ("UTC time integer: %lld.\n", current_time_long_long_int);
+  
+  time_UTC_to_local (&now_tm, &local_time_tm, INT_MIN);
+  time_tm_nano_to_string (&local_time_tm, nanoseconds,
+			  text_buffer_3, sizeof(text_buffer_3));
+  printf ("Local time with nanoseconds: %s.\n",
+	  text_buffer_3, sizeof(text_buffer_3));
+  
+  time_local_to_UTC (&local_time_tm, &utc_time_tm, INT_MIN);
+  time_tm_nano_to_string (&utc_time_tm, nanoseconds,
+			  text_buffer_4, sizeof(text_buffer_4));
+  printf ("back to UTC time: %s.\n", text_buffer_4, sizeof(text_buffer_4));
 
-      elapsed_time = time_diff (&base_time_tm, &now_tm, INT_MIN);
+  elapsed_time = time_diff (&base_time_tm, &now_tm, INT_MIN);
+  printf ("Elapsed time: %d.\n", elapsed_time);
       
-      fprintf (log_file, "%s, %s, %s, %s, %d, %lld, %ld, %ld\n",
-	       text_buffer_1, text_buffer_2, text_buffer_3, text_buffer_4,
-	       elapsed_time, current_time_long_long_int,
-	       (long int) ts_m.tv_sec, (long int) ts_m.tv_nsec);
-      
-      loop_counter = loop_counter + 1;
-      time_copy_tm (&base_time_tm, &target_time_tm);
-      target_nanoseconds = 0;
-      add_nanoseconds = delay_time_ns * loop_counter;
-      time_UTC_add_seconds_ns (&target_time_tm, &target_nanoseconds,
-			       0, add_nanoseconds, INT_MIN);
-      time_sleep_until (&target_time_tm, target_nanoseconds, INT_MIN); 
- 
-      /* clock_nanosleep (CLOCK_MONOTONIC, 0, &delay_timespec, NULL); */
-      current_time = (double) ts_m.tv_sec + (double) (ts_m.tv_nsec / 1e9);
-      if ((current_time - start_time) >= running_time)
-	break;
-    }
-    
-  fclose (log_file);
   return;
 }
 
@@ -194,9 +149,6 @@ usage (FILE * fp, int argc, char **argv)
 	       " Version 1.3 2019-11-16\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
-	       "-o | --output-file   Where to put the log file\n"
-	       "-r | --runtime       How many seconds to run\n"
-	       "-d | --delay         How many seconds to delay between lines\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"
 	       "", argv[0]);
     }
@@ -207,9 +159,6 @@ static const char short_options[] = "ho:r:d:D:";
 
 static const struct option long_options[] = {
   {"help", no_argument, NULL, 'h'},
-  {"output-file", required_argument, NULL, 'o'},
-  {"runtime", required_argument, NULL, 't'},
-  {"delay", required_argument, NULL, 'd'},
   {"debug-level", required_argument, NULL, 'D'},
   {0, 0, 0, 0}
 };
@@ -238,18 +187,6 @@ main (int argc, char **argv)
 	  usage (stdout, argc, argv);
 	  exit (EXIT_SUCCESS);
 
-	case 'o':
-	  output_file = optarg;
-	  break;
-
-	case 'r':
-	  running_time = atof (optarg);
-	  break;
-	  
-	case 'd':
-	  delay_time = atof (optarg);
-	  break;
-
 	case 'D':
 	  debug_level = atoi (optarg);
 	  break;
@@ -260,12 +197,7 @@ main (int argc, char **argv)
 	}
     }
 
-  if (output_file == NULL)
-    {
-      fprintf (stderr, "The output file must be specified.\n");
-      exit (EXIT_FAILURE);
-    }
-  do_logging (output_file);
+  do_tests ();
   exit (EXIT_SUCCESS);
 
   return 0;
