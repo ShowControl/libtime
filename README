@@ -1,4 +1,4 @@
-# README for libtime project, last updated October 28, 2023.
+# README for libtime project, last updated January 20, 2024.
 
 Libtime is a package of subroutines for the manipulation of time values.
 The subroutines handle leap seconds correctly by avoiding the use of
@@ -198,7 +198,8 @@ on its cover page, the revision history has been updated and the
 pagination looks OK.
 
 10. Create and test the SRPM file.  RPMlint will complain
-that the -doc RPM has no binaries.  Anything else needs to be investigated.
+that the -doc RPM has no binaries.  It may also complain about the spelling
+of "tm".  Anything else needs to be investigated.
 This is the first step that tests the spec file.  If you need to change it
 go back to the autogen step, since the spec file is included in the tarball.
 
