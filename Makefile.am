@@ -1,6 +1,6 @@
-# File: Makefile.am for libtime, author: John Sauter, date: January 6, 2023.
+# File: Makefile.am for libtime, author: John Sauter, date: April 7, 2024.
 #
-# Copyright © 2023 by John Sauter.
+# Copyright © 2024 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
@@ -106,7 +106,7 @@ noinst_PROGRAMS += powers_of_two
 endif
 
 # Here is the location of the source file, the dependency information
-# and the linking process for the above programs.
+# and the linking process for each of the above programs.
 example_02_SOURCES = examples/example_02.c
 example_03_SOURCES = examples/example_03.c
 example_04_SOURCES = examples/example_04.c
@@ -148,8 +148,8 @@ python_PYTHON = time_subroutines.py
 # The Libtool version-info integers are defined in configure.ac.
 libtime_la_LDFLAGS = -version-info @libtool_version_current@:@libtool_version_revision@:@libtool_version_age@
 
-# The spec file is used to build RPMs for the Centos, epel, Fedora and
-# OpenSUSE-tumbleweed distributions of GNU/Linux: libtime, libtime-devel,
+# The spec file is used to build RPMs for the Fedora
+# distribution of GNU/Linux: libtime, libtime-devel,
 # libtime-doc and two debug RPMs.
 EXTRA_DIST += libtime.spec
 
@@ -194,7 +194,7 @@ pdf-local: avoid_time_t.pdf fix_files.sh
 
 # Building the PDF depends on the bbl file, which is built below.
 # When the bbl file is available, run LaTeX four times to be sure
-# the forward references are resolved and the pdf byte count correct.
+# the forward references are resolved and the pdf byte count is correct.
 # There is a slight chance that this process will be unstable,
 # with the size of a reference changing the pagination, thus changing
 # the size of a reference to that page.
@@ -224,7 +224,7 @@ avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
 example_03_output.txt : example_03
 	$(builddir)/example_03 >$(builddir)/example_03_output.txt
 
-# Include the signature file in the repository
+# Include the signature file in the repository.
 signature : ${PACKAGE}-${VERSION}.tar.gz.asc
 .PHONEY: signature
 

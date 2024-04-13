@@ -14,9 +14,9 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: January 6, 2023.
+# File: Makefile.am for libtime, author: John Sauter, date: April 7, 2024.
 #
-# Copyright © 2023 by John Sauter.
+# Copyright © 2024 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
@@ -731,8 +731,8 @@ libtime_la_SOURCES = src/time_copy.c src/time_current_tm.c \
 # in the distribution.  Note that we include extraordinary_days.dat
 # even though it won't be used, to document the source of our data.
 
-# The spec file is used to build RPMs for the Centos, epel, Fedora and
-# OpenSUSE-tumbleweed distributions of GNU/Linux: libtime, libtime-devel,
+# The spec file is used to build RPMs for the Fedora
+# distribution of GNU/Linux: libtime, libtime-devel,
 # libtime-doc and two debug RPMs.
 
 # fix_files.sh is used to restore directories and permissions when needed
@@ -764,7 +764,7 @@ dist_doc_DATA = README COPYING LICENSE AUTHORS ChangeLog INSTALL NEWS \
 	$(am__append_2)
 
 # Here is the location of the source file, the dependency information
-# and the linking process for the above programs.
+# and the linking process for each of the above programs.
 example_02_SOURCES = examples/example_02.c
 example_03_SOURCES = examples/example_03.c
 example_04_SOURCES = examples/example_04.c
@@ -1971,7 +1971,7 @@ pdf-local: avoid_time_t.pdf fix_files.sh
 
 # Building the PDF depends on the bbl file, which is built below.
 # When the bbl file is available, run LaTeX four times to be sure
-# the forward references are resolved and the pdf byte count correct.
+# the forward references are resolved and the pdf byte count is correct.
 # There is a slight chance that this process will be unstable,
 # with the size of a reference changing the pagination, thus changing
 # the size of a reference to that page.
@@ -2001,7 +2001,7 @@ avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
 example_03_output.txt : example_03
 	$(builddir)/example_03 >$(builddir)/example_03_output.txt
 
-# Include the signature file in the repository
+# Include the signature file in the repository.
 signature : ${PACKAGE}-${VERSION}.tar.gz.asc
 .PHONEY: signature
 
