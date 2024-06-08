@@ -6,7 +6,7 @@
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
 AC_PREREQ([2.69])
-AC_INIT([libtime], [2024.05.31],
+AC_INIT([libtime], [2024.06.07],
 [John_Sauter@systemeyescomputerstore.com],
 [libtime], ["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
@@ -20,7 +20,7 @@ AM_PATH_PYTHON([3.5])
 # to need all the Autoconfigure software.
 AM_MAINTAINER_MODE
 
-# On the other hand, building the PDF requires LaTeX and lots of
+# On the other hand, building the PDF requires LuaLaTeX and lots of
 # its packages.  Build it only if --enable-pdf is specified at
 # configure time, or if building the distribution kit.
 # This won't be a problem if the sources have been extracted from the PDF,
@@ -56,7 +56,7 @@ LT_INIT()
 # It specifies three integers: current, revision and age.
 # Each release of a library might change the global functions that
 # it supports, by adding new entry points, removing old entry points,
-# or changing the arguments of existing entry points.
+# or changing the arguments or meaning of existing entry points.
 # The values change on each release, depending on the nature of the changes
 # to the library.  Here are the change rules from the GNU Libtool
 # documentation:
@@ -95,7 +95,7 @@ LT_INIT()
 # in the libtime.spec file must also be changed.
 #
 AC_SUBST(libtool_version_current,"5")
-AC_SUBST(libtool_version_revision, "165")
+AC_SUBST(libtool_version_revision, "166")
 AC_SUBST(libtool_version_age, "2")
 
 # Checks for programs.
