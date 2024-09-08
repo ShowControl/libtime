@@ -6,7 +6,7 @@
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
 AC_PREREQ([2.69])
-AC_INIT([libtime], [2024.08.09],
+AC_INIT([libtime], [2024.09.06],
 [John_Sauter@systemeyescomputerstore.com],
 [libtime], ["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
@@ -91,11 +91,12 @@ LT_INIT()
 #     use the new version. Bump current, set revision and age to 0.
 #
 # See the NEWS file (and the update history in the PDF) for the history
-# of the version-info.  When these values are changed, the parallel values
-# in the libtime.spec file must also be changed.
+# of the version-info.  Note that a change that requires programs to be
+# recompiled or relinked will change the library's soname, and this requires
+# a change in the libtime.spec file.
 #
 AC_SUBST(libtool_version_current,"5")
-AC_SUBST(libtool_version_revision, "172")
+AC_SUBST(libtool_version_revision, "173")
 AC_SUBST(libtool_version_age, "2")
 
 # Checks for programs.
