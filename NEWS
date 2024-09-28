@@ -1,3 +1,6 @@
+2024-09-27 5.174.2
+  Adjust future leap seconds starting in 2142.
+  
 2024-09-06 5.173.2
   Adjust future leap seconds starting in 2249.   Refer to the 2024 edition
   of POSIX.
