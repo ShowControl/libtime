@@ -6,7 +6,7 @@
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
 AC_PREREQ([2.69])
-AC_INIT([libtime], [2024.09.27],
+AC_INIT([libtime], [2024.11.01],
 [John_Sauter@systemeyescomputerstore.com],
 [libtime], ["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
@@ -96,7 +96,7 @@ LT_INIT()
 # a change in the libtime.spec file.
 #
 AC_SUBST(libtool_version_current,"5")
-AC_SUBST(libtool_version_revision, "174")
+AC_SUBST(libtool_version_revision, "175")
 AC_SUBST(libtool_version_age, "2")
 
 # Checks for programs.
