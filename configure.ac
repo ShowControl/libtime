@@ -6,14 +6,14 @@
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
 AC_PREREQ([2.69])
-AC_INIT([libtime], [2024.12.20],
+AC_INIT([libtime], [2024.12.27],
 [John_Sauter@systemeyescomputerstore.com],
 [libtime], ["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/time_diff.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIRS([m4])
-AM_PATH_PYTHON([3.5])
+AM_PATH_PYTHON([3.10])
 
 # Use maintainer mode because files extracted from a PDF file
 # lose their modification dates, and we don't want the end user
@@ -96,7 +96,7 @@ LT_INIT()
 # a change in the libtime.spec file.
 #
 AC_SUBST(libtool_version_current,"5")
-AC_SUBST(libtool_version_revision, "176")
+AC_SUBST(libtool_version_revision, "177")
 AC_SUBST(libtool_version_age, "2")
 
 # Checks for programs.
