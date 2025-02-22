@@ -1,12 +1,15 @@
-2025-01-10
+2025-02-21 5.180.2
+  Adjust future leap seconds starting in 2063.
+  
+2025-01-10 5.179.2
   Adjust future leap seconds starting in 2274.  Update to IERS Bulletin C 69
   which states that UTC - TAI will remain at -37 seconds for the next six
   months, at least.
   
-2025-01-03
+2025-01-03 5.178.2
   Adjust future leap seconds starting in 2223.
   
-2024-12-27
+2024-12-27 5.177.2
   Adjust future leap seconds starting in 2141.
   
 2024-12-20 5.176.2
