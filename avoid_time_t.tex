@@ -199,12 +199,12 @@
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2025 by John Sauter},
   pdfurl={https://www.systemeyescomputerstore.com/leap\%5Fseconds/proleptic\%5FUTC.pdf},
-  pdfdate={2025-05-23},
+  pdfdate={2025-05-30},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
 
-\date{2025-05-23}
+\date{2025-05-30}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -266,15 +266,17 @@ system's current value for seconds since the Epoch is unspecified.
 How any changes to the value of seconds since the Epoch are made to align to
 a desired relationship with the current actual time is implementation-defined.
 As represented in seconds since the Epoch, each and every day shall be
-accounted for by exactly \num{86400} seconds.
+accounted for by exactly \num[mode=text]{86400} seconds.
 
 \begin{description}
   \item[Note:]
     The last three terms of the expression add in a day for each year that
     follows a leap year starting with the first leap year since the Epoch.
-    The first term adds a day every \num{4} years starting in 1973, the second
-    subtracts a day back out every \num{100} years starting in 2001,
-    and the third adds a day back in every \num{400} years starting in 2001.
+    The first term adds a day every \num[mode=text]{4} years starting in 1973,
+    the second
+    subtracts a day back out every \num[mode=text]{100} years starting in 2001,
+    and the third adds a day back in every \num[mode=text]{400} years starting
+    in 2001.
     The divisions in the formula are integer divisions; that is, the remainder
     is discarded leaving only the integer quotient.
 \end{description}
@@ -296,9 +298,11 @@ There are several problems with this definition:
   relationship meaningless.}
 \item{An application using {\ttfamily time\_t} is required to pretend that
   all days
-  contain exactly \num{86400} seconds.  This is false: December 31, 2016, for
-  example, contains \num{86401} seconds.  This pretense leads to application
-  program errors on days that do not contain \num{86400} seconds.
+  contain exactly \num[mode=text]{86400} seconds.
+  This is false: December 31, 2016, for
+  example, contains \num[mode=text]{86401} seconds.
+  This pretense leads to application
+  program errors on days that do not contain \num[mode=text]{86400} seconds.
   Because {\ttfamily time\_t} counts seconds almost all the time,
   application programmers
   are tempted to use it as though it always counts seconds,
@@ -326,7 +330,8 @@ and second.  To encode it into an integer you can do this:
 \end{multline*}
 The value computed above is defined for all years, has a clear relationship
 to the date and time of day, and does not require an application to pretend
-that all days have \num{86400} seconds.  Its values are very different from
+that all days have \num[mode=text]{86400} seconds.
+Its values are very different from
 the value of a {\ttfamily time\_t}, and so are not likely to be mistaken for
 it, or vice-versa.  It does not count seconds for more than a minute, so
 application programmers will not be tempted to misuse it for that purpose.
@@ -348,7 +353,7 @@ its own epoch, and that epoch will change when the computer is restarted.
 For those purposes it is best to use Coordinated Universal Time.
 
 To measure the time between two instants of Coordinated Universal Time
-requires a table of days whose lengths are not \num{86400} seconds.
+requires a table of days whose lengths are not \num[mode=text]{86400} seconds.
 This table
 can be used to adjust for the number of leap seconds that have occurred
 during the interval.
@@ -409,7 +414,7 @@ the library does contain
 {\ttfamily time\_test\_for\_disabled\_adjtimex}.
 Feel free to express yourself as you see fit about the disabling
 of {\ttfamily adjtimex}.  Fedora bugzilla
-\num{1778298}\footnote{\href{https://bugzilla.redhat.com/show_bug.cgi?id=1778298}{https://bugzilla.redhat.com/show\_bug.cgi?id=1778298}}
+\num[mode=text]{1778298}\footnote{\href{https://bugzilla.redhat.com/show_bug.cgi?id=1778298}{https://bugzilla.redhat.com/show\_bug.cgi?id=1778298}}
 contains my opinion.
 
 \subsection{clock\_nanosleep}
@@ -711,8 +716,8 @@ is the number of SI seconds since January 1, 1970, plus 10.
 The benefit of this data type is that it makes computing the number of
 seconds between two times after January 1, 1972 easy: just subtract the
 integers.  The tradeoff is that displaying the time in UTC is more difficult.
-For example, the TAI integer \num{1483228836} corresponds to December 31, 2016,
-at 23:59:60.
+For example, the TAI integer \num[mode=text]{1483228836} corresponds to
+December 31, 2016, at 23:59:60.
 See the example in subsection \ref{example:TAI} for this conversion.
 
 \section{List of Entry Points}
@@ -757,7 +762,7 @@ Use the Julian Day Number instead of the proleptic Gregorian ordinal
 from the datetime module, since it covers a wider span of time.
 If you wish to avoid floating point in your dates, you can use
 the integer part of the Julian Day Number, with the understanding
-that \num{0.5} must be added to get a proper Julian Day Number.
+that \num[mode=text]{0.5} must be added to get a proper Julian Day Number.
 The {\ttfamily tm} structure is always associated with a time zone.
 
 There is a Python example in subsection \ref{example:PTP_using_Python}.
@@ -1121,10 +1126,11 @@ see the next example.
 IEEE 1588, known as Precision Time Protocol or PTP, counts fixed-length
 seconds since an epoch.
 The SMPTE ST-2059-2 profile specifies that the epoch is
-\num{63072010} seconds before January 1, 1972 at 00:00:00 UTC.  That definition
+\num[mode=text]{63072010} seconds before January 1, 1972 at 00:00:00 UTC.
+That definition
 avoids the complexity of variable length seconds before 1972, and is
 effectively the same as the TAI integer in the previous example
-for dates after January 1, 1972, since there are \num{63072000}
+for dates after January 1, 1972, since there are \num[mode=text]{63072000}
 variable-length seconds between January 1, 1970 and January 1, 1972.
 
 PTP always measures fixed-length seconds, so how should we display
@@ -1137,8 +1143,8 @@ contemporary civil time between January 1, 1970 and January 1, 1972.
 The code is similar to the previous example, but using
 fixed-length seconds before 1972.  The display is intended to be
 more readable than the ISO 8601 format used in the previous example.
-PTP times \num{15638408} and \num{47174409} correspond to the leap
-seconds that are needed to keep a count of fixed-length seconds
+PTP times \num[mode=text]{15638408} and \num[mode=text]{47174409} correspond
+to the leap seconds that are needed to keep a count of fixed-length seconds
 synchronized with the rotation of the Earth.
 
 \inputminted[firstline=41,lastline=74]{c}{examples/example_05.c}
@@ -1199,15 +1205,15 @@ uncertain.
 We have increasingly good records of the rotation rate of the Earth
 from the time
 of the invention of the telescope and the pendulum clock until
-the present.  Prior to \num{1825}, the measurements become uncertain.
+the present.  Prior to 1825 the measurements become uncertain.
 Efforts have been made to improve our knowledge of the rotation
 rate of the Earth in historical times\citep{2004JHA....35..327M}%
 \citep{2005JHA....36..339M}\citep{1997A&A...322..347S}%
 \citep{2011ASSP...23....3S}\citep{1986PEPI...44..281M}%
 \citep{Stephenson20160404}\citep{Stephenson20210217}.
 This software carries a table in file {\filename extraordinary\_days.dat}
-that reaches back to the year \num{-2000} and forward to
-the year \num{2500} based on the latest research on the rotation
+that reaches back to the year -2000 and forward to
+the year 2500 based on the latest research on the rotation
 of the Earth.
 Beyond the table, the software makes predictions which become less
 reliable the further out you go.
@@ -1215,7 +1221,7 @@ reliable the further out you go.
 The table will be updated from time to time to capture present
 observations of the Earth's rotation and better estimates from
 historical times.  If your application deals with times before
-\num{1825} or more than six months in the future, you should recompute
+1825 or more than six months in the future, you should recompute
 your times whenever the DTAI table is updated.  In the example
 of the rocket over Central Park, if you had pre-computed the times
 in 2015, you might have missed the leap second at the end of
@@ -1240,7 +1246,7 @@ programs, but some kernel changes would result in better UTC support.
 \begin{enumerate}
 \item Add a named clock, called {\ttfamily CLOCK\_UTC}, which uses
   a {\ttfamily timeval} in which the nanoseconds field has
-  \num[retain-unity-mantissa = false]{1e9} added to
+  \num[mode=text,retain-unity-mantissa = false]{1e9} added to
   indicate a leap second.  This would allow the clock to be set
   during a leap second.
 \item Add a kernel boot parameter (perhaps in conjunction with
@@ -1338,13 +1344,17 @@ freedoms as long as you follow the license terms.
 \section{Revision History}
 
 \begin{description}
+\item[2025-05-30 5.183.2]Adjust future leap seconds starting in 2029.
+  The next leap second is predicted to be a negative leap second
+  on December 31, 2029.
 \item[2025-05-23 5.182.2]Adjust future leap seconds starting in 2208.
 \item[2025-04-04 5.181.2]Adjust future leap seconds starting in 2063.
 \item[2025-02-21 5.180.2]Adjust future leap seconds starting in 2063.
 \item[2025-01-10 5.179.2]Adjust future leap seconds starting in 2274.
   Update to IERS Bulletin C 69,
   issued January 6, 2025, which states that $\rm{UTC}-\rm{TAI}$
-  will remain at \num{-37} seconds for the next six months, at least.
+  will remain at \num[mode=text]{-37} seconds for the next six months,
+  at least.
 \item[2025-01-03 5.178.2]Adjust future leap seconds starting in 2223.
 \item[2024-12-27 5.177.2]Adjust future leap seconds starting in 2141.
 \item[2024-12-20 5.176.2]Adjust future leap seconds starting in 2097.
@@ -1472,7 +1482,8 @@ freedoms as long as you follow the license terms.
   on December 31, 2029.
   Update to IERS Bulletin C 65,
   issued January 9, 2023, which states that $\rm{UTC}-\rm{TAI}$
-  will remain at \num{-37} seconds for the next six months, at least.
+  will remain at \num[mode=text]{-37} seconds for the next six months,
+  at least.
 \item[2023-01-11 5.98.2]Move the URLs of the documents from Google Drive
   to System Eyes Computer Store.
 \item[2023-01-06 5.98.2]Adjust future leap seconds starting in 2038.
@@ -1715,7 +1726,7 @@ freedoms as long as you follow the license terms.
 \item[2019-07-04 3:6:0]Update to IERS Bulletin C 58, issued July
   4, 2019, which states that no leap second will be introduced
   at the end of December 2019, so $\rm{UTC}-\rm{TAI}$ will remain at
-  \num{-37} seconds for the next six months, at least.  
+  \num[mode=text]{-37} seconds for the next six months, at least.  
 \item[2019-06-22 3:5:0] Be more careful with the definition
   and display of Julian Day Numbers.
 \item[2019-06-16 3:4:0] Delay the June 2020 leap second to
@@ -1747,7 +1758,7 @@ freedoms as long as you follow the license terms.
 \item[2019-01-12 2:5:0] Update to IERS Bulletin C 57, issued January
   7, 2019, which states that no leap second will be introduced
   at the end of June 2019, so $\rm{UTC}-\rm{TAI}$ will remain at
-  \num{-37} seconds for the next six months, at least.  
+  \num[mode=text]{-37} seconds for the next six months, at least.  
 \item[2018-12-23 2:4:0] Delay the December 2094 leap second by six month
   to June 2095.
 \item[2018-12-02 2:3:0] Add information on converting IEEE 1588 (PTP)
@@ -1769,7 +1780,7 @@ freedoms as long as you follow the license terms.
 \item[2018-07-15 1:12:0] Update to IERS Bulletin C 56, issued July
   5, 2018, which states that no leap second will be introduced
   at the end of December 2018, so $\rm{UTC}-\rm{TAI}$ will remain at
-  \num{-37} seconds for the next six months, at least.
+  \num[mode=text]{-37} seconds for the next six months, at least.
 \item[2018-05-20 1:11:0] Move the prediction of the next leap second
   from June 30, 2020 to December 31, 2020 based on predictions of
   the Earth's rotation by the IERS projected into the future.
@@ -1779,7 +1790,7 @@ freedoms as long as you follow the license terms.
 \item[2018-01-15 1:9:0] Update to IERS Bulletin C 55, issued
   January 9, 2018, which states that no leap second will be introduced
   at the end of June 2018 so $\rm{UTC}-\rm{TAI}$ will remain at
-  \num{-37} seconds for the next six months, at least.
+  \num[mode=text]{-37} seconds for the next six months, at least.
 \item[2017-12-04 1:8:0] Add information about International Atomic Time.
 \item[2017-11-19 1:7:0] Add support for pkg-config, make check and
   make distcheck.  Recommend CLOCK\_BOOTTIME rather than CLOCK\_MONOTONIC
@@ -1795,7 +1806,7 @@ freedoms as long as you follow the license terms.
   only if requested.  Update to IERS Bulletin C 54, issued
   July 6, 2017, which states that no leap second will be introduced
   at the end of December, 2017, so $\rm{UTC}-\rm{TAI}$ will remain at
-  \num{-37} seconds for the next six months, at least.
+  \num[mode=text]{-37} seconds for the next six months, at least.
 \item[2017-05-07 1:2:0] Minor typographical changes, add test\_local.c,
   work around compiler over-optimization in int128\_to\_string.
 \item[2017-01-27 1:1:0] Update the Makefile and some of the test programs
@@ -1804,7 +1815,8 @@ freedoms as long as you follow the license terms.
   before 1972.
 \item[2017-01-10 0:2:0] Updated to IERS Bulletin C 53,
   issued January 9, 2017, which states that $\rm{UTC}-\rm{TAI}$
-  will remain at \num{-37} seconds for the next six months, at least.
+  will remain at \num[mode=text]{-37} seconds for the next six months,
+  at least.
 \item[2017-01-01 0:1:0] Added a description of the stat function,
   the list of entry points and the kernel recommendations.
   Handle converting $-2^{127}$ to a string. 

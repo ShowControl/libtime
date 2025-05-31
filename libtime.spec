@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2025.05.23
+Version:        2025.05.30
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -103,6 +103,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Fri May 30 2025 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2025.05.30-1 Adjust future leap seconds starting in 2029.
 * Fri May 23 2025 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2025.05.23-1 Adjust future leap seconds starting in 2208.
 * Fri Apr 04 2025 John Sauter <John_Sauter@systemeyescomputerstore.com>
