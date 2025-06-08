@@ -1,4 +1,4 @@
-.TH LIBTIME 3 "2021-04-23" "John Sauter"
+.TH LIBTIME 3 "2025-06-07" "John Sauter"
 .SH NAME
 libtime \- manipulate representations of time
 .SH SYMOPSIS
@@ -101,7 +101,7 @@ February will be 28 or 29 depending on the year.
 int time_length_prev_local_minute (struct tm *time_tm, int variable_length_seconds_before_year);
 Compute the length of the previous minute of local time in seconds.
 Time_tm is the current time, expressed in local time.
-This is usually be 60, but will be 61 in the presence of a positive leap second,
+This is usually 60, but will be 61 in the presence of a positive leap second,
 or 59 in the presence of a negative leap second.  If the current minute is
 the first minute of the year, the previous minute will be the last minute
 of the previous year.
@@ -116,7 +116,7 @@ February will be 28 or 29 depending on the year.
 int time_length_prev_UTC_minute (struct tm *time_tm, int variable_length_seconds_before_year);
 Compute the length of the previous minute of Coordinated Universal Time in
 seconds.  Time_tm is the current time, expressed as UTC.
-This is usually be 60, but will be 61 in the presence of a positive leap second,
+This is usually 60, but will be 61 in the presence of a positive leap second,
 or 59 in the presence of a negative leap second.  If the current minute is
 the first minute of the year, the previous minute will be the last minute
 of the previous year.
@@ -128,7 +128,7 @@ are ignored.
 int time_length_UTC_minute (struct tm *time_tm, int variable_length_seconds_before_year);
 Compute the length of the current minute of Coordinated Universal Time in
 seconds.  Time_tm is the current time.
-This is usually be 60, but will be 61 in the presence of a positive leap second,
+This is usually 60, but will be 61 in the presence of a positive leap second,
 or 59 in the presence of a negative leap second.  If the current minute is
 the first minute of the year, the previous minute will be the last minute
 of the previous year.
@@ -138,11 +138,13 @@ are ignored.
 .sp
 .TP
 int time_local_add_days (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_before_year);
-Add days to a local time.  Time_tm is the current time, expressed as local time.
+Add days to a local time.
+Time_tm is the current time, expressed as local time.
 The result overwrites this value.  Addend is the number of days to add;
 a negative value causes days to be subtracted.
 Rounding_mode is used when the resulting time is invalid.  This can happen,
-for example, when adding one day to December 31, 2016 at 18:59:60 New York time.
+for example, when adding one day to December 31, 2016 at 18:59:60
+New York time.
 The result is January 1, 2017 at 18:59:60, which is invalid.  If rounding_mode
 is 1, the result is adjusted to January 1, 2017 at 19:00:00.  If rounding_mode
 is -1, the result is adjusted to January 1, 2017, at 18:59:59.
@@ -159,7 +161,8 @@ Rounding_mode is used when the resulting time is invalid.  This can
 happen, for example, when adding one hour to December 31, 2016 at 18:59:60
 New York time.  The result is December 31, 2016 at 19:59:60, which is invalid.
 If rounding_mode is 1, the result is adjusted to December 31, 2016 at 20:00:00.
-If rounding_mode is -1, the result is adjusted to December 31, 2016 at 19:59:59.
+If rounding_mode is -1, the result is adjusted to December 31, 2016 at
+19:59:59.
 If variable_length_seconds_before_year is greater than INT_MIN,
 leap seconds before January 1 of the specified year
 are ignored.
@@ -174,7 +177,8 @@ happen, for example, when subtracting one minute from December 31, 2016
 at 18:59:60 New York time.  The result is December 31, 2016 at 18:58:60,
 which is invalid.
 If rounding_mode is 1, the result is adjusted to December 31, 2016 at 18:59:00.
-If rounding_mode is -1, the result is adjusted to December 31, 2016 at 18:58:59.
+If rounding_mode is -1, the result is adjusted to December 31, 2016 at
+18:58:59.
 If variable_length_seconds_before_year is greater than INT_MIN,
 leap seconds before January 1 of the specified year
 are ignored.
@@ -226,7 +230,8 @@ happen, for example, when subtracting one year from December 31, 2016
 at 18:59:60 New York time.  The result is December 31, 2015 at 18:59:60,
 which is invalid.
 If rounding_mode is 1, the result is adjusted to December 31, 2015 at 19:00:00.
-If rounding_mode is -1, the result is adjusted to December 31, 2015 at 18:59:59.
+If rounding_mode is -1, the result is adjusted to December 31, 2015 at
+18:59:59.
 If variable_length_seconds_before_year is greater than INT_MIN,
 leap seconds before January 1 of the specified year
 are ignored.
@@ -234,9 +239,11 @@ are ignored.
 .TP
 int time_local_normalize (struct tm *time_tm, long long int seconds, int variable_length_seconds_before_year);
 Make sure all of the fields of a tm structure containing local time are
-within their valid ranges.  Time_tm is the TM value to be normalized; the
+within their valid ranges and that the day of the year and day of the week
+are correct.  Time_tm is the TM value to be normalized; the
 result overwrites this value.  Seconds holds the seconds value from the
-TM structure, so it can be a 64-bit value.
+TM structure, so it can be a 64-bit value.  The resulting number of seconds
+is stored in the seconds member of time_tm.
 If variable_length_seconds_before_year is greater than INT_MIN,
 leap seconds before January 1 of the specified year
 are ignored.
@@ -255,7 +262,8 @@ are ignored.
 int time_sleep_until (struct tm *time_tm, int nanoseconds, int variable_length_seconds_before_year);
 Sleep until a specified Coordinated Universal Time.
 Time_tm is the target of the sleep, to the second.  Nanoseconds specifies
-the number of nanoseconds after time_tm is the target.  If the specified time
+the number of nanoseconds after time_tm to reach the target.
+If the specified time
 is in the past this function returns immediately; otherwise it sleeps until
 at least the specified time, and then returns.
 If variable_length_seconds_before_year is greater than INT_MIN,
@@ -283,7 +291,8 @@ int time_tm_nano_to_string (struct tm *input_tm, int input_nanoseconds, char *cu
 Convert the time and nanoseconds to a string.
 Input_tm is the time to convert, to the second; input_nanoseconds is
 the additional nanoseconds.  Current_time_string is the result, with its
-length limited to current_time_string_length bytes.  The format follows RFC 3339
+length limited to current_time_string_length bytes.
+The format follows RFC 3339
 and ISO 8601 and can handle both UTC and local time.
 The return value is the number of bytes stored in the string, not counting
 the trailing NUL byte.
@@ -297,7 +306,8 @@ Input_tm is the time to be coverted; result is the result.
 int time_tm_to_string (struct tm *input_tm, char *current_time_string, int current_time_string_length);
 Convert the time to a string.  Input_tm is the time to convert.
 Current_time_string is the result, with its
-length limited to current_time_string_length bytes.  The format follows RFC 3339
+length limited to current_time_string_length bytes.
+The format follows RFC 3339
 and ISO 8601 and can handle both UTC and local time.
 The return value is the number of bytes stored in the string, not counting
 the trailing NUL byte.
@@ -314,8 +324,7 @@ The result is January 1, 2017 at 23:59:60, which is invalid.  If rounding_mode
 is 1, the result is adjusted to January 2, 2017 at 00:00:00.  If rounding_mode
 is -1, the result is adjusted to January 1, 2017, at 23:59:59.
 If variable_length_seconds_before_year is greater than INT_MIN,
-leap seconds before January 1 of the specified year
-are ignored.
+leap seconds before January 1 of the specified year are ignored.
 .sp
 .TP
 int time_UTC_add_hours (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_after_year);
@@ -329,8 +338,7 @@ The result is January 1, 2017 at 00:59:60, which is invalid.  If rounding_mode
 is 1, the result is adjusted to January 1, 2017 at 01:00:00.  If rounding_mode
 is -1, the result is adjusted to January 1, 2017, at 00:59:59.
 If variable_length_seconds_before_year is greater than INT_MIN,
-leap seconds before January 1 of the specified year
-are ignored.
+leap seconds before January 1 of the specified year are ignored.
 .sp
 .TP
 int time_UTC_add_minutes (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_before_year);
@@ -344,8 +352,7 @@ The result is January 1, 2017 at 00:00:60, which is invalid.  If rounding_mode
 is 1, the result is adjusted to January 1, 2017 at 00:01:00.  If rounding_mode
 is -1, the result is adjusted to January 1, 2017, at 00:59:59.
 If variable_length_seconds_before_year is greater than INT_MIN,
-leap seconds before January 1 of the specified year
-are ignored.
+leap seconds before January 1 of the specified year are ignored.
 .sp
 .TP
 int time_UTC_add_months (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_before_year);
@@ -359,8 +366,7 @@ The result is February 31, 2015 which is invalid.  If rounding_mode
 is 1, the result is adjusted to March 1, 2015.  If rounding_mode
 is -1, the result is adjusted to February 28, 2015.
 If variable_length_seconds_before_year is greater than INT_MIN,
-leap seconds before January 1 of the specified year
-are ignored.
+leap seconds before January 1 of the specified year are ignored.
 .sp
 .TP
 int time_UTC_add_seconds (struct tm *time_tm, long long int add_seconds, int variable_length_seconds_before_year);
@@ -369,8 +375,7 @@ Time_tm is the current time, expressed as UTC.  Add_seconds is the number of
 seconds to add.  Note that it is a 64-bit
 integer, to facilitate navigating by seconds through a large span of time.
 If variable_length_seconds_before_year is greater than INT_MIN,
-leap seconds before January 1 of the specified year
-are ignored.
+leap seconds before January 1 of the specified year are ignored.
 .sp
 .TP
 int time_UTC_add_seconds_ns (struct tm *time_tm, long long int *nanoseconds, long long int add_seconds, long long int add_nanoseconds, int variable_length_seconds_before_year);
@@ -383,22 +388,22 @@ Add_nanoseconds is the number of nanoseconds to add.  If you just want to
 navigate the calendar by nanoseconds, you can keep add_seconds 0 and put
 the entire span in add_nanoseconds.
 If variable_length_seconds_before_year is greater than INT_MIN,
-leap seconds before January 1 of the specified year
-are ignored.
+leap seconds before January 1 of the specified year are ignored.
 .sp
 .TP
 int time_UTC_add_years (struct tm *time_tm, int addend, int rounding_mode, int variable_length_seconds_before_year);
 Add years to a Coordinated Universal Time.
 Time_tm is the current time, expressed as UTC.
 The result overwrites this value.
-Addend is the number of years to
-add; a negative value causes years to be subtracted.
+Addend is the number of years to add; a negative value causes years to be
+subtracted.
 Rounding_mode is used when the resulting time is invalid.  This can
 happen, for example, when subtracting one year from December 31, 2016
 at 23:59:60.  The result is December 31, 2015 at 23:59:60,
 which is invalid.
 If rounding_mode is 1, the result is adjusted to January 1, 2016 at 00:00:00.
-If rounding_mode is -1, the result is adjusted to December 31, 2015 at 23:59:59.
+If rounding_mode is -1, the result is adjusted to December 31, 2015 at
+23:59:59.
 If variable_length_seconds_before_year is greater than INT_MIN,
 leap seconds before January 1 of the specified year
 are ignored.
@@ -406,15 +411,28 @@ are ignored.
 .TP
 int time_UTC_normalize (struct tm *time_tm, long long int seconds, int variable_length_seconds_before_year);
 Make sure all of the fields of a tm structure containing a
-Coordinated Universal Time are within their valid ranges.
+Coordinated Universal Time are within their valid ranges, and that the day
+of the year and day of the week are correct..
 Time_tm is the TM value to be normalized; the
 result overwrites this value.  Seconds holds the seconds value from the
-TM structure, so it can be a 64-bit value.
+TM structure, so it can be a 64-bit value.  The resulting value of seconds
+is stored in the seconds member of time_tm.
 If variable_length_seconds_before_year is greater than INT_MIN,
 leap seconds before January 1 of the specified year
 are ignored.
 This function is used internally to make sure the TM structure shows a valid
 time before returning it.
+.sp
+.TP
+int time_UTC_to_foreign_local (struct tm *coordinated_universal_time, int foreign_UTC_offset, struct tm *local_time, int variable_length_seconds_before_year);
+Convert Coordinated Universal Time to one containing a foreign local time.
+Coordinated_universal_time is the input time, in UTC.
+Foreign_UTC_offset is the offset in seconds between UTC and the desired
+local time.
+The result is stored in local_time.
+If variable_length_seconds_before_year is greater than INT_MIN,
+leap seconds before January 1 of the specified year
+are ignored.
 .sp
 .TP
 int time_UTC_to_local (struct tm *coordinated_universal_time, struct tm *local_time, int variable_length_seconds_before_year);

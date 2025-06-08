@@ -142,10 +142,35 @@
 %\newcommand{\filename}{\ttfamily\smaller}
 
 % 13. New Computer Modern, book weight
+\usepackage{fontspec}
 \usepackage{unicode-math}
-\usepackage{newcomputermodern}
-\newcommand{\filename}{\ttfamily\smaller}
 
+\setmainfont[%
+Numbers=OldStyle,%
+ItalicFont=NewCM10-Italic.otf,%
+BoldFont=NewCM10-Bold.otf,%
+BoldItalicFont=NewCM10-BoldItalic.otf,%
+SmallCapsFeatures={Numbers=OldStyle}]{NewCM10-Regular.otf}
+
+\setsansfont[%
+Numbers=OldStyle,%
+ItalicFont=NewCMSans10-Oblique.otf,%
+BoldFont=NewCMSans10-Bold.otf,%
+BoldItalicFont=NewCMSans10-BoldOblique.otf,%
+SmallCapsFeatures={Numbers=OldStyle}]{NewCMSans10-Regular.otf}
+
+\setmonofont[ItalicFont=NewCMMono10-Italic.otf,%
+Numbers=OldStyle,%
+BoldFont=NewCMMono10-Bold.otf,%
+BoldItalicFont=NewCMMono10-BoldOblique.otf,%
+SmallCapsFeatures={Numbers=OldStyle}]{NewCMMono10-Regular.otf}
+
+\setmathfont{NewCMMath-Regular.otf}
+
+\addfontfeatures{Renderer=Harfbuzz}
+\newcommand{\filename}{\ttfamily\smaller}
+\newcommand{\liningnumbers}{\addfontfeatures{Numbers=Lining}}
+    
 \usepackage[pdfencoding=unicode,pagebackref,breaklinks]{hyperref}
 \bibliographystyle{plainnat}
 \setcitestyle{numbers,square}
@@ -199,12 +224,12 @@
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2025 by John Sauter},
   pdfurl={https://www.systemeyescomputerstore.com/leap\%5Fseconds/proleptic\%5FUTC.pdf},
-  pdfdate={2025-05-30},
+  pdfdate={2025-06-06},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
 
-\date{2025-05-30}
+\date{2025-06-06}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -777,6 +802,8 @@ Also included are some sample and test programs, and the configuration
 scripts needed to compile the programs and construct this PDF file.
 Building the PDF file requires {\LaTeX} and Python.
 
+\subsection{PDF file}
+
 If you have only the PDF file, you can build the time library
 and include files as follows:
 \begin{enumerate}
@@ -803,11 +830,15 @@ and {\ttfamily make}.
 {\ttfamily sudo make install}.
 \end{enumerate}
 
+\subsection{TAR file}
+
 If you have the compressed tar file, extract its contents to an empty
 directory, then type {\ttfamily ./configure},
 and {\ttfamily make}.  Type {\ttfamily sudo make install} to
 install the library.  If you want the PDF you can get it by
 typing {\ttfamily make pdf}.
+
+\subsection{COPR}
 
 If you are running the Fedora distribution of GNU/Linux, the code
 described in this document is also available in a repository
@@ -1013,8 +1044,13 @@ in libtime.
   ucfilespec={John\_Sauter\_public\_key.asc}]
           {John_Sauter_public_key.asc}
 
+\subsection{GitHub}
 These files are also available on github, at the following URL:
-\href{https://github.com/ShowControl/libtime}{https://github.com/ShowControl/libtime}.
+          
+\begin{center}
+  \href{https://github.com/ShowControl/libtime}{https://github.com/ShowControl/libtime}
+  \end{center}
+          
 That directory has all of the code displayed in this document,
 the {\LaTeX} source for this document,
 a tarball which holds the sources plus the build and install procedure,
@@ -1035,7 +1071,8 @@ is located in Tokyo, Japan.
 Set your time zone to Asia/Tokyo.  Construct a {\ttfamily tm} structure
 containing June 30, 2017, at 9 AM.  Convert that from local time to UTC.
 Convert the UTC time to a string, and send the string to
-the participants.  The string you send should be 2017-06-30T00:00:00Z.
+the participants.  The string you send should be
+{\liningnumbers 2017-06-30T00:00:00Z}.
 
 \subsection{Periodic Backups}
 You are writing the scheduler for a backup program.  At 3 AM
@@ -1056,7 +1093,8 @@ until tm\_wday is not Sunday or Monday.  Convert the result
 to Coordinated Universal Time.  This is the time of the
 next backup.  If you install the software on December 31, 2016,
 at 21:21:35 in time zone America/New\_York, the first
-scheduled backup will be at 2017-01-03T08:00:00Z.
+scheduled backup will be at
+{\liningnumbers 2017-01-03T08:00:00Z}.
 \inputminted[firstline=44,lastline=76]{c}{examples/example_02.c}
 \embedfile[desc={Example code for periodic backups},
   mimetype={text/plain},
@@ -1090,15 +1128,14 @@ and the leap second at the end of the year.
 \inputminted[firstline=45,lastline=81]{c}{examples/example_03.c}
 \embedfile[desc={Example code for rocket over Central Park},
   mimetype={text/plain},
-  ucfilespec={examples/example\_03.c}]
-          {examples/example_03.c}
+  ucfilespec={examples/example\_03.c}]{examples/example_03.c}
 
 Here is the schedule for 2016:
-\VerbatimInput[fontsize=\relscale{0.95}]{example_03_output.txt}
+{\liningnumbers          
+\VerbatimInput[formatcom=\liningnumbers]{example_03_output.txt}}
 \embedfile[desc={Output of example 3},
   mimetype={text/plain},
-  ucfilespec={example\_03\_output.txt}]
-          {example_03_output.txt}
+  ucfilespec={example\_03\_output.txt}]{example_03_output.txt}
 
 \subsection{Using International Atomic Time}
 \label{example:TAI}
@@ -1344,6 +1381,7 @@ freedoms as long as you follow the license terms.
 \section{Revision History}
 
 \begin{description}
+\item[2025-06-06 5.184.2]Adjust future leap seconds starting in 2194.
 \item[2025-05-30 5.183.2]Adjust future leap seconds starting in 2029.
   The next leap second is predicted to be a negative leap second
   on December 31, 2029.
