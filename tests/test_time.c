@@ -1,10 +1,10 @@
 /*
- * File: test_time.c, author: John Sauter, date: January 7, 2024.
+ * File: test_time.c, author: John Sauter, date: June 8, 2025.
  * Test the time subroutines.
  */
 
 /*
- * Copyright © 2024 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2025 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -43,14 +43,6 @@
 
 static int debug_level = 0;
 
-/* routine to exit with an error message */
-static void
-errno_exit (const char *s)
-{
-  fprintf (stderr, "%s error %d, %s\n", s, errno, strerror (errno));
-  exit (EXIT_FAILURE);
-}
-
 /* Perform some tests. */
 void
 do_tests ()
@@ -69,12 +61,7 @@ do_tests ()
   struct tm utc_time_tm;
   struct tm base_time_tm;
   int elapsed_time;
-  int loop_counter;
-  long long int delay_time_ns;
   int base_nanoseconds;
-  long long int target_nanoseconds;
-  struct tm target_time_tm;
-  long long int add_nanoseconds;
 
   __int128 current_time_int128;
     
@@ -99,7 +86,6 @@ do_tests ()
 	  sizeof(((struct tm *)0)->tm_zone));
   
   time_current_tm_nano (&base_time_tm, &base_nanoseconds);
-  loop_counter = 0;
   
   clock_gettime (id_r, &ts_r);
   clock_gettime (id_m, &ts_m);
@@ -107,14 +93,13 @@ do_tests ()
   time_current_tm_nano (&now_tm, &nanoseconds);
   time_tm_nano_to_string (&now_tm, nanoseconds,
 			  text_buffer_1, sizeof(text_buffer_1));
-  printf ("UTC time string: %s.\n", text_buffer_1, sizeof(text_buffer_1));
+  printf ("UTC time string: %s.\n", text_buffer_1);
   
   time_tm_nano_to_integer (&now_tm, nanoseconds,
 			   &current_time_int128);
   int128_to_string (&current_time_int128,
 		    text_buffer_2, sizeof(text_buffer_2));
-  printf ("UTC time integer with nanoseconds: %s.\n",
-	  text_buffer_2, sizeof(text_buffer_2));
+  printf ("UTC time integer with nanoseconds: %s.\n", text_buffer_2);
   
   time_tm_to_integer (&now_tm, &current_time_long_long_int);
   printf ("UTC time integer: %lld.\n", current_time_long_long_int);
@@ -122,13 +107,12 @@ do_tests ()
   time_UTC_to_local (&now_tm, &local_time_tm, INT_MIN);
   time_tm_nano_to_string (&local_time_tm, nanoseconds,
 			  text_buffer_3, sizeof(text_buffer_3));
-  printf ("Local time with nanoseconds: %s.\n",
-	  text_buffer_3, sizeof(text_buffer_3));
+  printf ("Local time with nanoseconds: %s.\n", text_buffer_3);
   
   time_local_to_UTC (&local_time_tm, &utc_time_tm, INT_MIN);
   time_tm_nano_to_string (&utc_time_tm, nanoseconds,
 			  text_buffer_4, sizeof(text_buffer_4));
-  printf ("back to UTC time: %s.\n", text_buffer_4, sizeof(text_buffer_4));
+  printf ("back to UTC time: %s.\n", text_buffer_4);
 
   elapsed_time = time_diff (&base_time_tm, &now_tm, INT_MIN);
   printf ("Elapsed time: %d.\n", elapsed_time);
