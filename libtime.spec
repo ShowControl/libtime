@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2025.08.22
+Version:        2025.09.19
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
@@ -9,7 +9,7 @@ Source0:        https://github.com/ShowControl/libtime/blob/master/libtime-%{ver
 
 BuildRequires:  gcc
 BuildRequires:  make
-BuildRequires:  python3 >= 3.10
+BuildRequires:  python3 >= 3.13
 BuildRequires:  git
 BuildRequires:  proleptic_utc_with_leap_seconds
 
@@ -103,6 +103,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Fri Sep 19 2025 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2025.09.19-1 Adjust future leap seconds starting in 2161.
 * Fri Aug 22 2025 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2025.08.22-1 Adjust future leap seconds starting in 2099.
 * Fri Aug 15 2025 John Sauter <John_Sauter@systemeyescomputerstore.com>
