@@ -1,4 +1,9 @@
-2025-01-02 5.195.2
+2026-01-16 5.196.2
+  Adjust future leap seconds starting in 2149.
+  Update to IERS Bulletin C 71 which states that UTC - TAI
+  will remain at -37 seconds for the next six months, at least.
+  
+2026-01-02 5.195.2
   Adjust future leap seconds starting in 2030.  The next leap second
   is predicted to be a negative leap second on June 30, 2031.
   
