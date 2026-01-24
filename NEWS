@@ -1,3 +1,7 @@
+2026-01-23 5.197.2
+  Adjust future leap seconds starting in 2031.  The next leap second
+  is predicted to be a positive leap second on December 31, 2047.
+  
 2026-01-16 5.196.2
   Adjust future leap seconds starting in 2149.
   Update to IERS Bulletin C 71 which states that UTC - TAI
