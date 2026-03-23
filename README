@@ -1,4 +1,4 @@
-# README for libtime project, last updated February 3, 2024.
+# README for libtime project, last updated March 22, 2026.
 
 Libtime is a package of subroutines for the manipulation of time values.
 The subroutines handle leap seconds correctly by avoiding the use of
@@ -104,12 +104,12 @@ The version number of libtime is the distribution date, since the
 unpredictability of leap seconds means the library will never be finished.
 When updating the version number in configure.ac, don't forget to update
 the sharable image version triplet, which is in configure.ac, NEWS and
-the revision history section of avoid_time_t.tex.  If you make a change
+the revision history section of avoid_time_t.tex.in.  If you make a change
 to libtime that is not backwards-compatible, you will also have to
 change the spec file.  Such changes are discouraged because they
 require modifying potentially all the software that depends on libtime.
 
-The date also appears in avoid_time_t.tex, in three places: in the
+The date also appears in avoid_time_t.tex.in, in three places: in the
 PDF metadata, on the title page, and in the revision history.  The date
 is also in file references.bib, so other documents can refer to the
 current version.  That file is alse used by "Extending Coordinated
@@ -139,7 +139,7 @@ and libtime-doc RPMs.
 If this is the first change you are making to libtime since taking it over
 from the previous maintainer, you should add your PGP public key to the
 tarball and the PDF.  See John_Sauter_public_key.asc in Makefile.am
-and avoid_time_t.tex for an example.
+and avoid_time_t.tex.in for an example.
 
 Here is the checklist I use to be sure I am distributing working software.
 I start with proleptic_utc_with_leap_seconds and libtime installed, and in the
@@ -161,7 +161,7 @@ use the same comment as in that package's spec file.
 4. Edit file NEWS to add the new version number, the new version-info
 triplet, and the reason for the update.
 
-5. Edit file avoid_time_t.tex to update the revision date on the title
+5. Edit file avoid_time_t.tex.in to update the revision date on the title
 page and in the PDF metadata.  Update the revision history using the
 information in the NEWS file.
 

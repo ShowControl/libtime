@@ -1,4 +1,4 @@
-# File: Makefile.am for libtime, author: John Sauter, date: June 8, 2025.
+# File: Makefile.am for libtime, author: John Sauter, date: March 22, 2026.
 #
 # Copyright © 2025 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -46,7 +46,7 @@ EXTRA_DIST = read_extraordinary_days_table.py \
 	examples/example_06.py \
 	examples/example_07.py \
 	extraordinary_days.dat \
-	avoid_time_t.tex \
+	avoid_time_t.tex.in \
 	references.bib \
 	legalcode.txt \
 	autogen.sh John_Sauter_public_key.asc
@@ -66,8 +66,8 @@ src/time_diff.lo: dtai_table.h dtai_table.tab
 # When removing files, also remove the following:
 CLEANFILES = dtai_table.h dtai_table.tab example_03_output.txt \
 avoid_time_t.out avoid_time_t.brf avoid_time_t.log avoid_time_t.aux \
-avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf check_time_output.txt \
-verify_files.sh extraordinary_days.dat
+avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf avoid_time_t.tex \
+check_time_output.txt verify_files.sh extraordinary_days.dat
 
 clean-local:
 	rm -rf _minted-avoid_time_t/
@@ -206,10 +206,10 @@ avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	examples/example_07.py \
 	example_03_output.txt libtime.pc extraordinary_days.dat \
 	$(libtime_la_SOURCES)
-	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
-	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
-	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
-	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
+	lualatex -shell-escape $(builddir)/avoid_time_t.tex
+	lualatex -shell-escape $(builddir)/avoid_time_t.tex
+	lualatex -shell-escape $(builddir)/avoid_time_t.tex
+	lualatex -shell-escape $(builddir)/avoid_time_t.tex
 
 # Build the bbl file by running LaTeX without it, then running bibtex.
 avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
@@ -217,7 +217,8 @@ avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
 	dtai_table.h dtai_table.tab time_subroutines.h time_subroutines.py \
 	example_03_output.txt libtime.pc extraordinary_days.dat \
 	$(libtime_la_SOURCES)
-	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
+	echo "" >${builddir}/avoid_time_t.bbl
+	lualatex -shell-escape $(builddir)/avoid_time_t.tex
 	export BIBINPUTS="$(srcdir):" && kpsewhich -var-value BIBINPUTS && bibtex $(builddir)/avoid_time_t.aux
 
 # The output of example 3 is presented in the document.
@@ -226,13 +227,15 @@ example_03_output.txt : example_03
 $(builddir)/example_03 >$(builddir)/example_03_output.txt
 	cat $(builddir)/example_03_output.txt
 
-# Include the signature file in the repository.
+# Include the signature file and my public key in the repository.
 signature : ${PACKAGE}-${VERSION}.tar.gz.asc
 .PHONEY: signature
 
 ${PACKAGE}-${VERSION}.tar.gz.asc : ${PACKAGE}-${VERSION}.tar.gz
 	rm -f ${PACKAGE}-*.tar.gz.asc
 	gpg2 --detach-sign --armor ${PACKAGE}-${VERSION}.tar.gz
+
+EXTRA_DIST += John_Sauter_public_key.asc
 
 # Support pgk-config
 pkgconfigdir = $(libdir)/pkgconfig

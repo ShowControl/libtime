@@ -6,7 +6,7 @@
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
 AC_PREREQ([2.69])
-AC_INIT([libtime], [2026.02.13],
+AC_INIT([libtime], [2026.03.20],
 [John_Sauter@systemeyescomputerstore.com],
 [libtime], ["github@github.com:ShowControl/libtime.git"])
 AM_INIT_AUTOMAKE
@@ -96,7 +96,7 @@ LT_INIT()
 # a change in the libtime.spec file.
 #
 AC_SUBST(libtool_version_current,"5")
-AC_SUBST(libtool_version_revision, "198")
+AC_SUBST(libtool_version_revision, "199")
 AC_SUBST(libtool_version_age, "2")
 
 # Checks for programs.
@@ -148,7 +148,11 @@ AS_IF([test $try_int128 = TRUE],
 	    [AC_SUBST(USE_int128_Python,[])],
 	    [AC_SUBST(USE_int128_Python,[#])])
 	    
-AC_CONFIG_FILES([Makefile libtime.pc time_subroutines.h time_subroutines.py])
+AC_CONFIG_FILES([Makefile
+		 libtime.pc
+		 time_subroutines.h
+		 time_subroutines.py
+		 avoid_time_t.tex])
 AC_OUTPUT
 
 # End of file configure.ac

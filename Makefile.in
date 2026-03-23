@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: June 8, 2025.
+# File: Makefile.am for libtime, author: John Sauter, date: March 22, 2026.
 #
 # Copyright © 2025 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -137,7 +137,8 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = libtime.pc time_subroutines.h time_subroutines.py
+CONFIG_CLEAN_FILES = libtime.pc time_subroutines.h time_subroutines.py \
+	avoid_time_t.tex
 CONFIG_CLEAN_VPATH_FILES =
 @USE_int128_TRUE@am__EXEEXT_1 = powers_of_two$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
@@ -549,8 +550,8 @@ TEST_LOG_DRIVER = $(SHELL) $(top_srcdir)/test-driver
 TEST_LOG_COMPILE = $(TEST_LOG_COMPILER) $(AM_TEST_LOG_FLAGS) \
 	$(TEST_LOG_FLAGS)
 am__DIST_COMMON = $(dist_man_MANS) $(srcdir)/Makefile.in \
-	$(srcdir)/config.h.in $(srcdir)/libtime.pc.in \
-	$(srcdir)/time_subroutines.h.in \
+	$(srcdir)/avoid_time_t.tex.in $(srcdir)/config.h.in \
+	$(srcdir)/libtime.pc.in $(srcdir)/time_subroutines.h.in \
 	$(srcdir)/time_subroutines.py.in AUTHORS COPYING ChangeLog \
 	INSTALL NEWS README compile config.guess config.sub depcomp \
 	install-sh ltmain.sh missing py-compile test-driver
@@ -752,10 +753,10 @@ libtime_la_SOURCES = src/time_copy.c src/time_current_tm.c \
 # Distribute the shell script which builds the RPMs.
 EXTRA_DIST = read_extraordinary_days_table.py tests/demo_python.py \
 	tests/test_python_interface.py examples/example_06.py \
-	examples/example_07.py extraordinary_days.dat avoid_time_t.tex \
-	references.bib legalcode.txt autogen.sh \
+	examples/example_07.py extraordinary_days.dat \
+	avoid_time_t.tex.in references.bib legalcode.txt autogen.sh \
 	John_Sauter_public_key.asc libtime.spec fix_files.sh \
-	build_RPMs.sh
+	build_RPMs.sh John_Sauter_public_key.asc
 
 # Also distribute the text for the man command.
 dist_man_MANS = libtime.3
@@ -763,8 +764,8 @@ dist_man_MANS = libtime.3
 # When removing files, also remove the following:
 CLEANFILES = dtai_table.h dtai_table.tab example_03_output.txt \
 avoid_time_t.out avoid_time_t.brf avoid_time_t.log avoid_time_t.aux \
-avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf check_time_output.txt \
-verify_files.sh extraordinary_days.dat
+avoid_time_t.blg avoid_time_t.bbl avoid_time_t.pdf avoid_time_t.tex \
+check_time_output.txt verify_files.sh extraordinary_days.dat
 
 
 # Place support files in the m4 directory.
@@ -889,6 +890,8 @@ libtime.pc: $(top_builddir)/config.status $(srcdir)/libtime.pc.in
 time_subroutines.h: $(top_builddir)/config.status $(srcdir)/time_subroutines.h.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 time_subroutines.py: $(top_builddir)/config.status $(srcdir)/time_subroutines.py.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+avoid_time_t.tex: $(top_builddir)/config.status $(srcdir)/avoid_time_t.tex.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 clean-noinstPROGRAMS:
@@ -2017,10 +2020,10 @@ avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	examples/example_07.py \
 	example_03_output.txt libtime.pc extraordinary_days.dat \
 	$(libtime_la_SOURCES)
-	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
-	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
-	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
-	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
+	lualatex -shell-escape $(builddir)/avoid_time_t.tex
+	lualatex -shell-escape $(builddir)/avoid_time_t.tex
+	lualatex -shell-escape $(builddir)/avoid_time_t.tex
+	lualatex -shell-escape $(builddir)/avoid_time_t.tex
 
 # Build the bbl file by running LaTeX without it, then running bibtex.
 avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
@@ -2028,7 +2031,8 @@ avoid_time_t.bbl : avoid_time_t.tex references.bib examples/example_02.c \
 	dtai_table.h dtai_table.tab time_subroutines.h time_subroutines.py \
 	example_03_output.txt libtime.pc extraordinary_days.dat \
 	$(libtime_la_SOURCES)
-	export TEXINPUTS="$(srcdir):" && lualatex -shell-escape $(srcdir)/avoid_time_t.tex
+	echo "" >${builddir}/avoid_time_t.bbl
+	lualatex -shell-escape $(builddir)/avoid_time_t.tex
 	export BIBINPUTS="$(srcdir):" && kpsewhich -var-value BIBINPUTS && bibtex $(builddir)/avoid_time_t.aux
 
 # The output of example 3 is presented in the document.
@@ -2037,7 +2041,7 @@ example_03_output.txt : example_03
 $(builddir)/example_03 >$(builddir)/example_03_output.txt
 	cat $(builddir)/example_03_output.txt
 
-# Include the signature file in the repository.
+# Include the signature file and my public key in the repository.
 signature : ${PACKAGE}-${VERSION}.tar.gz.asc
 .PHONEY: signature
 
