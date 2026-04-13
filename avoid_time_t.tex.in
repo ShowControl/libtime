@@ -224,12 +224,12 @@ SmallCapsFeatures={Numbers=Lowercase}]{NewCMMono10-Regular.otf}
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2026 by John Sauter},
   pdfurl={https://www.systemeyescomputerstore.com/leap\%5Fseconds/proleptic\%5FUTC.pdf},
-  pdfdate={2026-03-20},
+  pdfdate={2026-04-10},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
 
-\date{2026-03-20}
+\date{2026-04-10}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -1388,6 +1388,7 @@ freedoms as long as you follow the license terms.
 \section{Revision History}
 
 \begin{description}
+\item[2026-04-10 5.200.2]Adjust future leap seconds starting in 2071.
 \item[2026-03-20 5.199.2]Adjust future leap seconds starting in 2095.
 \item[2026-02-13 5.198.2]Adjust future leap seconds starting in 2090.
 \item[2026-01-23 5.197.2]Adjust future leap seconds starting in 2031.
