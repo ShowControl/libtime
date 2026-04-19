@@ -1,9 +1,9 @@
 Name:           libtime
-Version:        2026.04.10
+Version:        2026.04.17
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
-License:        GPLv3+
+License:        GPL-3.0-or-later AND CC-BY-SA-4.0
 URL:            https://github.com/ShowControl/libtime/
 Source0:        https://github.com/ShowControl/libtime/blob/master/libtime-%{version}.tar.gz
 
@@ -12,8 +12,6 @@ BuildRequires:  make
 BuildRequires:  python3 >= 3.13
 BuildRequires:  git
 BuildRequires:  proleptic_utc_with_leap_seconds
-
-%global _hardened_build 1
 
 %description
 Manipulate time values stored in a POSIX tm structure.
@@ -103,6 +101,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+* Fri Apr 17 2026 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2026.04.17-1 Adjust future leap seconds starting in 2189.
 * Fri Apr 10 2026 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2026.04.10-1 Adjust future leap seconds starting in 2071.
 * Fri Mar 20 2026 John Sauter <John_Sauter@systemeyescomputerstore.com>
