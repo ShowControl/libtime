@@ -1,6 +1,6 @@
-# File: Makefile.am for libtime, author: John Sauter, date: March 22, 2026.
+# File: Makefile.am for libtime, author: John Sauter, date: May 22, 2026.
 #
-# Copyright © 2025 by John Sauter.
+# Copyright © 2026 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
 # license.  See https://creativecommons.org/license/by-sa/4.0/.
 
@@ -71,6 +71,7 @@ check_time_output.txt verify_files.sh extraordinary_days.dat
 
 clean-local:
 	rm -rf _minted-avoid_time_t/
+	rm -rf _minted/
 	rm -rf __pycache__
 	rm -rf autom4te.cache
 	rm -f *~
