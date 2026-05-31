@@ -1,5 +1,5 @@
 Name:           libtime
-Version:        2026.05.22
+Version:        2026.05.29
 Release:        1%{?dist}
 Summary:        Manipulate time values
 
