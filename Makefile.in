@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am for libtime, author: John Sauter, date: May 22, 2026.
+# File: Makefile.am for libtime, author: John Sauter, date: June 6, 2026.
 #
 # Copyright © 2026 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -2018,7 +2018,7 @@ pdf-local: avoid_time_t.pdf fix_files.sh
 avoid_time_t.pdf : avoid_time_t.tex avoid_time_t.bbl dtai_table.h \
 	dtai_table.tab time_subroutines.h time_subroutines.py \
 	examples/example_02.c examples/example_03.c examples/example_06.py \
-	examples/example_07.py \
+	examples/example_07.py references.bib \
 	example_03_output.txt libtime.pc extraordinary_days.dat \
 	$(libtime_la_SOURCES)
 	lualatex -shell-escape $(builddir)/avoid_time_t.tex
