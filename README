@@ -1,4 +1,4 @@
-# README for libtime project, last updated June 27, 2026.
+# README for libtime project, last updated August 2, 2026.
 
 Libtime is a package of subroutines for the manipulation of time values.
 The subroutines handle leap seconds correctly by avoiding the use of
@@ -147,7 +147,7 @@ directory which is a clone of the github repository.
 
 1. Perform whatever updates are called for to the libtime sources.  If you are
 just rebuilding libtime because proleptic_utc_with_leap_seconds changed,
-no changes to the source code are required.
+no changes to the source code are required beyond those described below.
 
 2. Edit file configure.ac to set the version number to the expected
 distribution date, and update the version-info triplet.  There are comments in
