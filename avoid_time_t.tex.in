@@ -224,12 +224,12 @@ SmallCapsFeatures={Numbers=Lowercase}]{NewCMMono10-Regular.otf}
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2026 by John Sauter},
   pdfurl={https://www.systemeyescomputerstore.com/leap\%5Fseconds/proleptic\%5FUTC.pdf},
-  pdfdate={2026-10-16},
+  pdfdate={2026-10-30},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
 
-\date{2026-10-16}
+\date{2026-10-30}
 \maketitle
 \begin{abstract}
   The POSIX data type {\ttfamily time\_t} is defined in a way that leads
@@ -325,7 +325,9 @@ There are several problems with this definition:
   all days
   contain exactly \num[mode=text]{86400} seconds.
   This is false: December 31, 2016, for
-  example, contains \num[mode=text]{86401} seconds.
+  example, contains \num[mode=text]{86401} seconds
+  and there may be days in the future with \num[mode=text]{23} and
+  \num[mode=text]{25} hours.
   This pretense leads to application
   program errors on days that do not contain \num[mode=text]{86400} seconds.
   Because {\ttfamily time\_t} counts seconds almost all the time,
@@ -390,7 +392,7 @@ programmer to avoid completely the use of {\ttfamily time\_t} for telling time.
 To demonstrate that this is possible,
 I will list all of the POSIX functions 
 that use {\ttfamily time\_t}
-(or timespec, which contains a {\ttfamily time\_t}) 
+(or {\ttfamily timespec}, which contains a {\ttfamily time\_t}) 
 and show how to
 replace the application functions which use {\ttfamily time\_t} as
 seconds since the epoch.
@@ -399,9 +401,11 @@ below into a library called {\ttfamily libtime}.
 See section \ref{section:Embedded_files} for details.
 
 \subsection{clock\_getres}
-This function returns a timespec, but that timespec describes an interval
-rather than an instant.  The {\ttfamily time\_t} returned in the timespec is a
-number of seconds rather than seconds since the epoch.
+This function returns a {\ttfamily timespec}, but that {\ttfamily timespec}
+describes an interval
+rather than an instant.  The {\ttfamily time\_t} returned in the
+{\ttfamily timespec} is a
+number of seconds rather than a count of seconds since the epoch.
 
 \subsection{clock\_gettime and gettimeofday}
 Gettimeofday is equivalent to clock\_gettime with clock ID set to
@@ -442,6 +446,12 @@ Feel free to express yourself as you see fit about the disabling
 of {\ttfamily adjtimex}.  Fedora bugzilla
 \num[mode=text]{1778298}\footnote{\href{https://bugzilla.redhat.com/show_bug.cgi?id=1778298}{https://bugzilla.redhat.com/show\_bug.cgi?id=1778298}}
 contains my opinion.
+
+Note also that the {\ttfamily adjtimex} function cannot handle leaps of more
+than a single second, so it will have to be replaced when leaps of
+\num[mode=text]{3600} seconds become possible.  In section
+\ref{section:KernelRecommendations} I suggests a kernel
+function which fetches the current time as a {\ttfamily tm} structure directly.
 
 \subsection{clock\_nanosleep}
 Clock\_nanosleep with clock ID set to CLOCK\_REAL\-TIME and with flag
@@ -1274,10 +1284,6 @@ of 2016 should cause the schedule for the remainder of the year
 to be recomputed, resulting in a launch time of 23:59:59 for
 the December 31 rocket, instead of 23:59:58.
 
-If your application deals only with days, and is not sensitive
-to the exact number of seconds between two times, you can be
-more relaxed.
-
 \subsection{Only coded for GNU/Linux}
 The code embedded in this PDF has been written for GNU/Linux.
 Some effort would be required to port the code to another
@@ -1288,40 +1294,18 @@ operating system.
 Most of the work needed to handle UTC correctly is done in application
 programs, but some kernel changes would result in better UTC support.
 \begin{enumerate}
-\item Add a named clock, called {\ttfamily CLOCK\_UTC}, which uses
-  a {\ttfamily timeval} in which the nanoseconds field has
-  \num[mode=text,retain-unity-mantissa = false]{1e9} added to
-  indicate a leap second.  This would allow the clock to be set
-  during a leap second.
-\item Add a kernel boot parameter (perhaps in conjunction with
-  an NTP configuration option) to specify the behavior of
-  {\ttfamily CLOCK\_REALTIME}.
-  Choices are:
-  \begin{enumerate}
-  \item The same as the old behavior, where during a leap second
-    23:59:59 is repeated and {\ttfamily adjtimex} returns
-    {\ttfamily TIME\_OOP}.  This is the default, for compatibility.
-  \item Smeared time, where the clock begins to depart from UTC several hours
-    before the leap second, reaches its maximum at the leap second, then
-    returns to UTC over the next several hours.  {\ttfamily Adjtimex}
-    never returns {\ttfamily TIME\_OOP} and no second is repeated.
-    Reasonable choices for the total smear time are 24 and 48 hours.
-    Clock smearing is used to mask leap seconds from software that isn't
-    prepared to handle them.
-  \item The same as {\ttfamily CLOCK\_UTC}.
-  \end{enumerate}
+\item Add a function to fetch the current UTC time into a {\ttfamily tm}
+  structure and an integer containing the number of nanoseconds since
+  the start of the current second.
+  This will permit expressing the current time correctly during leap seconds.
+\item Add a function to set the current UTC time using a {\ttfamily tm}
+  structure and an integer containing the number of nanoseconds since
+  the start of the current second.
+  This will permit setting the time during leap seconds.
 \item When file systems store their mtime, atime and ctime, they use
-  the value returned by {\ttfamily CLOCK\_REALTIME}.  Provided that
-  {\ttfamily CLOCK\_REALTIME} is set to behave like {\ttfamily CLOCK\_UTC}
-  this fixes the inaccuracy of file times.
+  the value returned by {\ttfamily CLOCK\_REALTIME}.
+  They should store the {\ttfamily tm} structure and the nanoseconds instead.
 \end{enumerate}
-
-\section{Future Work}
-The table of leap seconds will need to be updated every six months,
-when the IERS releases Bulletin C with a new leap second announcement.
-These updates can also capture the latest research on the rotation
-of the Earth in historical times.  It would be nice if these updates
-could be included in the software automatically.
 
 \section{Licensing}
 \label{section:Licensing}
@@ -1388,6 +1372,10 @@ freedoms as long as you follow the license terms.
 \section{Revision History}
 
 \begin{description}
+\item[2026-10-30 5.223.2]Adjust future leap seconds starting in 2030.
+  The next leap second is predicted to be a positive leap second
+  on June 30, 2030.
+  In the future leaps of \num[mode=text]{3600} seconds are possible.
 \item[2026-10-16 5.222.2]Adjust future leap seconds starting in 2031.
   The next leap second is predicted to be a positive leap second
   on June 30, 2031.
