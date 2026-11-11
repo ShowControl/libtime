@@ -1,9 +1,9 @@
 /*
- * File: check_time.c, author: John Sauter, date: November 18, 2019.
+ * File: check_time.c, author: John Sauter, date: November 11, 2026.
  * Used by "make check" to be sure the subroutines work.
  */
 /*
- * Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+ * Copyright © 2026 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -519,15 +519,15 @@ do_test ()
       seconds3 = time_diff (&time_tm, &extra_time_tm, INT_MIN);
       if (((seconds1 + i) != 2266800) && ((seconds1 + i) != 2180400) &&
 	  ((seconds1 + i) != 2007600) && ((seconds1 + i) != 2094000) &&
-	  ((seconds1 + i) != 2266801))
+	  ((seconds1 + i) != 2266801) && ((seconds1 + i) != 2266802))
 	{
 	  printf ("%d: %s->%s is %lld seconds\n",
 		  i, buffer2, buffer4, i+seconds1);
 	  return 1;
 	}
-      if ((((seconds2 - i) != -2266800) && ((seconds2 - i) != -2180400) &&
+      if (((((seconds2 - i) != -2266800) && ((seconds2 - i) != -2180400) &&
 	   ((seconds2 - i) != -2007600) && ((seconds2 - i) != -2094000) &&
-	   ((seconds2 - i) != -2266801)) ||
+	   ((seconds2 - i) != -2266801)) && ((seconds2 - i) != -2266802)) ||
 	  (seconds3 != 0))
 	{
 	  printf ("%d: %s->%s->%s is %lld, %lld seconds\n",
@@ -1030,7 +1030,7 @@ usage (FILE * fp, int argc, char **argv)
       fprintf (fp,
 	       "Usage: %s [options] \n\n"
 	       "test_local\n"
-	       " Version 2.0 2019-11-18\n"
+	       " Version 2.1 2026-11-11\n"
 	       "Options:\n"
 	       "-h | --help          Print this message\n"
 	       "-D | --debug-level   Amount of debugging output, default 0\n"
